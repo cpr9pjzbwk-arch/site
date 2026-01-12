@@ -8,45 +8,75 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --bg:#f2f2f2;
+  --card:#ffffff;
+  --text:#222;
+  --accent:#1e90ff;
+}
+body.dark{
+  --bg:#121212;
+  --card:#1e1e1e;
+  --text:#f2f2f2;
+  --accent:#4da3ff;
+}
+
 body{
   margin:0;
   font-family:Montserrat,sans-serif;
-  background:#f2f2f2;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s;
 }
+
 header{
-  background:#fff;
   padding:25px;
   text-align:center;
   position:relative;
 }
+
 select{
   position:absolute;
   top:15px;
   right:15px;
   padding:6px 10px;
 }
-h1{margin-bottom:5px}
-.support{font-size:14px;color:#555}
+
+.theme-toggle{
+  position:absolute;
+  top:15px;
+  left:15px;
+  cursor:pointer;
+  font-size:20px;
+}
 
 form{
-  background:#fff;
+  background:var(--card);
   margin:20px;
   padding:25px;
   border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 
 label.title{
   display:block;
-  margin:12px 0 6px;
+  margin:14px 0 6px;
   font-weight:600;
 }
 
-input[type=text],input[type=tel]{
+input{
   width:100%;
   padding:14px;
   border-radius:12px;
   border:1px solid #ccc;
   margin-bottom:10px;
+  font-size:16px;
+}
+
+body.dark input{
+  background:#2a2a2a;
+  color:#fff;
+  border-color:#444;
 }
 
 .service{
@@ -54,20 +84,42 @@ input[type=text],input[type=tel]{
   align-items:center;
   gap:10px;
   padding:14px;
-  border:1px solid #ddd;
+  border:1px solid #ccc;
   border-radius:12px;
   margin-bottom:10px;
+  cursor:pointer;
 }
 
 button{
   width:100%;
   padding:16px;
-  background:#1e90ff;
+  background:var(--accent);
   color:#fff;
   border:none;
   border-radius:30px;
   font-weight:700;
-  margin-top:10px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+/* WhatsApp floating button */
+.wa-float{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:56px;
+  height:56px;
+  background:#25D366;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.3);
+  z-index:999;
+}
+.wa-float img{
+  width:28px;
+  height:28px;
 }
 </style>
 </head>
@@ -75,6 +127,8 @@ button{
 <body>
 
 <header>
+  <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+
   <select id="lang">
     <option value="ru">RU</option>
     <option value="uz">UZ</option>
@@ -82,7 +136,6 @@ button{
   </select>
 
   <h1 id="title"></h1>
-  <div class="support" id="support"></div>
 </header>
 
 <form id="form">
@@ -91,7 +144,7 @@ button{
   <input type="text" id="name" required>
 
   <label class="title" id="phoneLabel"></label>
-  <input type="tel" id="phone" required>
+  <input type="tel" id="phone" placeholder="79230304790" required>
 
   <label class="title" id="serviceLabel"></label>
 
@@ -108,11 +161,15 @@ button{
   <button id="sendBtn"></button>
 </form>
 
+<!-- Floating WhatsApp -->
+<a class="wa-float" href="https://wa.me/79230304790" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+</a>
+
 <script>
 const T={
 ru:{
 title:"Оставить заявку",
-support:"Поддержка WhatsApp: wa.me/79230304790",
 nameLabel:"Имя и фамилия",
 phoneLabel:"Номер телефона",
 serviceLabel:"Выберите услугу",
@@ -122,7 +179,6 @@ btn:"Отправить в WhatsApp"
 },
 uz:{
 title:"Ariza qoldirish",
-support:"WhatsApp qo‘llab-quvvatlash: wa.me/79230304790",
 nameLabel:"Ism va familiya",
 phoneLabel:"Telefon raqami",
 serviceLabel:"Xizmatni tanlang",
@@ -132,7 +188,6 @@ btn:"WhatsApp ga yuborish"
 },
 tj:{
 title:"Дархост гузоред",
-support:"Дастгирии WhatsApp: wa.me/79230304790",
 nameLabel:"Ном ва насаб",
 phoneLabel:"Рақами телефон",
 serviceLabel:"Хизматро интихоб кунед",
@@ -144,36 +199,31 @@ btn:"Ба WhatsApp фиристодан"
 
 function applyLang(l){
   title.textContent=T[l].title;
-  support.textContent=T[l].support;
   nameLabel.textContent=T[l].nameLabel;
   phoneLabel.textContent=T[l].phoneLabel;
   serviceLabel.textContent=T[l].serviceLabel;
-
   srv1Text.textContent=T[l].s1;
   srv2Text.textContent=T[l].s2;
   srv1.value=T[l].s1;
   srv2.value=T[l].s2;
-
   sendBtn.textContent=T[l].btn;
 }
 
-lang.addEventListener("change",e=>applyLang(e.target.value));
+lang.onchange=e=>applyLang(e.target.value);
 
-form.addEventListener("submit",e=>{
+form.onsubmit=e=>{
   e.preventDefault();
   const service=document.querySelector('input[name=service]:checked').value;
-
-  const msg=
-`Заявка с сайта
+  const msg=`Заявка с сайта
 Имя: ${name.value}
 Телефон: wa.me/${phone.value}
 Услуга: ${service}`;
+  window.open("https://wa.me/79230304790?text="+encodeURIComponent(msg),"_blank");
+};
 
-  window.open(
-    "https://wa.me/79230304790?text="+encodeURIComponent(msg),
-    "_blank"
-  );
-});
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+}
 
 applyLang("ru");
 </script>
