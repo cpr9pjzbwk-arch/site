@@ -78,7 +78,6 @@ input[type=text],input[type=tel]{
 
 /* SERVICES */
 .service{
-  width:100%;
   display:flex;
   gap:12px;
   padding:14px;
@@ -105,6 +104,14 @@ button{
 
 .pay-btn{
   background:#14b8a6;
+  display:none;
+}
+
+.hint{
+  font-size:13px;
+  text-align:center;
+  opacity:.7;
+  margin-top:6px;
   display:none;
 }
 
@@ -160,6 +167,10 @@ button{
     💳 Оплатить по СБП (Тинькофф)
   </button>
 
+  <div class="hint" id="payHint">
+    После выбора банка откроется приложение банка
+  </div>
+
   <button type="submit" id="sendBtn"></button>
 </form>
 
@@ -207,13 +218,13 @@ function applyLang(l){
   srv2Text.textContent=T[l].s2;
   sendBtn.textContent=T[l].btn;
 }
-
 lang.onchange=e=>applyLang(e.target.value);
 
 /* показать кнопку оплаты */
 document.querySelectorAll('input[name="service"]').forEach(r=>{
   r.addEventListener('change',()=>{
-    document.getElementById("payBtn").style.display="block";
+    payBtn.style.display="block";
+    payHint.style.display="block";
   });
 });
 
@@ -225,21 +236,19 @@ function paySBP(){
   }
 
   const amount=service.value;
-  const baseUrl="https://www.tinkoff.ru/rm/r_oiNYaVkgzM.kXJRGeuGkT/0pgDR86850";
-  const url=baseUrl+"?amount="+amount;
+  const url="https://www.tinkoff.ru/rm/r_oiNYaVkgzM.kXJRGeuGkT/0pgDR86850?amount="+amount;
 
-  const btn=document.getElementById("payBtn");
-  btn.textContent="✅ Оплачено";
-  btn.style.background="#22c55e";
-  btn.disabled=true;
+  payBtn.textContent="✅ Оплачено";
+  payBtn.style.background="#22c55e";
+  payBtn.disabled=true;
 
-  window.open(url,"_blank");
+  // 🔥 ключевой момент — так лучше открываются банковские приложения
+  window.location.href = url;
 }
 
 form.onsubmit=e=>{
   e.preventDefault();
-
-  if(!document.getElementById("payBtn").disabled){
+  if(!payBtn.disabled){
     alert("Сначала оплатите услугу");
     return;
   }
@@ -249,6 +258,7 @@ form.onsubmit=e=>{
 Имя: ${name.value}
 Телефон: wa.me/${phone.value}
 Услуга: ${s}`;
+
   window.open("https://wa.me/79230304790?text="+encodeURIComponent(msg),"_blank");
 };
 
