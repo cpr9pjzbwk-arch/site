@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Заявка</title>
+<title>Реестр контролируемых лиц</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -34,23 +34,8 @@ body{
 header{
   padding:24px 20px 10px;
   text-align:center;
-  position:relative;
 }
-.theme-toggle{
-  position:absolute;
-  left:16px;
-  top:16px;
-  cursor:pointer;
-  font-size:20px;
-}
-select{
-  position:absolute;
-  right:16px;
-  top:16px;
-  padding:6px 10px;
-  border-radius:8px;
-}
-h1{margin:30px 0 10px}
+h1{margin:20px 0}
 
 /* FORM */
 form{
@@ -68,30 +53,32 @@ form{
   display:block;
 }
 
-input[type=text],input[type=tel]{
+input[type=text],
+input[type=tel],
+input[type=file]{
   width:100%;
-  padding:14px;
+  padding:12px;
   border-radius:12px;
   border:1px solid #cbd5e1;
-  font-size:16px;
+  font-size:15px;
+  background:#fff;
 }
 
 /* SERVICES */
 .service{
   display:flex;
-  gap:12px;
+  gap:10px;
   padding:14px;
   border:1px solid #cbd5e1;
   border-radius:14px;
   margin-bottom:12px;
   cursor:pointer;
 }
-.service input{margin-top:4px}
 
 /* BUTTONS */
 button{
   width:100%;
-  margin-top:10px;
+  margin-top:12px;
   padding:16px;
   background:var(--accent);
   color:#fff;
@@ -107,12 +94,16 @@ button{
   display:none;
 }
 
+.pay-alt{
+  background:#22c55e;
+  display:none;
+}
+
 .hint{
   font-size:13px;
-  text-align:center;
   opacity:.7;
-  margin-top:6px;
-  display:none;
+  margin-top:8px;
+  text-align:center;
 }
 
 /* FLOAT WA */
@@ -135,43 +126,55 @@ button{
 <body>
 
 <header>
-  <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
-  <select id="lang">
-    <option value="ru">RU</option>
-    <option value="uz">UZ</option>
-    <option value="tj">TJ</option>
-  </select>
-  <h1 id="title"></h1>
+  <h1>Реестр контролируемых лиц</h1>
 </header>
 
 <form id="form">
-  <label class="label" id="nameLabel"></label>
+
+  <label class="label">Имя и фамилия</label>
   <input type="text" id="name" required>
 
-  <label class="label" id="phoneLabel"></label>
+  <label class="label">Номер телефона</label>
   <input type="tel" id="phone" required>
 
-  <label class="label" id="serviceLabel"></label>
+  <label class="label">Выберите услугу</label>
 
   <label class="service">
     <input type="radio" name="service" value="1500" required>
-    <span id="srv1Text"></span>
+    Проверка документов — 1500 ₽
   </label>
 
   <label class="service">
     <input type="radio" name="service" value="7500">
-    <span id="srv2Text"></span>
+    Снятие с реестра контролируемых лиц — 7500 ₽
   </label>
 
-  <button type="button" class="pay-btn" id="payBtn" onclick="paySBP()">
-    💳 Оплатить по СБП (Тинькофф)
-  </button>
+  <!-- Документы -->
+  <label class="label">Паспорт (фото или PDF)</label>
+  <input type="file" accept="image/*,.pdf">
 
-  <div class="hint" id="payHint">
-    После выбора банка откроется приложение банка
+  <label class="label">Миграционная карта</label>
+  <input type="file" accept="image/*,.pdf">
+
+  <label class="label">Патент</label>
+  <input type="file" accept="image/*,.pdf">
+
+  <div class="hint">
+    📎 После отправки заявки отправьте эти документы в WhatsApp
   </div>
 
-  <button type="submit" id="sendBtn"></button>
+  <!-- Оплата -->
+  <button type="button" class="pay-btn" id="payBtn" onclick="payTinkoff()">
+    💳 Оплатить через Тинькофф / СБП
+  </button>
+
+  <button type="button" class="pay-alt" id="payAltBtn" onclick="payAnyBank()">
+    🏦 Оплатить через любой банк (СБП)
+  </button>
+
+  <button type="submit">
+    Отправить заявку в WhatsApp
+  </button>
 </form>
 
 <a class="wa-float" href="https://wa.me/79230304790" target="_blank">
@@ -179,94 +182,74 @@ button{
 </a>
 
 <script>
-const T={
-ru:{
-title:"Оставить заявку",
-name:"Имя и фамилия",
-phone:"Номер телефона",
-service:"Выберите услугу",
-s1:"Проверка документов — 1500 ₽",
-s2:"Снятие с реестра контролируемых лиц — 7500 ₽",
-btn:"Отправить в WhatsApp"
-},
-uz:{
-title:"Ariza qoldirish",
-name:"Ism va familiya",
-phone:"Telefon raqami",
-service:"Xizmatni tanlang",
-s1:"Hujjatlarni to‘liq tekshirish — 1500 ₽",
-s2:"Nazorat qilinadigan shaxslar reestridan chiqarish — 7500 ₽",
-btn:"WhatsApp ga yuborish"
-},
-tj:{
-title:"Дархост гузоред",
-name:"Ном ва насаб",
-phone:"Рақами телефон",
-service:"Хизматро интихоб кунед",
-s1:"Санҷиши пурраи ҳуҷҷатҳо — 1500 ₽",
-s2:"Баровардан аз феҳристи шахсони назоратшаванда — 7500 ₽",
-btn:"Ба WhatsApp фиристодан"
-}
-};
+let paid=false;
 
-function applyLang(l){
-  title.textContent=T[l].title;
-  nameLabel.textContent=T[l].name;
-  phoneLabel.textContent=T[l].phone;
-  serviceLabel.textContent=T[l].service;
-  srv1Text.textContent=T[l].s1;
-  srv2Text.textContent=T[l].s2;
-  sendBtn.textContent=T[l].btn;
-}
-lang.onchange=e=>applyLang(e.target.value);
-
-/* показать кнопку оплаты */
 document.querySelectorAll('input[name="service"]').forEach(r=>{
   r.addEventListener('change',()=>{
     payBtn.style.display="block";
-    payHint.style.display="block";
+    payAltBtn.style.display="block";
   });
 });
 
-function paySBP(){
-  const service=document.querySelector('input[name="service"]:checked');
-  if(!service){
-    alert("Выберите услугу");
-    return;
-  }
-
-  const amount=service.value;
-  const url="https://www.tinkoff.ru/rm/r_oiNYaVkgzM.kXJRGeuGkT/0pgDR86850?amount="+amount;
-
+function markPaid(){
+  paid=true;
   payBtn.textContent="✅ Оплачено";
-  payBtn.style.background="#22c55e";
+  payAltBtn.textContent="✅ Оплачено";
   payBtn.disabled=true;
+  payAltBtn.disabled=true;
+}
 
-  // 🔥 ключевой момент — так лучше открываются банковские приложения
-  window.location.href = url;
+function payTinkoff(){
+  const s=document.querySelector('input[name="service"]:checked');
+  if(!s) return;
+  markPaid();
+  window.location.href=
+    "https://www.tinkoff.ru/rm/r_oiNYaVkgzM.kXJRGeuGkT/0pgDR86850?amount="+s.value;
+}
+
+function payAnyBank(){
+  const s=document.querySelector('input[name="service"]:checked');
+  if(!s) return;
+  markPaid();
+
+  const msg=`Здравствуйте!
+Прошу оплатить услугу по СБП.
+
+Сумма: ${s.value} ₽
+Номер: +7 923 030-47-90`;
+
+  window.open(
+    "https://wa.me/79230304790?text="+encodeURIComponent(msg),
+    "_blank"
+  );
 }
 
 form.onsubmit=e=>{
   e.preventDefault();
-  if(!payBtn.disabled){
+  if(!paid){
     alert("Сначала оплатите услугу");
     return;
   }
 
-  const s=document.querySelector('input[name=service]:checked').parentElement.innerText;
-  const msg=`Заявка с сайта
+  const serviceText =
+    document.querySelector('input[name="service"]:checked')
+    .parentElement.innerText;
+
+  const msg=`Заявка:
 Имя: ${name.value}
-Телефон: wa.me/${phone.value}
-Услуга: ${s}`;
+Телефон: ${phone.value}
+Услуга: ${serviceText}
 
-  window.open("https://wa.me/79230304790?text="+encodeURIComponent(msg),"_blank");
+Пожалуйста, отправьте документы:
+📎 Паспорт
+📎 Миграционная карта
+📎 Патент`;
+
+  window.open(
+    "https://wa.me/79230304790?text="+encodeURIComponent(msg),
+    "_blank"
+  );
 };
-
-function toggleTheme(){
-  document.body.classList.toggle("dark");
-}
-
-applyLang("ru");
 </script>
 
 </body>
