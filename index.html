@@ -22,11 +22,13 @@
     </style>
 </head>
 <body>
+
 <header>
     <h1>Снимаем вас с реестра контролируемых лиц</h1>
     <p>Законно • Конфиденциально • С гарантией результата</p>
     <a href="#form" class="btn">Получить консультацию</a>
 </header>
+
 <section>
     <h2>Чем мы помогаем</h2>
     <div class="features">
@@ -36,6 +38,7 @@
         <div class="box">✔ Без очередей и лишних визитов</div>
     </div>
 </section>
+
 <section>
     <h2>Почему нам доверяют</h2>
     <div class="features">
@@ -45,6 +48,7 @@
         <div class="box">💯 Работаем до результата</div>
     </div>
 </section>
+
 <section>
     <h2>Как мы работаем</h2>
     <div class="steps">
@@ -54,16 +58,35 @@
         <div class="box">4️⃣ Снятие с реестра</div>
     </div>
 </section>
+
 <section id="form">
     <h2>Бесплатная консультация</h2>
-    <form>
-        <input type="text" placeholder="Ваше имя" required>
-        <input type="tel" placeholder="Телефон / WhatsApp" required>
-        <button type="submit">Отправить заявку</button>
+    <form onsubmit="sendWhatsApp(); return false;">
+        <input type="text" id="name" placeholder="Ваше имя" required>
+        <input type="tel" id="phone" placeholder="Телефон клиента" required>
+        <button type="submit">Отправить заявку в WhatsApp</button>
     </form>
 </section>
+
 <footer>
     <p>Конфиденциальность гарантирована © 2026</p>
 </footer>
+
+<script>
+function sendWhatsApp() {
+    var name = document.getElementById('name').value;
+    var phone = document.getElementById('phone').value;
+
+    var message = "Заявка с сайта:%0A"
+        + "Имя: " + name + "%0A"
+        + "Телефон: " + phone;
+
+    var whatsappNumber = "79230304790"; // замените на свой номер
+
+    var url = "https://wa.me/" + whatsappNumber + "?text=" + message;
+    window.open(url, "_blank");
+}
+</script>
+
 </body>
 </html>
