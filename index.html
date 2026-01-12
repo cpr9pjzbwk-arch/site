@@ -5,7 +5,6 @@
 <title>Снятие с реестра контролируемых лиц</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Шрифты -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -175,7 +174,6 @@ function setLang(l){
   document.getElementById('opt2').value=data[l].opt2;
 }
 
-/* ===== ВОТ ЗДЕСЬ ДОБАВЛЕНО: правильный wa.me ===== */
 function sendWhatsApp(){
   let name = document.getElementById('name').value;
   let phone = document.getElementById('phone').value;
@@ -184,7 +182,7 @@ function sendWhatsApp(){
   let message =
     "Заявка с сайта\n" +
     "Имя: " + name + "\n" +
-    "Телефон: " + phone + "\n" +
+    "Телефон: wa.me/" + phone + "\n" +
     "Услуга: " + service;
 
   let url = "https://wa.me/79230304790?text=" + encodeURIComponent(message);
