@@ -5,7 +5,7 @@
 <title>Снятие с реестра контролируемых лиц</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Красивые шрифты -->
+<!-- Шрифты -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -20,24 +20,48 @@ body{
   margin:0;
   font-family:'Montserrat',sans-serif;
   background:
-    linear-gradient(rgba(255,255,255,0.88),rgba(255,255,255,0.88)),
+    linear-gradient(rgba(255,255,255,0.9),rgba(255,255,255,0.9)),
     url('https://images.unsplash.com/photo-1521791136064-7986c2920216');
   background-size:cover;
   background-position:center;
   color:#1c1c1c;
 }
 
+/* ===== HEADER ===== */
 header{
   padding:80px 20px;
   text-align:center;
   background:linear-gradient(135deg,#0f4c81,#1e90ff);
   color:#fff;
+  position:relative;
+}
+
+.lang{
+  position:absolute;
+  top:20px;
+  right:20px;
+}
+
+.lang button{
+  background:rgba(255,255,255,0.2);
+  color:#fff;
+  border:none;
+  padding:6px 14px;
+  margin-left:5px;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.lang button.active{
+  background:var(--accent);
+  color:#000;
 }
 
 header h1{
   font-family:'Playfair Display',serif;
-  font-size:42px;
-  margin-bottom:20px;
+  font-size:40px;
+  margin-bottom:15px;
 }
 
 header p{
@@ -45,33 +69,28 @@ header p{
 }
 
 .btn{
-  display:inline-block;
   margin-top:25px;
+  display:inline-block;
   padding:16px 38px;
   background:var(--accent);
   color:#000;
   font-weight:700;
-  border-radius:50px;
+  border-radius:40px;
   text-decoration:none;
-  transition:.3s;
 }
 
-.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-}
-
+/* ===== SECTIONS ===== */
 section{
   max-width:1100px;
   margin:auto;
-  padding:70px 20px;
+  padding:60px 20px;
 }
 
 h2{
   text-align:center;
-  font-size:34px;
-  margin-bottom:45px;
   font-family:'Playfair Display',serif;
+  font-size:34px;
+  margin-bottom:40px;
 }
 
 .cards{
@@ -84,62 +103,42 @@ h2{
   background:#fff;
   padding:35px;
   border-radius:18px;
-  box-shadow:0 15px 35px rgba(0,0,0,.12);
   text-align:center;
+  box-shadow:0 15px 35px rgba(0,0,0,0.12);
 }
 
 .price{
   font-size:28px;
-  color:#0f4c81;
+  color:var(--blue);
   font-weight:700;
   margin-top:15px;
 }
 
-.steps{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-  text-align:center;
-}
-
-.step{
-  background:#fff;
-  padding:30px;
-  border-radius:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,.1);
-}
-
+/* ===== FORM ===== */
 form{
   max-width:520px;
   margin:auto;
   background:#fff;
   padding:40px;
   border-radius:20px;
-  box-shadow:0 20px 40px rgba(0,0,0,.15);
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
 input{
   width:100%;
   padding:14px;
-  margin-bottom:18px;
+  margin-bottom:16px;
   border-radius:10px;
   border:1px solid #ccc;
-  font-size:15px;
 }
 
-.services label{
+label{
   display:block;
-  padding:16px;
-  border-radius:12px;
+  padding:14px;
   border:1px solid #ddd;
-  margin-bottom:14px;
+  border-radius:10px;
+  margin-bottom:12px;
   cursor:pointer;
-  transition:.25s;
-}
-
-.services label:hover{
-  background:#f4f8ff;
-  border-color:#1e90ff;
 }
 
 button{
@@ -147,24 +146,19 @@ button{
   padding:18px;
   background:#1e90ff;
   color:#fff;
-  font-size:17px;
   border:none;
-  border-radius:50px;
+  border-radius:40px;
+  font-size:17px;
   font-weight:700;
   cursor:pointer;
-  transition:.3s;
 }
 
-button:hover{
-  background:#0f4c81;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-}
-
+/* ===== FOOTER ===== */
 footer{
   background:#0f4c81;
   color:#fff;
   text-align:center;
-  padding:25px;
+  padding:20px;
   font-size:14px;
 }
 </style>
@@ -173,61 +167,96 @@ footer{
 <body>
 
 <header>
-  <h1>Снимаем вас с реестра контролируемых лиц</h1>
-  <p>Законно • Конфиденциально • Без очередей</p>
-  <a href="#form" class="btn">Выбрать услугу</a>
+  <div class="lang">
+    <button id="ruBtn" class="active" onclick="setLang('ru')">RU</button>
+    <button id="uzBtn" onclick="setLang('uz')">UZ</button>
+  </div>
+
+  <h1 id="title">Снимаем вас с реестра контролируемых лиц</h1>
+  <p id="subtitle">Законно • Конфиденциально • Без очередей</p>
+  <a href="#form" class="btn" id="mainBtn">Выбрать услугу</a>
 </header>
 
 <section>
-  <h2>Наши услуги</h2>
+  <h2 id="servicesTitle">Наши услуги</h2>
   <div class="cards">
     <div class="card">
-      <strong>Проверка всех документов</strong>
+      <div id="s1">Проверка всех документов</div>
       <div class="price">1500 ₽</div>
     </div>
     <div class="card">
-      <strong>Снятие с реестра</strong>
+      <div id="s2">Снятие с реестра</div>
       <div class="price">7500 ₽</div>
     </div>
   </div>
 </section>
 
-<section>
-  <h2>Как мы работаем</h2>
-  <div class="steps">
-    <div class="step">📄 Анализ документов</div>
-    <div class="step">⚖ Юридическая проверка</div>
-    <div class="step">📝 Подготовка</div>
-    <div class="step">✅ Результат</div>
-  </div>
-</section>
-
 <section id="form">
-  <h2>Оставить заявку</h2>
+  <h2 id="formTitle">Оставить заявку</h2>
   <form onsubmit="sendWhatsApp();return false;">
     <input id="name" placeholder="Ваше имя" required>
     <input id="phone" placeholder="Телефон" required>
 
-    <div class="services">
-      <label>
-        <input type="radio" name="service" value="Проверка документов — 1500 ₽" required>
-        Проверка документов — <strong>1500 ₽</strong>
-      </label>
-      <label>
-        <input type="radio" name="service" value="Снятие с реестра — 7500 ₽">
-        Снятие с реестра — <strong>7500 ₽</strong>
-      </label>
-    </div>
+    <label>
+      <input type="radio" name="service" id="opt1" required>
+      <span id="opt1Text">Проверка документов — 1500 ₽</span>
+    </label>
 
-    <button>Отправить в WhatsApp</button>
+    <label>
+      <input type="radio" name="service" id="opt2">
+      <span id="opt2Text">Снятие с реестра — 7500 ₽</span>
+    </label>
+
+    <button id="sendBtn">Отправить в WhatsApp</button>
   </form>
 </section>
 
-<footer>
+<footer id="footerText">
   Конфиденциальность гарантирована © 2026
 </footer>
 
 <script>
+const data={
+  ru:{
+    title:"Снимаем вас с реестра контролируемых лиц",
+    subtitle:"Законно • Конфиденциально • Без очередей",
+    mainBtn:"Выбрать услугу",
+    servicesTitle:"Наши услуги",
+    s1:"Проверка всех документов",
+    s2:"Снятие с реестра",
+    formTitle:"Оставить заявку",
+    opt1:"Проверка документов — 1500 ₽",
+    opt2:"Снятие с реестра — 7500 ₽",
+    sendBtn:"Отправить в WhatsApp",
+    footer:"Конфиденциальность гарантирована © 2026"
+  },
+  uz:{
+    title:"Nazorat qilinadigan shaxslar reestridan chiqaramiz",
+    subtitle:"Qonuniy • Maxfiy • Navbatsiz",
+    mainBtn:"Xizmatni tanlash",
+    servicesTitle:"Bizning xizmatlar",
+    s1:"Hujjatlarni tekshirish",
+    s2:"Reestrdan chiqarish",
+    formTitle:"Ariza qoldirish",
+    opt1:"Hujjatlarni tekshirish — 1500 ₽",
+    opt2:"Reestrdan chiqarish — 7500 ₽",
+    sendBtn:"WhatsApp ga yuborish",
+    footer:"Maxfiylik kafolatlanadi © 2026"
+  }
+};
+
+function setLang(l){
+  document.getElementById('ruBtn').classList.toggle('active',l==='ru');
+  document.getElementById('uzBtn').classList.toggle('active',l==='uz');
+
+  for(let k in data[l]){
+    let el=document.getElementById(k);
+    if(el) el.innerText=data[l][k];
+  }
+  document.getElementById('opt1').value=data[l].opt1;
+  document.getElementById('opt2').value=data[l].opt2;
+}
+
 function sendWhatsApp(){
   let name=document.getElementById('name').value;
   let phone=document.getElementById('phone').value;
@@ -236,6 +265,8 @@ function sendWhatsApp(){
   let text=`Заявка с сайта:%0AИмя: ${name}%0AТелефон: ${phone}%0AУслуга: ${service}`;
   window.open("https://wa.me/79230304790?text="+text,"_blank");
 }
+
+setLang('ru');
 </script>
 
 </body>
