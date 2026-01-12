@@ -86,20 +86,17 @@ input[type=text],input[type=tel]{
   border:1px solid #cbd5e1;
   border-radius:14px;
   margin-bottom:12px;
+  cursor:pointer;
 }
 
 .service input{margin-top:5px}
 
 .service span{
-  display:block;
-  white-space:normal;
-  word-break:break-word;
-  overflow-wrap:anywhere;
   line-height:1.45;
   font-size:15px;
 }
 
-/* BUTTON */
+/* BUTTONS */
 button{
   width:100%;
   margin-top:10px;
@@ -109,6 +106,13 @@ button{
   border:none;
   border-radius:30px;
   font-weight:700;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.pay-btn{
+  background:#14b8a6;
+  display:none; /* 👈 скрыта по умолчанию */
 }
 
 /* FLOAT WA */
@@ -145,21 +149,25 @@ button{
   <input type="text" id="name" required>
 
   <label class="label" id="phoneLabel"></label>
-  <input type="tel" id="phone" placeholder="" required>
+  <input type="tel" id="phone" required>
 
   <label class="label" id="serviceLabel"></label>
 
   <label class="service">
-    <input type="radio" name="service" id="srv1" required>
+    <input type="radio" name="service" value="1500" required>
     <span id="srv1Text"></span>
   </label>
 
   <label class="service">
-    <input type="radio" name="service" id="srv2">
+    <input type="radio" name="service" value="7500">
     <span id="srv2Text"></span>
   </label>
 
-  <button id="sendBtn"></button>
+  <button type="button" class="pay-btn" id="payBtn" onclick="paySBP()">
+    💳 Оплатить по СБП (Тинькофф)
+  </button>
+
+  <button type="submit" id="sendBtn"></button>
 </form>
 
 <a class="wa-float" href="https://wa.me/79230304790" target="_blank">
@@ -204,22 +212,36 @@ function applyLang(l){
   serviceLabel.textContent=T[l].service;
   srv1Text.textContent=T[l].s1;
   srv2Text.textContent=T[l].s2;
-  srv1.value=T[l].s1;
-  srv2.value=T[l].s2;
   sendBtn.textContent=T[l].btn;
 }
 
 lang.onchange=e=>applyLang(e.target.value);
 
+/* 👇 показываем кнопку оплаты при выборе услуги */
+document.querySelectorAll('input[name="service"]').forEach(radio=>{
+  radio.addEventListener('change',()=>{
+    document.getElementById('payBtn').style.display="block";
+  });
+});
+
 form.onsubmit=e=>{
   e.preventDefault();
-  const s=document.querySelector('input[name=service]:checked').value;
+  const s=document.querySelector('input[name=service]:checked').parentElement.innerText;
   const msg=`Заявка с сайта
 Имя: ${name.value}
 Телефон: wa.me/${phone.value}
 Услуга: ${s}`;
   window.open("https://wa.me/79230304790?text="+encodeURIComponent(msg),"_blank");
 };
+
+function paySBP(){
+  const service=document.querySelector('input[name=service]:checked');
+  if(!service) return;
+  const amount=service.value;
+  const phone="79230304790";
+  const url=`https://qr.nspk.ru/AS1A000000000000000000000000000?type=02&bank=100000000004&phone=${phone}&amount=${amount}`;
+  window.open(url,"_blank");
+}
 
 function toggleTheme(){
   document.body.classList.toggle("dark");
