@@ -1,256 +1,91 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Реестр контролируемых лиц</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --bg:#f3f4f6;
-  --card:#ffffff;
-  --text:#1f2937;
-  --accent:#1e90ff;
-}
-body.dark{
-  --bg:#0f172a;
-  --card:#1e293b;
-  --text:#f1f5f9;
-  --accent:#38bdf8;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:Montserrat,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-/* HEADER */
-header{
-  padding:24px 20px 10px;
-  text-align:center;
-}
-h1{margin:20px 0}
-
-/* FORM */
-form{
-  max-width:420px;
-  margin:20px auto;
-  background:var(--card);
-  padding:22px;
-  border-radius:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
-}
-
-.label{
-  font-weight:600;
-  margin:14px 0 6px;
-  display:block;
-}
-
-input[type=text],
-input[type=tel],
-input[type=file]{
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border:1px solid #cbd5e1;
-  font-size:15px;
-  background:#fff;
-}
-
-/* SERVICES */
-.service{
-  display:flex;
-  gap:10px;
-  padding:14px;
-  border:1px solid #cbd5e1;
-  border-radius:14px;
-  margin-bottom:12px;
-  cursor:pointer;
-}
-
-/* BUTTONS */
-button{
-  width:100%;
-  margin-top:12px;
-  padding:16px;
-  background:var(--accent);
-  color:#fff;
-  border:none;
-  border-radius:30px;
-  font-weight:700;
-  font-size:16px;
-  cursor:pointer;
-}
-
-.pay-btn{
-  background:#14b8a6;
-  display:none;
-}
-
-.pay-alt{
-  background:#22c55e;
-  display:none;
-}
-
-.hint{
-  font-size:13px;
-  opacity:.7;
-  margin-top:8px;
-  text-align:center;
-}
-
-/* FLOAT WA */
-.wa-float{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  width:56px;
-  height:56px;
-  background:#25D366;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.wa-float img{width:28px}
-</style>
+    <meta charset="UTF-8">
+    <title>Заказ карты Тройка</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 20px;
+        }
+        .container {
+            max-width: 420px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .success {
+            margin-top: 15px;
+            color: green;
+            text-align: center;
+        }
+    </style>
 </head>
-
 <body>
-
-<header>
-  <h1>Реестр контролируемых лиц</h1>
-</header>
-
-<form id="form">
-
-  <label class="label">Имя и фамилия</label>
-  <input type="text" id="name" required>
-
-  <label class="label">Номер телефона</label>
-  <input type="tel" id="phone" required>
-
-  <label class="label">Выберите услугу</label>
-
-  <label class="service">
-    <input type="radio" name="service" value="1500" required>
-    Проверка документов — 1500 ₽
-  </label>
-
-  <label class="service">
-    <input type="radio" name="service" value="7500">
-    Снятие с реестра контролируемых лиц — 7500 ₽
-  </label>
-
-  <!-- Документы -->
-  <label class="label">Паспорт (фото или PDF)</label>
-  <input type="file" accept="image/*,.pdf">
-
-  <label class="label">Миграционная карта</label>
-  <input type="file" accept="image/*,.pdf">
-
-  <label class="label">Патент</label>
-  <input type="file" accept="image/*,.pdf">
-
-  <div class="hint">
-    📎 После отправки заявки отправьте эти документы в WhatsApp
-  </div>
-
-  <!-- Оплата -->
-  <button type="button" class="pay-btn" id="payBtn" onclick="payTinkoff()">
-    💳 Оплатить через Тинькофф / СБП
-  </button>
-
-  <button type="button" class="pay-alt" id="payAltBtn" onclick="payAnyBank()">
-    🏦 Оплатить через любой банк (СБП)
-  </button>
-
-  <button type="submit">
-    Отправить заявку в WhatsApp
-  </button>
-</form>
-
-<a class="wa-float" href="https://wa.me/79230304790" target="_blank">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
-</a>
-
+<div class="container">
+    <h2>Заказ карты «Тройка»</h2>
+    <input type="text" id="name" placeholder="ФИО">
+    <input type="tel" id="phone" placeholder="Телефон">
+    <input type="text" id="metro" placeholder="Ближайшее метро">
+    <input type="number" id="quantity" placeholder="Количество карт">
+    <button onclick="saveOrder()">Оформить заказ</button>
+    <div id="message" class="success"></div>
+</div>
 <script>
-let paid=false;
+function saveOrder() {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const metro = document.getElementById("metro").value;
+    const quantity = document.getElementById("quantity").value;
 
-document.querySelectorAll('input[name="service"]').forEach(r=>{
-  r.addEventListener('change',()=>{
-    payBtn.style.display="block";
-    payAltBtn.style.display="block";
-  });
-});
+    if (!name || !phone || !metro || !quantity) {
+        alert("Заполните все поля");
+        return;
+    }
 
-function markPaid(){
-  paid=true;
-  payBtn.textContent="✅ Оплачено";
-  payAltBtn.textContent="✅ Оплачено";
-  payBtn.disabled=true;
-  payAltBtn.disabled=true;
+    const order = {
+        name, phone, metro, quantity,
+        date: new Date().toLocaleString()
+    };
+
+    let orders = JSON.parse(localStorage.getItem("troika_orders")) || [];
+    orders.push(order);
+    localStorage.setItem("troika_orders", JSON.stringify(orders));
+
+    document.getElementById("message").innerText = "✅ Заказ принят!";
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("metro").value = "";
+    document.getElementById("quantity").value = "";
 }
-
-function payTinkoff(){
-  const s=document.querySelector('input[name="service"]:checked');
-  if(!s) return;
-  markPaid();
-  window.location.href=
-    "https://www.tinkoff.ru/rm/r_oiNYaVkgzM.kXJRGeuGkT/0pgDR86850?amount="+s.value;
-}
-
-function payAnyBank(){
-  const s=document.querySelector('input[name="service"]:checked');
-  if(!s) return;
-  markPaid();
-
-  const msg=`Здравствуйте!
-Прошу оплатить услугу по СБП.
-
-Сумма: ${s.value} ₽
-Номер: +7 923 030-47-90`;
-
-  window.open(
-    "https://wa.me/79230304790?text="+encodeURIComponent(msg),
-    "_blank"
-  );
-}
-
-form.onsubmit=e=>{
-  e.preventDefault();
-  if(!paid){
-    alert("Сначала оплатите услугу");
-    return;
-  }
-
-  const serviceText =
-    document.querySelector('input[name="service"]:checked')
-    .parentElement.innerText;
-
-  const msg=`Заявка:
-Имя: ${name.value}
-Телефон: ${phone.value}
-Услуга: ${serviceText}
-
-Пожалуйста, отправьте документы:
-📎 Паспорт
-📎 Миграционная карта
-📎 Патент`;
-
-  window.open(
-    "https://wa.me/79230304790?text="+encodeURIComponent(msg),
-    "_blank"
-  );
-};
 </script>
+</body>
+</html>
 
 </body>
 </html>
