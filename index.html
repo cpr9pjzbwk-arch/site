@@ -1,66 +1,135 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Заказ карты Тройка</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            padding: 20px;
-        }
-        .container {
-            max-width: 420px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        input, button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        .wa {
-            background: #25D366;
-            color: #fff;
-            border: none;
-            font-weight: bold;
-        }
-        .tg {
-            background: #0088cc;
-            color: #fff;
-            border: none;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Заказ карты Тройка</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #e9f0ff, #f7f9ff);
+    padding: 20px;
+}
+.container {
+    max-width: 420px;
+    margin: auto;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+}
+.field {
+    margin-bottom: 14px;
+}
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #555;
+}
+.field input, .field select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+.field input:focus, .field select:focus {
+    border-color: #4a7cff;
+    box-shadow: 0 0 0 3px rgba(74,124,255,0.15);
+}
+.phone-group {
+    display: flex;
+    gap: 8px;
+}
+.phone-group select {
+    width: 38%;
+}
+.phone-group input {
+    width: 62%;
+}
+button {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.wa {
+    background: linear-gradient(135deg, #25D366, #1ebe5d);
+    color: #fff;
+}
+.tg {
+    background: linear-gradient(135deg, #0088cc, #007ab8);
+    color: #fff;
+}
+button:hover {
+    opacity: 0.95;
+}
+</style>
 </head>
+
 <body>
-
 <div class="container">
-    <h2>Заказ карты «Тройка»</h2>
+<h2>🪪 Заказ карты «Тройка»</h2>
 
-    <input type="text" id="name" placeholder="ФИО">
-    <input type="tel" id="phone" placeholder="Телефон">
-    <input type="text" id="metro" placeholder="Ближайшее метро">
-    <input type="number" id="quantity" placeholder="Количество карт">
+<div class="field">
+    <label>ФИО</label>
+    <input type="text" id="name" placeholder="Введите ФИО">
+</div>
 
-    <button class="wa" onclick="sendWhatsApp()">Отправить в WhatsApp</button>
-    <button class="tg" onclick="sendTelegram()">Отправить в Telegram</button>
+<div class="field">
+    <label>Телефон</label>
+    <div class="phone-group">
+        <select id="code">
+            <option value="+7">🇷🇺 +7</option>
+            <option value="+992">🇹🇯 +992</option>
+            <option value="+998">🇺🇿 +998</option>
+            <option value="+996">🇰🇬 +996</option>
+            <option value="+994">🇦🇿 +994</option>
+            <option value="+993">🇹🇲 +993</option>
+            <option value="+375">🇧🇾 +375</option>
+            <option value="+374">🇦🇲 +374</option>
+            <option value="+380">🇺🇦 +380</option>
+        </select>
+        <input type="tel" id="phone" placeholder="Номер"
+               maxlength="12"
+               oninput="this.value=this.value.replace(/\D/g,'')">
+    </div>
+</div>
+
+<div class="field">
+    <label>Ближайшее метро</label>
+    <input type="text" id="metro" placeholder="Например: Комсомольская">
+</div>
+
+<div class="field">
+    <label>Количество карт</label>
+    <input type="text" id="quantity" placeholder="Только цифры"
+           oninput="this.value=this.value.replace(/\D/g,'')">
+</div>
+
+<button class="wa" onclick="sendWhatsApp()">📲 Отправить в WhatsApp</button>
+<button class="tg" onclick="sendTelegram()">✈️ Отправить в Telegram</button>
 </div>
 
 <script>
 function getMessage() {
     const name = document.getElementById("name").value;
+    const code = document.getElementById("code").value;
     const phone = document.getElementById("phone").value;
     const metro = document.getElementById("metro").value;
     const quantity = document.getElementById("quantity").value;
@@ -73,7 +142,7 @@ function getMessage() {
     return (
         "📌 Заказ карты Тройка\n\n" +
         "👤 ФИО: " + name + "\n" +
-        "📞 Телефон: " + phone + "\n" +
+        "📞 Телефон: " + code + phone + "\n" +
         "🚇 Метро: " + metro + "\n" +
         "🎫 Количество: " + quantity
     );
@@ -82,15 +151,13 @@ function getMessage() {
 function sendWhatsApp() {
     const msg = getMessage();
     if (!msg) return;
-    const url = "https://wa.me/992716102398?text=" + encodeURIComponent(msg);
-    window.open(url, "_blank");
+    window.open("https://wa.me/992716102398?text=" + encodeURIComponent(msg), "_blank");
 }
 
 function sendTelegram() {
     const msg = getMessage();
     if (!msg) return;
-    const url = "https://t.me/Muhammadrasul277?text=" + encodeURIComponent(msg);
-    window.open(url, "_blank");
+    window.open("https://t.me/Muhammadrasul277?text=" + encodeURIComponent(msg), "_blank");
 }
 </script>
 
