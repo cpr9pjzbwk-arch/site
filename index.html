@@ -5,9 +5,7 @@
 <title>Заказ карты Тройка</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: linear-gradient(135deg, #e9f0ff, #f7f9ff);
@@ -24,11 +22,8 @@ body {
 h2 {
     text-align: center;
     margin-bottom: 24px;
-    color: #333;
 }
-.field {
-    margin-bottom: 14px;
-}
+.field { margin-bottom: 14px; }
 .field label {
     display: block;
     margin-bottom: 6px;
@@ -41,23 +36,14 @@ h2 {
     border-radius: 10px;
     border: 1px solid #ddd;
     font-size: 16px;
-    outline: none;
-    transition: all 0.2s ease;
-}
-.field input:focus, .field select:focus {
-    border-color: #4a7cff;
-    box-shadow: 0 0 0 3px rgba(74,124,255,0.15);
 }
 .phone-group {
     display: flex;
     gap: 8px;
 }
-.phone-group select {
-    width: 38%;
-}
-.phone-group input {
-    width: 62%;
-}
+.phone-group select { width: 38%; }
+.phone-group input { width: 62%; }
+
 button {
     width: 100%;
     padding: 15px;
@@ -75,9 +61,6 @@ button {
 .tg {
     background: linear-gradient(135deg, #0088cc, #007ab8);
     color: #fff;
-}
-button:hover {
-    opacity: 0.95;
 }
 </style>
 </head>
@@ -122,8 +105,8 @@ button:hover {
            oninput="this.value=this.value.replace(/\D/g,'')">
 </div>
 
-<button class="wa" onclick="sendWhatsApp()">📲 Отправить в WhatsApp</button>
-<button class="tg" onclick="sendTelegram()">✈️ Отправить в Telegram</button>
+<button class="wa" onclick="sendWhatsApp()">📲 WhatsApp</button>
+<button class="tg" onclick="sendTelegram()">✈️ Telegram</button>
 </div>
 
 <script>
@@ -151,17 +134,18 @@ function getMessage() {
 function sendWhatsApp() {
     const msg = getMessage();
     if (!msg) return;
-    window.open("https://wa.me/992716102398?text=" + encodeURIComponent(msg), "_blank");
+    window.location.href = "https://wa.me/992716102398?text=" + encodeURIComponent(msg);
 }
 
 function sendTelegram() {
     const msg = getMessage();
     if (!msg) return;
-    window.open("https://t.me/Muhammadrasul277?text=" + encodeURIComponent(msg), "_blank");
+    window.location.href = "tg://resolve?domain=Muhammadrasul277&text=" + encodeURIComponent(msg);
 }
 </script>
 
 </body>
 </html>
+
 
 </html>
