@@ -30,15 +30,17 @@
             border: 1px solid #ccc;
             font-size: 16px;
         }
-        button {
+        .wa {
             background: #25D366;
             color: #fff;
             border: none;
-            cursor: pointer;
             font-weight: bold;
         }
-        button:hover {
-            background: #1ebe5d;
+        .tg {
+            background: #0088cc;
+            color: #fff;
+            border: none;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -52,11 +54,12 @@
     <input type="text" id="metro" placeholder="Ближайшее метро">
     <input type="number" id="quantity" placeholder="Количество карт">
 
-    <button onclick="sendToWhatsApp()">Отправить заказ в WhatsApp</button>
+    <button class="wa" onclick="sendWhatsApp()">Отправить в WhatsApp</button>
+    <button class="tg" onclick="sendTelegram()">Отправить в Telegram</button>
 </div>
 
 <script>
-function sendToWhatsApp() {
+function getMessage() {
     const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
     const metro = document.getElementById("metro").value;
@@ -64,17 +67,29 @@ function sendToWhatsApp() {
 
     if (!name || !phone || !metro || !quantity) {
         alert("Заполните все поля");
-        return;
+        return null;
     }
 
-    const message =
-        "📌 Заказ карты Тройка%0A%0A" +
-        "👤 ФИО: " + name + "%0A" +
-        "📞 Телефон: " + phone + "%0A" +
-        "🚇 Метро: " + metro + "%0A" +
-        "🎫 Количество: " + quantity;
+    return (
+        "📌 Заказ карты Тройка\n\n" +
+        "👤 ФИО: " + name + "\n" +
+        "📞 Телефон: " + phone + "\n" +
+        "🚇 Метро: " + metro + "\n" +
+        "🎫 Количество: " + quantity
+    );
+}
 
-    const url = "https://wa.me/992716102398?text=" + message;
+function sendWhatsApp() {
+    const msg = getMessage();
+    if (!msg) return;
+    const url = "https://wa.me/992716102398?text=" + encodeURIComponent(msg);
+    window.open(url, "_blank");
+}
+
+function sendTelegram() {
+    const msg = getMessage();
+    if (!msg) return;
+    const url = "https://t.me/Muhammadrasul277?text=" + encodeURIComponent(msg);
     window.open(url, "_blank");
 }
 </script>
