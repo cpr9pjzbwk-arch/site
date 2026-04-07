@@ -3,172 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Тройка Premium</title>
+<title>Поступление 2026</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
-}
-
 body {
-  background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
-  color: white;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    font-family: Arial;
+    background: linear-gradient(135deg,#4f46e5,#9333ea,#06b6d4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
 }
 
-.app {
-  width: 360px;
-  padding: 20px;
+.container {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    padding:30px;
+    border-radius:20px;
+    color:white;
+    width:350px;
+    text-align:center;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.header h1 {
-  font-size: 24px;
-}
-
-.header p {
-  font-size: 13px;
-  opacity: 0.6;
-}
-
-.plans {
-  display: grid;
-  gap: 12px;
-}
-
-.plan {
-  padding: 15px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.plan:hover {
-  transform: translateY(-3px);
-}
-
-.plan.active {
-  border: 1px solid #6c5ce7;
-  box-shadow: 0 0 15px #6c5ce7;
-}
-
-.form {
-  margin-top: 15px;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  background: rgba(255,255,255,0.08);
-  color: white;
-}
-
-.buttons {
-  margin-top: 15px;
-  display: grid;
-  gap: 10px;
+input, select {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:10px;
+    border:none;
 }
 
 button {
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.3s;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    margin-top:10px;
+    cursor:pointer;
+    font-size:15px;
 }
 
-.whatsapp {
-  background: linear-gradient(45deg, #25D366, #1ebe5d);
+.btn-whatsapp {
+    background:#25D366;
+    color:white;
 }
 
-.telegram {
-  background: linear-gradient(45deg, #0088cc, #00aaff);
-}
-
-button:hover {
-  transform: scale(1.05);
+.btn-telegram {
+    background:#0088cc;
+    color:white;
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
+    <h2>🎓 Поступление 2026</h2>
 
-  <div class="header">
-    <h1>🚇 Тройка Premium</h1>
-    <p>Быстрый заказ с доставкой</p>
-  </div>
+    <form id="form">
+        <input type="text" id="name" placeholder="Имя" required>
+        <input type="tel" id="phone" placeholder="Телефон" required>
+        <input type="email" id="email" placeholder="Email" required>
 
-  <div class="plans">
-    <div class="plan active" onclick="selectPlan(this)">1 месяц — 1000₽</div>
-    <div class="plan" onclick="selectPlan(this)">2 месяца — 1500₽</div>
-    <div class="plan" onclick="selectPlan(this)">3 месяца — 2500₽</div>
-    <div class="plan" onclick="selectPlan(this)">4 месяца — 3500₽</div>
-    <div class="plan" onclick="selectPlan(this)">5 месяцев — 4000₽</div>
-  </div>
+        <select id="city" required>
+            <option value="">Выберите город</option>
+            <option>Москва</option>
+            <option>Новосибирск</option>
+            <option>Ульяновск</option>
+            <option>Екатеринбург</option>
+        </select>
+    </form>
 
-  <div class="form">
-    <input type="text" id="name" placeholder="👤 Имя">
-    <input type="text" id="phone" placeholder="📞 Телефон">
-    <input type="text" id="address" placeholder="📍 Адрес доставки">
-  </div>
-
-  <div class="buttons">
-    <button class="whatsapp" onclick="orderWhatsApp()">📲 WhatsApp</button>
-    <button class="telegram" onclick="orderTelegram()">✈️ Telegram</button>
-  </div>
+    <!-- только кнопки -->
+    <button class="btn-whatsapp" onclick="sendWhatsApp()">📱 Отправить в WhatsApp</button>
+    <button class="btn-telegram" onclick="sendTelegram()">✈️ Отправить в Telegram</button>
 
 </div>
 
 <script>
-let selectedPlan = "1 месяц — 1000₽";
+function getMessage() {
+    let name = document.getElementById('name').value;
+    let phone = document.getElementById('phone').value;
+    let email = document.getElementById('email').value;
+    let city = document.getElementById('city').value;
 
-function selectPlan(el) {
-  document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  selectedPlan = el.innerText;
-}
-
-function getData() {
-  const name = document.getElementById('name').value;
-  const phone = document.getElementById('phone').value;
-  const address = document.getElementById('address').value;
-
-  return `🔥 Заказ Тройка Premium:
-Тариф: ${selectedPlan}
+    return `🎓 Новая заявка:
 Имя: ${name}
 Телефон: ${phone}
-Адрес: ${address}`;
+Email: ${email}
+Город: ${city}`;
 }
 
-function orderWhatsApp() {
-  const msg = encodeURIComponent(getData());
-  const phoneNumber = "79230304790";
-  window.open(`https://wa.me/${phoneNumber}?text=${msg}`);
+function sendWhatsApp() {
+    let message = getMessage();
+    window.open(`https://wa.me/79236244554?text=${encodeURIComponent(message)}`);
 }
 
-function orderTelegram() {
-  const msg = encodeURIComponent(getData());
-  const username = "muhammadrasul277";
-  window.open(`https://t.me/${username}?text=${msg}`);
+function sendTelegram() {
+    let message = getMessage();
+    window.open(`https://t.me/institutmoskow?text=${encodeURIComponent(message)}`);
 }
 </script>
 
