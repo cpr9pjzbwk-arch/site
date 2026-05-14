@@ -29,7 +29,7 @@ header{
     top:0;
     left:0;
     z-index:1000;
-    background:rgba(0,0,0,0.8);
+    background:rgba(0,0,0,0.85);
     backdrop-filter:blur(10px);
 }
 
@@ -56,14 +56,14 @@ header{
 
 .logo h2{
     color:#ff1a1a;
-    font-size:22px;
+    font-size:24px;
     font-weight:800;
 }
 
 nav ul{
     display:flex;
     list-style:none;
-    gap:40px;
+    gap:35px;
 }
 
 nav a{
@@ -79,7 +79,7 @@ nav a:hover{
 
 .order-btn{
     background:red;
-    padding:14px 28px;
+    padding:14px 30px;
     border-radius:12px;
     color:white;
     text-decoration:none;
@@ -88,7 +88,7 @@ nav a:hover{
 }
 
 .order-btn:hover{
-    background:#c40000;
+    background:#c70000;
     transform:scale(1.05);
 }
 
@@ -99,7 +99,7 @@ nav a:hover{
     justify-content:center;
     padding:140px 8%;
     background:
-    radial-gradient(circle at center, rgba(255,0,0,0.2), transparent 50%),
+    radial-gradient(circle at center, rgba(255,0,0,0.18), transparent 50%),
     #000;
 }
 
@@ -113,16 +113,16 @@ nav a:hover{
 }
 
 .left{
-    max-width:600px;
+    max-width:620px;
 }
 
 .left img{
-    width:420px;
+    width:320px;
     margin-bottom:30px;
 }
 
 .left h1{
-    font-size:70px;
+    font-size:72px;
     line-height:1;
     font-weight:800;
 }
@@ -133,7 +133,7 @@ nav a:hover{
 
 .left p{
     margin-top:25px;
-    color:#ccc;
+    color:#bbb;
     font-size:20px;
     line-height:1.7;
 }
@@ -155,12 +155,12 @@ nav a:hover{
 }
 
 .btn-red:hover{
-    transform:translateY(-4px);
     background:#d10000;
+    transform:translateY(-5px);
 }
 
 .btn-dark{
-    border:2px solid #555;
+    border:2px solid #444;
     padding:18px 35px;
     border-radius:14px;
     color:white;
@@ -182,7 +182,7 @@ nav a:hover{
 
 @keyframes float{
     0%{transform:translateY(0px);}
-    50%{transform:translateY(-20px);}
+    50%{transform:translateY(-18px);}
     100%{transform:translateY(0px);}
 }
 
@@ -197,12 +197,12 @@ nav a:hover{
 }
 
 .section-title h2{
-    font-size:55px;
+    font-size:58px;
     font-weight:800;
 }
 
 .section-title p{
-    color:#aaa;
+    color:#999;
     margin-top:15px;
     font-size:20px;
 }
@@ -222,9 +222,9 @@ nav a:hover{
 }
 
 .card:hover{
-    transform:translateY(-12px);
+    transform:translateY(-10px);
     border-color:red;
-    box-shadow:0 0 30px rgba(255,0,0,0.4);
+    box-shadow:0 0 30px rgba(255,0,0,0.35);
 }
 
 .card img{
@@ -254,21 +254,22 @@ nav a:hover{
     font-weight:800;
 }
 
-.card button{
+.card-button{
+    display:block;
     margin-top:25px;
     width:100%;
-    border:none;
     background:red;
     color:white;
     padding:16px;
     border-radius:12px;
     font-size:18px;
     font-weight:700;
-    cursor:pointer;
+    text-align:center;
+    text-decoration:none;
     transition:0.3s;
 }
 
-.card button:hover{
+.card-button:hover{
     background:#d00000;
 }
 
@@ -295,7 +296,6 @@ nav a:hover{
 .feature p{
     color:#aaa;
     margin-top:10px;
-    line-height:1.5;
 }
 
 footer{
@@ -318,12 +318,12 @@ footer{
     max-width:500px;
 }
 
-.left img{
-    width:280px;
+.left h1{
+    font-size:52px;
 }
 
-.left h1{
-    font-size:50px;
+.left img{
+    width:250px;
 }
 
 .buttons{
@@ -346,7 +346,7 @@ nav{
 <div class="navbar">
 
 <div class="logo">
-<img src="logo.png.PNG" alt="Красный Лаваш логотип">
+<img src="logo.png" alt="">
 <h2>КРАСНЫЙ ЛАВАШ</h2>
 </div>
 
@@ -372,7 +372,7 @@ nav{
 
 <div class="left">
 
-<img src="logo.png.PNG" alt="Красный Лаваш">
+<img src="logo.png" alt="">
 
 <h1>
 САМАЯ СОЧНАЯ <br>
@@ -380,9 +380,9 @@ nav{
 </h1>
 
 <p>
-Сочный мясной микс, свежие овощи
-и фирменные соусы в красном лаваше.
-Попробуй — и ты наш постоянный клиент!
+Сочный донер, свежие овощи,
+фирменные соусы и настоящий вкус
+который хочется снова и снова 🌯🔥
 </p>
 
 <div class="buttons">
@@ -404,7 +404,7 @@ nav{
 
 <div class="section-title">
 <h2>НАШЕ МЕНЮ</h2>
-<p>Выбери свою любимую шаурму</p>
+<p>Попробуй лучшие вкусы Красного Лаваша</p>
 </div>
 
 <div class="cards">
@@ -413,18 +413,8 @@ nav{
 <img src="shawarma.png">
 <div class="card-content">
 <h3>Классическая</h3>
-<p>Курица, овощи, фирменный соус, красный лаваш</p>
-<div class="price">350 ₽</div>
-<a href="tel:+79236244554" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="shawarma.png">
-<div class="card-content">
-<h3>Острая</h3>
-<p>Курица, острый соус, халапеньо, овощи</p>
-<div class="price">420 ₽</div>
+<p>Курица, овощи, фирменный соус</p>
+<div class="price">280 ₽</div>
 <a href="tel:+79236244554" class="card-button">Заказать</a>
 </div>
 </div>
@@ -433,8 +423,68 @@ nav{
 <img src="shawarma.png">
 <div class="card-content">
 <h3>Сырная</h3>
-<p>Курица, двойной сыр, сырный соус</p>
-<div class="price">390 ₽</div>
+<p>Двойной сыр, курица, сырный соус</p>
+<div class="price">280 ₽</div>
+<a href="tel:+79236244554" class="card-button">Заказать</a>
+</div>
+</div>
+
+<div class="card">
+<img src="shawarma.png">
+<div class="card-content">
+<h3>Цезарь</h3>
+<p>Курица, салат айсберг, соус цезарь</p>
+<div class="price">300 ₽</div>
+<a href="tel:+79236244554" class="card-button">Заказать</a>
+</div>
+</div>
+
+<div class="card">
+<img src="shawarma.png">
+<div class="card-content">
+<h3>Барбекю</h3>
+<p>Мясо, BBQ соус, овощи</p>
+<div class="price">300 ₽</div>
+<a href="tel:+79236244554" class="card-button">Заказать</a>
+</div>
+</div>
+
+<div class="card">
+<img src="shawarma.png">
+<div class="card-content">
+<h3>Биг Мак</h3>
+<p>Двойное мясо, сыр, фирменный соус</p>
+<div class="price">300 ₽</div>
+<a href="tel:+79236244554" class="card-button">Заказать</a>
+</div>
+</div>
+
+<div class="card">
+<img src="shawarma.png">
+<div class="card-content">
+<h3>Гигант</h3>
+<p>Большая шаурма с двойной порцией мяса</p>
+<div class="price">400 ₽</div>
+<a href="tel:+79236244554" class="card-button">Заказать</a>
+</div>
+</div>
+
+<div class="card">
+<img src="shawarma.png">
+<div class="card-content">
+<h3>Шаурма в пите</h3>
+<p>Мясо, овощи, фирменный соус в пите</p>
+<div class="price">340 ₽</div>
+<a href="tel:+79236244554" class="card-button">Заказать</a>
+</div>
+</div>
+
+<div class="card">
+<img src="shawarma.png">
+<div class="card-content">
+<h3>Донер в лепёшке</h3>
+<p>Сочный донер с овощами и соусом</p>
+<div class="price">330 ₽</div>
 <a href="tel:+79236244554" class="card-button">Заказать</a>
 </div>
 </div>
@@ -449,7 +499,7 @@ nav{
 
 <div class="feature">
 <h4>🔥 Всегда горячая</h4>
-<p>Готовим при тебе</p>
+<p>Готовим прямо при тебе</p>
 </div>
 
 <div class="feature">
@@ -459,12 +509,12 @@ nav{
 
 <div class="feature">
 <h4>🥫 Фирменные соусы</h4>
-<p>Уникальные рецепты</p>
+<p>Настоящий вкус Красного Лаваша</p>
 </div>
 
 <div class="feature">
 <h4>⚡ Быстрая доставка</h4>
-<p>Доставим за 30–40 минут</p>
+<p>Привезём за 30–40 минут</p>
 </div>
 
 </div>
@@ -474,27 +524,6 @@ nav{
 <footer>
 © 2026 Красный Лаваш | 📞 +79236244554
 </footer>
-
-<style>
-.card-button{
-    display:block;
-    margin-top:25px;
-    width:100%;
-    background:red;
-    color:white;
-    padding:16px;
-    border-radius:12px;
-    font-size:18px;
-    font-weight:700;
-    text-align:center;
-    text-decoration:none;
-    transition:0.3s;
-}
-
-.card-button:hover{
-    background:#d00000;
-}
-</style>
 
 </body>
 </html>
