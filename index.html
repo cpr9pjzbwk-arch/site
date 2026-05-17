@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💎 GROK CASINO 💎</title>
+    <title>GROK CASINO</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         
@@ -13,152 +13,195 @@
             background: linear-gradient(135deg, #0f001a, #1a0033);
             color: #00ffcc;
             font-family: 'Press Start 2P', cursive;
-            text-align: center;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-y: auto; /* Важно для прокрутки */
         }
         
         .header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            text-align: center;
             border-bottom: 4px solid #ff00aa;
-            text-shadow: 0 0 20px #ff00aa;
         }
         
         h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 1.6em;
             color: #ff00aa;
-            text-shadow: 0 0 30px #ff00ff;
         }
         
         .balance {
-            font-size: 1.5em;
-            margin: 15px 0;
+            font-size: 1.3em;
+            margin: 10px 0;
             color: #00ff00;
         }
-        
-        .game-container {
+
+        .container {
             max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 20px auto;
+            padding: 15px;
+        }
+
+        .register-form {
+            background: rgba(0,0,0,0.85);
+            border: 4px solid #00ffcc;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 420px;
+            border-radius: 12px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .game-container {
             background: rgba(0, 0, 0, 0.7);
             border: 6px solid #ff00aa;
             border-radius: 15px;
-            box-shadow: 0 0 40px #ff00ff;
+            padding: 20px;
+            margin-top: 20px;
         }
         
         .slots {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
+            gap: 12px;
+            margin: 25px 0;
             padding: 20px;
             background: #000;
             border: 5px solid #00ffff;
+            flex-wrap: wrap;
         }
         
         .reel {
-            width: 120px;
-            height: 160px;
+            width: 100px;
+            height: 130px;
             background: #111;
             border: 4px solid #ffd700;
-            font-size: 4em;
+            font-size: 3.5em;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: inset 0 0 20px #000;
         }
         
         button {
             font-family: 'Press Start 2P', cursive;
-            padding: 15px 40px;
-            font-size: 1.2em;
-            margin: 10px;
+            padding: 14px 30px;
+            font-size: 1.1em;
+            margin: 8px;
             background: #ff00aa;
             color: white;
             border: none;
             cursor: pointer;
-            box-shadow: 0 0 20px #ff00ff;
-            transition: all 0.2s;
         }
         
         button:hover {
             background: #ff66cc;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
-        
-        button:active {
-            transform: scale(0.95);
-        }
-        
-        .bet {
-            display: inline-block;
-            margin: 15px;
-            font-size: 1.3em;
-        }
-        
+
         .win {
-            color: #00ff00;
-            font-size: 2em;
-            min-height: 50px;
-            text-shadow: 0 0 20px #00ff00;
+            font-size: 1.8em;
+            margin: 20px 0;
+            min-height: 60px;
         }
-        
-        .history {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #aaa;
+
+        @media (max-width: 600px) {
+            .reel {
+                width: 85px;
+                height: 110px;
+                font-size: 2.8em;
+            }
+            h1 { font-size: 1.4em; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>💎 GROK CASINO 💎</h1>
-        <div class="balance">Баланс: <span id="balance">10000</span> ₽</div>
+        <h1>GROK CASINO</h1>
+        <div id="user-info" style="display:none;">
+            Игрок: <span id="username"></span> | Баланс: <span id="balance">10000</span> ₽
+        </div>
     </div>
 
-    <div class="game-container">
-        <h2>🎰 СЛОТ-МАШИНА 🎰</h2>
-        
-        <div class="slots" id="slots">
-            <div class="reel" id="reel1">🍒</div>
-            <div class="reel" id="reel2">🍒</div>
-            <div class="reel" id="reel3">🍒</div>
+    <div class="container">
+        <!-- Форма регистрации -->
+        <div id="register-screen">
+            <div class="register-form">
+                <h2>Регистрация</h2>
+                <input type="text" id="reg-username" placeholder="Имя пользователя" required><br>
+                <input type="email" id="reg-email" placeholder="Email (необязательно)"><br>
+                <button onclick="register()" style="width:100%; padding:16px;">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+            </div>
         </div>
 
-        <div class="bet">
-            Ставка: 
-            <button onclick="changeBet(-100)">-100</button>
-            <span id="betAmount">500</span> ₽
-            <button onclick="changeBet(100)">+100</button>
+        <!-- Игровой экран -->
+        <div id="game-screen" style="display:none;">
+            <div class="game-container">
+                <h2 style="margin-top:0;">🎰 СЛОТЫ (КАЖДЫЙ СПИН — ВЫИГРЫШ) 🎰</h2>
+                
+                <div class="slots" id="slots">
+                    <div class="reel" id="reel1">🍒</div>
+                    <div class="reel" id="reel2">🍒</div>
+                    <div class="reel" id="reel3">🍒</div>
+                </div>
+
+                <div style="margin:20px 0;">
+                    Ставка: 
+                    <button onclick="changeBet(-100)">-100</button>
+                    <span id="betAmount" style="font-size:1.4em;">500</span> ₽
+                    <button onclick="changeBet(100)">+100</button>
+                </div>
+
+                <button onclick="spin()" style="width:100%; max-width:400px;">КРУТИТЬ</button>
+                <button onclick="addMoney()">+5000 ₽</button>
+
+                <div class="win" id="result"></div>
+            </div>
         </div>
-
-        <button onclick="spin()">КРУТИТЬ ЗА 500₽</button>
-        <button onclick="addMoney()">+5000 ₽ (чит)</button>
-
-        <div class="win" id="result"></div>
-        
-        <div class="history" id="history"></div>
     </div>
 
     <script>
         let balance = 10000;
         let bet = 500;
-        const symbols = ['🍒', '🍋', '🍉', '⭐', '💎', '🔔', '7️⃣'];
-        
+        let currentUser = "";
+
+        const symbols = ['🍒', '🍋', '🍉', '⭐', '💎', '🔔', '7️⃣', '🍓', '🍊'];
+
         function updateBalance() {
             document.getElementById('balance').textContent = balance;
         }
-        
+
+        function register() {
+            const username = document.getElementById('reg-username').value.trim();
+            if (!username) {
+                alert("Введите имя пользователя!");
+                return;
+            }
+            currentUser = username;
+            
+            document.getElementById('register-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+            document.getElementById('user-info').style.display = 'block';
+            document.getElementById('username').textContent = currentUser;
+            updateBalance();
+        }
+
         function changeBet(amount) {
-            bet = Math.max(100, Math.min(2000, bet + amount));
+            bet = Math.max(100, Math.min(5000, bet + amount));
             document.getElementById('betAmount').textContent = bet;
         }
-        
+
         function getRandomSymbol() {
             return symbols[Math.floor(Math.random() * symbols.length)];
         }
-        
+
         function spin() {
             if (balance < bet) {
                 document.getElementById('result').innerHTML = '❌ НЕДОСТАТОЧНО СРЕДСТВ!';
@@ -168,83 +211,47 @@
             balance -= bet;
             updateBalance();
             
-            const reel1 = document.getElementById('reel1');
-            const reel2 = document.getElementById('reel2');
-            const reel3 = document.getElementById('reel3');
             const resultEl = document.getElementById('result');
-            
             resultEl.textContent = 'КРУТИМ...';
             
-            // Анимация
             let spins = 0;
             const interval = setInterval(() => {
-                reel1.textContent = getRandomSymbol();
-                reel2.textContent = getRandomSymbol();
-                reel3.textContent = getRandomSymbol();
+                document.getElementById('reel1').textContent = getRandomSymbol();
+                document.getElementById('reel2').textContent = getRandomSymbol();
+                document.getElementById('reel3').textContent = getRandomSymbol();
                 spins++;
-                if (spins > 15) {
+                if (spins > 14) {
                     clearInterval(interval);
                     finishSpin();
                 }
-            }, 80);
+            }, 90);
         }
-        
+
         function finishSpin() {
-            const reel1 = document.getElementById('reel1');
-            const reel2 = document.getElementById('reel2');
-            const reel3 = document.getElementById('reel3');
-            
             const s1 = getRandomSymbol();
             const s2 = getRandomSymbol();
             const s3 = getRandomSymbol();
             
-            reel1.textContent = s1;
-            reel2.textContent = s2;
-            reel3.textContent = s3;
+            document.getElementById('reel1').textContent = s1;
+            document.getElementById('reel2').textContent = s2;
+            document.getElementById('reel3').textContent = s3;
             
-            let winAmount = 0;
+            let multiplier = 3;
+            if (s1 === s2 && s2 === s3) multiplier = 12;
+            else if (s1 === s2 || s2 === s3 || s1 === s3) multiplier = 4;
             
-            if (s1 === s2 && s2 === s3) {
-                if (s1 === '💎') winAmount = bet * 50;
-                else if (s1 === '7️⃣') winAmount = bet * 25;
-                else winAmount = bet * 10;
-            } 
-            else if (s1 === s2 || s2 === s3 || s1 === s3) {
-                winAmount = bet * 2;
-            }
+            const winAmount = Math.floor(bet * multiplier);
+            balance += winAmount;
             
-            if (winAmount > 0) {
-                balance += winAmount;
-                document.getElementById('result').innerHTML = `🎉 ВЫИГРЫШ +${winAmount} ₽!`;
-                document.getElementById('result').style.color = '#00ff00';
-            } else {
-                document.getElementById('result').innerHTML = '😢 ПРОИГРЫШ';
-                document.getElementById('result').style.color = '#ff0066';
-            }
-            
+            document.getElementById('result').innerHTML = `🎉 +${winAmount} ₽ (x${multiplier})`;
             updateBalance();
-            addToHistory(s1, s2, s3, winAmount);
         }
-        
-        function addToHistory(s1, s2, s3, win) {
-            const history = document.getElementById('history');
-            const entry = document.createElement('div');
-            entry.innerHTML = `${s1} ${s2} ${s3} — ${win > 0 ? '+' + win : '0'}₽`;
-            history.prepend(entry);
-            
-            if (history.children.length > 8) {
-                history.removeChild(history.lastChild);
-            }
-        }
-        
+
         function addMoney() {
             balance += 5000;
             updateBalance();
-            document.getElementById('result').innerHTML = '💰 +5000 ₽ добавлено!';
+            document.getElementById('result').innerHTML = '💰 +5000 ₽';
         }
-        
-        // Инициализация
-        updateBalance();
     </script>
 </body>
 </html>
