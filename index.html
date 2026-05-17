@@ -1,529 +1,250 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Красный Лаваш</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:'Montserrat',sans-serif;
-    background:#000;
-    color:white;
-    overflow-x:hidden;
-}
-
-header{
-    position:fixed;
-    width:100%;
-    top:0;
-    left:0;
-    z-index:1000;
-    background:rgba(0,0,0,0.85);
-    backdrop-filter:blur(10px);
-}
-
-.navbar{
-    max-width:1400px;
-    margin:auto;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px;
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.logo img{
-    width:60px;
-    height:60px;
-    object-fit:contain;
-}
-
-.logo h2{
-    color:#ff1a1a;
-    font-size:24px;
-    font-weight:800;
-}
-
-nav ul{
-    display:flex;
-    list-style:none;
-    gap:35px;
-}
-
-nav a{
-    text-decoration:none;
-    color:white;
-    font-weight:600;
-    transition:0.3s;
-}
-
-nav a:hover{
-    color:red;
-}
-
-.order-btn{
-    background:red;
-    padding:14px 30px;
-    border-radius:12px;
-    color:white;
-    text-decoration:none;
-    font-weight:700;
-    transition:0.3s;
-}
-
-.order-btn:hover{
-    background:#c70000;
-    transform:scale(1.05);
-}
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:140px 8%;
-    background:
-    radial-gradient(circle at center, rgba(255,0,0,0.18), transparent 50%),
-    #000;
-}
-
-.hero-container{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:50px;
-    width:100%;
-    max-width:1400px;
-}
-
-.left{
-    max-width:620px;
-}
-
-.left img{
-    width:320px;
-    margin-bottom:30px;
-}
-
-.left h1{
-    font-size:72px;
-    line-height:1;
-    font-weight:800;
-}
-
-.left h1 span{
-    color:red;
-}
-
-.left p{
-    margin-top:25px;
-    color:#bbb;
-    font-size:20px;
-    line-height:1.7;
-}
-
-.buttons{
-    margin-top:40px;
-    display:flex;
-    gap:20px;
-}
-
-.btn-red{
-    background:red;
-    padding:18px 35px;
-    border-radius:14px;
-    color:white;
-    text-decoration:none;
-    font-weight:700;
-    transition:0.3s;
-}
-
-.btn-red:hover{
-    background:#d10000;
-    transform:translateY(-5px);
-}
-
-.btn-dark{
-    border:2px solid #444;
-    padding:18px 35px;
-    border-radius:14px;
-    color:white;
-    text-decoration:none;
-    font-weight:700;
-    transition:0.3s;
-}
-
-.btn-dark:hover{
-    border-color:red;
-    color:red;
-}
-
-.right img{
-    width:650px;
-    animation:float 4s ease-in-out infinite;
-    filter:drop-shadow(0 0 40px red);
-}
-
-@keyframes float{
-    0%{transform:translateY(0px);}
-    50%{transform:translateY(-18px);}
-    100%{transform:translateY(0px);}
-}
-
-.menu{
-    padding:120px 8%;
-    background:#050505;
-}
-
-.section-title{
-    text-align:center;
-    margin-bottom:70px;
-}
-
-.section-title h2{
-    font-size:58px;
-    font-weight:800;
-}
-
-.section-title p{
-    color:#999;
-    margin-top:15px;
-    font-size:20px;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:35px;
-}
-
-.card{
-    background:#111;
-    border-radius:24px;
-    overflow:hidden;
-    border:1px solid #222;
-    transition:0.4s;
-}
-
-.card:hover{
-    transform:translateY(-10px);
-    border-color:red;
-    box-shadow:0 0 30px rgba(255,0,0,0.35);
-}
-
-.card img{
-    width:100%;
-    height:250px;
-    object-fit:cover;
-}
-
-.card-content{
-    padding:25px;
-}
-
-.card h3{
-    font-size:30px;
-    margin-bottom:15px;
-}
-
-.card p{
-    color:#bbb;
-    line-height:1.6;
-}
-
-.price{
-    margin-top:20px;
-    font-size:35px;
-    color:red;
-    font-weight:800;
-}
-
-.card-button{
-    display:block;
-    margin-top:25px;
-    width:100%;
-    background:red;
-    color:white;
-    padding:16px;
-    border-radius:12px;
-    font-size:18px;
-    font-weight:700;
-    text-align:center;
-    text-decoration:none;
-    transition:0.3s;
-}
-
-.card-button:hover{
-    background:#d00000;
-}
-
-.features{
-    padding:100px 8%;
-    background:black;
-}
-
-.feature-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:40px;
-}
-
-.feature{
-    text-align:center;
-}
-
-.feature h4{
-    margin-top:20px;
-    font-size:24px;
-}
-
-.feature p{
-    color:#aaa;
-    margin-top:10px;
-}
-
-footer{
-    padding:40px;
-    text-align:center;
-    background:#050505;
-    border-top:1px solid #111;
-    color:#888;
-}
-
-@media(max-width:1100px){
-
-.hero-container{
-    flex-direction:column;
-    text-align:center;
-}
-
-.right img{
-    width:100%;
-    max-width:500px;
-}
-
-.left h1{
-    font-size:52px;
-}
-
-.left img{
-    width:250px;
-}
-
-.buttons{
-    justify-content:center;
-}
-
-nav{
-    display:none;
-}
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💎 GROK CASINO 💎</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f001a, #1a0033);
+            color: #00ffcc;
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-bottom: 4px solid #ff00aa;
+            text-shadow: 0 0 20px #ff00aa;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #ff00aa;
+            text-shadow: 0 0 30px #ff00ff;
+        }
+        
+        .balance {
+            font-size: 1.5em;
+            margin: 15px 0;
+            color: #00ff00;
+        }
+        
+        .game-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 6px solid #ff00aa;
+            border-radius: 15px;
+            box-shadow: 0 0 40px #ff00ff;
+        }
+        
+        .slots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px;
+            background: #000;
+            border: 5px solid #00ffff;
+        }
+        
+        .reel {
+            width: 120px;
+            height: 160px;
+            background: #111;
+            border: 4px solid #ffd700;
+            font-size: 4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 20px #000;
+        }
+        
+        button {
+            font-family: 'Press Start 2P', cursive;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            margin: 10px;
+            background: #ff00aa;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff00ff;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: #ff66cc;
+            transform: scale(1.1);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .bet {
+            display: inline-block;
+            margin: 15px;
+            font-size: 1.3em;
+        }
+        
+        .win {
+            color: #00ff00;
+            font-size: 2em;
+            min-height: 50px;
+            text-shadow: 0 0 20px #00ff00;
+        }
+        
+        .history {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+    </style>
 </head>
-
 <body>
+    <div class="header">
+        <h1>💎 GROK CASINO 💎</h1>
+        <div class="balance">Баланс: <span id="balance">10000</span> ₽</div>
+    </div>
 
-<header>
+    <div class="game-container">
+        <h2>🎰 СЛОТ-МАШИНА 🎰</h2>
+        
+        <div class="slots" id="slots">
+            <div class="reel" id="reel1">🍒</div>
+            <div class="reel" id="reel2">🍒</div>
+            <div class="reel" id="reel3">🍒</div>
+        </div>
 
-<div class="navbar">
+        <div class="bet">
+            Ставка: 
+            <button onclick="changeBet(-100)">-100</button>
+            <span id="betAmount">500</span> ₽
+            <button onclick="changeBet(100)">+100</button>
+        </div>
 
-<div class="logo">
-<img src="logo.png.PNG" alt="Красный Лаваш логотип">
-<h2>КРАСНЫЙ ЛАВАШ</h2>
-</div>
+        <button onclick="spin()">КРУТИТЬ ЗА 500₽</button>
+        <button onclick="addMoney()">+5000 ₽ (чит)</button>
 
-<nav>
-<ul>
-<li><a href="#">Главная</a></li>
-<li><a href="#">Меню</a></li>
-<li><a href="#">О нас</a></li>
-<li><a href="#">Отзывы</a></li>
-<li><a href="#">Контакты</a></li>
-</ul>
-</nav>
+        <div class="win" id="result"></div>
+        
+        <div class="history" id="history"></div>
+    </div>
 
-<a href="tel:+79236244554" class="order-btn">📞 +79236244554</a>
-
-</div>
-
-</header>
-
-<section class="hero">
-
-<div class="hero-container">
-
-<div class="left">
-
-<img src="logo.png.PNG" alt="Красный Лаваш">
-
-<h1>
-САМАЯ СОЧНАЯ <br>
-<span>ШАУРМА В ГОРОДЕ!</span>
-</h1>
-
-<p>
-Сочный донер, свежие овощи,
-фирменные соусы и настоящий вкус
-который хочется снова и снова 🌯🔥
-</p>
-
-<div class="buttons">
-<a href="tel:+79236244554" class="btn-red">Заказать сейчас</a>
-<a href="#menu" class="btn-dark">Смотреть меню</a>
-</div>
-
-</div>
-
-<div class="right">
-<img src="shawarma.png" alt="">
-</div>
-
-</div>
-
-</section>
-
-<section class="menu" id="menu">
-
-<div class="section-title">
-<h2>НАШЕ МЕНЮ</h2>
-<p>Попробуй лучшие вкусы Красного Лаваша</p>
-</div>
-
-<div class="cards">
-
-<div class="card">
-<img src="Classic.png.PNG">
-<div class="card-content">
-<h3>Классическая</h3>
-<p>Курица, овощи, фирменный соус</p>
-<div class="price">280 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="Sirniy.png.PNG">
-<div class="card-content">
-<h3>Сырная</h3>
-<p>Двойной сыр, курица, сырный соус</p>
-<div class="price">280 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="Separate.png.PNG">
-<div class="card-content">
-<h3>Цезарь</h3>
-<p>Курица, салат айсберг, соус цезарь</p>
-<div class="price">300 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="bqq.png.PNG">
-<div class="card-content">
-<h3>Барбекю</h3>
-<p>Мясо, BBQ соус, овощи</p>
-<div class="price">300 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="bikmak.png.PNG">
-<div class="card-content">
-<h3>Биг Мак</h3>
-<p>Двойное мясо, сыр, фирменный соус</p>
-<div class="price">300 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="gig.png.PNG">
-<div class="card-content">
-<h3>Гигант</h3>
-<p>Большая шаурма с двойной порцией мяса</p>
-<div class="price">400 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="absd.png.PNG">
-<div class="card-content">
-<h3>Арабская в пите</h3>
-<p>Мясо, овощи, фирменный соус в пите</p>
-<div class="price">340 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-<div class="card">
-<img src="doner.png.PNG">
-<div class="card-content">
-<h3>Донер в лепёшке</h3>
-<p>Сочный донер с овощами и соусом</p>
-<div class="price">330 ₽</div>
-<a href="https://eda.yandex.ru/restaurant/krasnyj_lavash_fxp2c?utm_campaign=superapp_taxi_web&utm_medium=referral&utm_source=rst_shared_link" class="card-button">Заказать</a>
-</div>
-</div>
-
-</div>
-
-</section>
-
-<section class="features">
-
-<div class="feature-grid">
-
-<div class="feature">
-<h4>🔥 Всегда горячая</h4>
-<p>Готовим прямо при тебе</p>
-</div>
-
-<div class="feature">
-<h4>🥬 Свежие продукты</h4>
-<p>Только качественные ингредиенты</p>
-</div>
-
-<div class="feature">
-<h4>🥫 Фирменные соусы</h4>
-<p>Настоящий вкус Красного Лаваша</p>
-</div>
-
-<div class="feature">
-<h4>⚡ Быстрая доставка</h4>
-<p>Привезём за 30–40 минут</p>
-</div>
-
-</div>
-
-</section>
-
-<footer>
-© 2026 Красный Лаваш | 📞 +79236244554
-</footer>
-
+    <script>
+        let balance = 10000;
+        let bet = 500;
+        const symbols = ['🍒', '🍋', '🍉', '⭐', '💎', '🔔', '7️⃣'];
+        
+        function updateBalance() {
+            document.getElementById('balance').textContent = balance;
+        }
+        
+        function changeBet(amount) {
+            bet = Math.max(100, Math.min(2000, bet + amount));
+            document.getElementById('betAmount').textContent = bet;
+        }
+        
+        function getRandomSymbol() {
+            return symbols[Math.floor(Math.random() * symbols.length)];
+        }
+        
+        function spin() {
+            if (balance < bet) {
+                document.getElementById('result').innerHTML = '❌ НЕДОСТАТОЧНО СРЕДСТВ!';
+                return;
+            }
+            
+            balance -= bet;
+            updateBalance();
+            
+            const reel1 = document.getElementById('reel1');
+            const reel2 = document.getElementById('reel2');
+            const reel3 = document.getElementById('reel3');
+            const resultEl = document.getElementById('result');
+            
+            resultEl.textContent = 'КРУТИМ...';
+            
+            // Анимация
+            let spins = 0;
+            const interval = setInterval(() => {
+                reel1.textContent = getRandomSymbol();
+                reel2.textContent = getRandomSymbol();
+                reel3.textContent = getRandomSymbol();
+                spins++;
+                if (spins > 15) {
+                    clearInterval(interval);
+                    finishSpin();
+                }
+            }, 80);
+        }
+        
+        function finishSpin() {
+            const reel1 = document.getElementById('reel1');
+            const reel2 = document.getElementById('reel2');
+            const reel3 = document.getElementById('reel3');
+            
+            const s1 = getRandomSymbol();
+            const s2 = getRandomSymbol();
+            const s3 = getRandomSymbol();
+            
+            reel1.textContent = s1;
+            reel2.textContent = s2;
+            reel3.textContent = s3;
+            
+            let winAmount = 0;
+            
+            if (s1 === s2 && s2 === s3) {
+                if (s1 === '💎') winAmount = bet * 50;
+                else if (s1 === '7️⃣') winAmount = bet * 25;
+                else winAmount = bet * 10;
+            } 
+            else if (s1 === s2 || s2 === s3 || s1 === s3) {
+                winAmount = bet * 2;
+            }
+            
+            if (winAmount > 0) {
+                balance += winAmount;
+                document.getElementById('result').innerHTML = `🎉 ВЫИГРЫШ +${winAmount} ₽!`;
+                document.getElementById('result').style.color = '#00ff00';
+            } else {
+                document.getElementById('result').innerHTML = '😢 ПРОИГРЫШ';
+                document.getElementById('result').style.color = '#ff0066';
+            }
+            
+            updateBalance();
+            addToHistory(s1, s2, s3, winAmount);
+        }
+        
+        function addToHistory(s1, s2, s3, win) {
+            const history = document.getElementById('history');
+            const entry = document.createElement('div');
+            entry.innerHTML = `${s1} ${s2} ${s3} — ${win > 0 ? '+' + win : '0'}₽`;
+            history.prepend(entry);
+            
+            if (history.children.length > 8) {
+                history.removeChild(history.lastChild);
+            }
+        }
+        
+        function addMoney() {
+            balance += 5000;
+            updateBalance();
+            document.getElementById('result').innerHTML = '💰 +5000 ₽ добавлено!';
+        }
+        
+        // Инициализация
+        updateBalance();
+    </script>
 </body>
 </html>
