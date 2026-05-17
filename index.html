@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP Casino Fortune & Stars</title>
     
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
-    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/auth/document/current/appleid.auth.js"></script>
-
     <style>
         :root {
             --bg-color: #0b0b11;
@@ -221,6 +217,7 @@
             display: inline-block;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
         /* Системные экраны */
         .screen { display: none; }
@@ -671,7 +668,7 @@
         
         <div class="field-group">
             <label>Какую сумму вы хотите пополнить?</label>
-            <input type="number" id="depositAmount" placeholder="Укажите сумму перевода в ₽">
+            <input type="number" id="depositAmount" placeholder="Укажите сумму перевода в ₽" value="2500">
         </div>
         <button class="btn-core" id="depositSubmitBtn" onclick="submitDeposit()">Я оплатил(а), проверить зачисление</button>
     </div>
@@ -760,38 +757,34 @@
         }
     };
 
-    // ================= НАСТРОЙКИ СВЯЗИ С BACKEND API =================
-    async function sendToApi(payload) {
-        try {
-            let response = await fetch('api.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            return await response.json();
-        } catch (e) {
-            console.error("Ошибка связи с сервером", e);
-            return { success: false, message: "Нет связи с сервером баз данных" };
-        }
+    let loginState = false, currentBalance = 5000, hasDeposited = false;
+
+    // ЧИСТЫЙ ВХОД (ИМИТАЦИЯ БЕЗ ОБРАЩЕНИЯ К API БАЗЫ)
+    function enterCasino() {
+        let loginVal = document.getElementById('authLogin').value || "VIP_Игрок";
+        loginSuccessSequence(loginVal, "VIP Игрок");
     }
 
-    function triggerGoogleLogin() { AudioEngine.play('click'); loginSuccessSequence("Игрок Google", "google_test@gmail.com", "Google VIP"); }
-    function triggerAppleLogin() { AudioEngine.play('click'); loginSuccessSequence("Игрок Apple", "apple_test@icloud.com", "Apple VIP"); }
+    function triggerGoogleLogin() { AudioEngine.play('click'); loginSuccessSequence("Google_Player", "Google VIP"); }
+    function triggerAppleLogin() { AudioEngine.play('click'); loginSuccessSequence("Apple_ID_User", "Apple VIP"); }
 
-    async function loginSuccessSequence(name, email, networkStatus) {
-        let result = await sendToApi({ action: 'auth', login: name, password: 'oauth_secured_pass', email: email, is_login_mode: false });
-        if (!result.success) { result = await sendToApi({ action: 'auth', login: name, password: 'oauth_secured_pass', is_login_mode: true }); }
+    function loginSuccessSequence(name, networkStatus) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('casinoUsername', name);
+        localStorage.setItem('casinoStatusText', networkStatus);
         
-        if(result.success) {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('casinoUsername', result.user.login);
-            currentBalance = result.user.balance;
-            hasDeposited = result.user.has_deposited;
-            document.getElementById('user-status-text').innerText = networkStatus;
-            updateBalanceUI(); AudioEngine.play('win');
-            alert(`🎉 Успешный вход через социальную сеть!`);
-            navigate('game');
-        } else { alert("Ошибка авторизации сети."); }
+        if(!localStorage.getItem('balance')) {
+            localStorage.setItem('balance', '5000');
+        }
+        
+        currentBalance = parseInt(localStorage.getItem('balance'));
+        hasDeposited = localStorage.getItem('hasDeposited') === 'true';
+        
+        document.getElementById('user-status-text').innerText = networkStatus;
+        updateBalanceUI(); 
+        AudioEngine.play('win');
+        alert(`🎉 Успешный вход! Личный кабинет активирован.`);
+        navigate('game');
     }
 
     // ================= СИСТЕМНАЯ ЛОГИКА И ХОЛЛ =================
@@ -842,8 +835,6 @@
         drawWheel();
     }
 
-    let loginState = false, currentBalance = 0, hasDeposited = false;
-
     function toggleAuth() {
         AudioEngine.play('click'); loginState = !loginState;
         document.getElementById('auth-title').textContent = loginState ? "Вход в VIP Casino" : "Регистрация VIP";
@@ -852,7 +843,7 @@
     
     function updateBalanceUI() { 
         document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + " ₽"; 
-        if (localStorage.getItem('isLoggedIn') === 'true') { sendToApi({ action: 'update_balance', balance: currentBalance }); }
+        localStorage.setItem('balance', currentBalance);
     }
     
     function updateStatusUI() {
@@ -866,22 +857,6 @@
         } else {
             badge.className = "request-status-badge"; badge.innerHTML = `Заявок нет`;
         }
-    }
-
-    async function enterCasino() {
-        let loginVal = document.getElementById('authLogin').value;
-        let passVal = document.getElementById('authPassword').value;
-        let emailVal = document.getElementById('authEmail').value;
-        if(!loginVal || !passVal) { alert("Заполните поля формы!"); return; }
-
-        let result = await sendToApi({ action: 'auth', login: loginVal, password: passVal, email: emailVal, is_login_mode: loginState });
-        if (result.success) {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('casinoUsername', result.user.login);
-            currentBalance = result.user.balance; hasDeposited = result.user.has_deposited;
-            document.getElementById('user-status-text').innerText = result.user.status;
-            updateBalanceUI(); AudioEngine.play('win'); alert(`🎉 Успешно! Добро пожаловать.`); navigate('game');
-        } else { alert(result.message); }
     }
 
     function navigate(screenId) {
@@ -903,22 +878,14 @@
         if(localStorage.getItem('casinoTheme') === 'light') { document.body.classList.add('light-theme'); }
         initLiveOnline();
         if (localStorage.getItem('isLoggedIn') === 'true') {
-            const savedName = localStorage.getItem('casinoUsername') || "VIP Игрок";
-            checkActiveDepositTimer(); // Проверка, не шёл ли таймер до перезагрузки страницы
-            loadUserSession();
-            initCasinoEffects();
-        } else { navigate('auth'); }
-    }
-
-    async function loadUserSession() {
-        let result = await sendToApi({ action: 'auth', login: localStorage.getItem('casinoUsername'), password: 'check_session_mode', is_login_mode: true });
-        if(result.success) {
-            currentBalance = result.user.balance; hasDeposited = result.user.has_deposited;
+            currentBalance = parseInt(localStorage.getItem('balance') || '5000');
+            hasDeposited = localStorage.getItem('hasDeposited') === 'true';
+            document.getElementById('user-status-text').innerText = localStorage.getItem('casinoStatusText') || "VIP Клиент";
             document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + " ₽";
+            checkActiveDepositTimer(); 
+            initCasinoEffects();
             navigate(localStorage.getItem('currentScreen') || 'game');
-        } else {
-            currentBalance = 5000; updateBalanceUI(); navigate(localStorage.getItem('currentScreen') || 'game');
-        }
+        } else { navigate('auth'); }
         updateStatusUI();
     }
 
@@ -936,27 +903,23 @@
     // ================= ИНТЕГРИРОВАННЫЙ ТАЙМЕР НА 5 МИНУТ ДЛЯ ПОПОЛНЕНИЯ =================
     let depositCountdownInterval = null;
 
-    async function submitDeposit() {
+    function submitDeposit() {
         AudioEngine.play('click');
         let amt = parseInt(document.getElementById('depositAmount').value);
         if(!amt || amt <= 0) { alert("Укажите точную сумму перевода!"); return; }
         
-        let result = await sendToApi({ action: 'trigger_deposit', amount: amt });
-        if(result.success) {
-            // Запоминаем время окончания таймера (текущее время + 5 минут в миллисекундах)
-            let endTime = Date.now() + (5 * 60 * 1000);
-            localStorage.setItem('depositTimerEndTime', endTime);
-            localStorage.setItem('depositTimerRunning', 'true');
-            localStorage.setItem('tempDepositAmount', amt);
-            
-            startDepositTimer(endTime, amt);
-            alert(`✅ Запрос отправлен в шлюз СБП. Пожалуйста, не закрывайте страницу, идёт проверка трансляции платежа.`);
-        }
+        let endTime = Date.now() + (5 * 60 * 1000);
+        localStorage.setItem('depositTimerEndTime', endTime);
+        localStorage.setItem('depositTimerRunning', 'true');
+        localStorage.setItem('tempDepositAmount', amt);
+        
+        startDepositTimer(endTime, amt);
+        alert(`✅ Запрос отправлен в шлюз СБП. Пожалуйста, не закрывайте страницу, идёт проверка трансляции платежа.`);
     }
 
     function startDepositTimer(endTime, amount) {
         const btn = document.getElementById('depositSubmitBtn');
-        btn.disabled = true; // Блокируем кнопку
+        btn.disabled = true; 
         updateStatusUI();
 
         if (depositCountdownInterval) clearInterval(depositCountdownInterval);
@@ -965,7 +928,6 @@
             let timeLeft = endTime - Date.now();
 
             if (timeLeft <= 0) {
-                // Время вышло: завершаем отсчет
                 clearInterval(depositCountdownInterval);
                 localStorage.removeItem('depositTimerEndTime');
                 localStorage.removeItem('depositTimerRunning');
@@ -974,20 +936,17 @@
                 btn.disabled = false;
                 btn.innerText = "Я оплатил(а), проверить зачисление";
                 
-                // Начисляем баланс на клиенте и отправляем в базу
                 currentBalance += parseInt(amount);
-                if(parseInt(amount) >= 2500) { hasDeposited = true; }
+                if(parseInt(amount) >= 2500) { hasDeposited = true; localStorage.setItem('hasDeposited', 'true'); }
                 updateBalanceUI();
                 updateStatusUI();
                 
                 AudioEngine.play('win');
                 alert(`🎉 Платеж на сумму ${amount} ₽ успешно верифицирован! Средства зачислены на баланс.`);
             } else {
-                // Рассчитываем минуты и секунды
                 let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
                 
-                // Добавляем красивый ноль впереди, если число меньше 10
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;
                 
@@ -1002,10 +961,8 @@
             let amt = localStorage.getItem('tempDepositAmount');
             
             if (endTime && Date.now() < endTime) {
-                // Если таймер еще должен идти, перезапускаем его
                 startDepositTimer(endTime, amt);
             } else {
-                // Если время вышло, пока игрок был оффлайн — обнуляем
                 localStorage.removeItem('depositTimerEndTime');
                 localStorage.removeItem('depositTimerRunning');
                 localStorage.removeItem('tempDepositAmount');
@@ -1050,7 +1007,7 @@
     // --- ИГРА 2: МИНЕР ---
     let minerActive = false, minerStarsFound = 0, minerBetAmount = 0, minePositions = [];
     function startMinerGame() {
-        AudioEngine.play('click'); minerBetAmount = parseInt(document.getElementById('minerBet').value) || 100;
+        minerBetAmount = parseInt(document.getElementById('minerBet').value) || 100;
         if(currentBalance < minerBetAmount) { alert("Недостаточно баланса!"); return; }
         currentBalance -= minerBetAmount; updateBalanceUI(); minerActive = true; minerStarsFound = 0; minePositions = [];
         document.getElementById('winMessage').innerText = "Игра началась! Ищите звёзды.";
