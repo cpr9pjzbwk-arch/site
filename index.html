@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky Wheel Casino</title>
+    <title>Lucky Wheel Premium Casino</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a1c29 0%, #0e1017 100%);
+            background: linear-gradient(135deg, #0f111a 0%, #06080c 100%);
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -25,149 +25,155 @@
         .container {
             width: 100%;
             max-width: 500px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            backdrop-filter: blur(15px);
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 24px;
-            color: #ffb703;
-            font-size: 24px;
-            letter-spacing: 1px;
-        }
-
-        .form-group {
             margin-bottom: 20px;
+            color: #00cc66;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 22px;
+            text-shadow: 0 0 10px rgba(0, 204, 102, 0.2);
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #aaa;
-            font-size: 14px;
-        }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 6px; color: #aaa; font-size: 13px; }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        input[type="number"] {
+        input {
             width: 100%;
             padding: 12px 16px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             transition: all 0.3s ease;
         }
 
         input:focus {
             outline: none;
-            border-color: #ffb703;
-            box-shadow: 0 0 8px rgba(255, 183, 3, 0.3);
+            border-color: #00cc66;
+            box-shadow: 0 0 8px rgba(0, 204, 102, 0.2);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: #11141d;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
         }
 
         button {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(90deg, #ffb703 0%, #fb8500 100%);
+            background: linear-gradient(90deg, #00cc66 0%, #00994d 100%);
             border: none;
             border-radius: 12px;
-            color: #023047;
+            color: #ffffff;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.1s, opacity 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 204, 102, 0.2);
         }
 
-        button:hover {
-            opacity: 0.9;
-        }
+        button:hover { opacity: 0.9; }
+        button:active { transform: scale(0.98); }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
-        /* Игровой экран скрыт изначально */
-        #game-screen {
-            display: none;
-        }
+        #game-screen { display: none; }
 
         .header-panel {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             padding: 12px 16px;
             border-radius: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .user-info .name {
-            font-weight: bold;
-            color: #ffb703;
-            font-size: 16px;
+        .user-info .name { font-weight: bold; color: #00cc66; }
+        .balance-box .amount { color: #00ffcc; font-weight: bold; font-size: 18px; }
+
+        /* Финансы */
+        .finance-tabs { display: flex; gap: 10px; margin-bottom: 10px; }
+        
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ccc;
+            padding: 8px;
+            font-size: 13px;
+            border-radius: 8px;
+            box-shadow: none;
         }
 
-        .balance-box {
-            text-align: right;
+        .tab-btn.active {
+            background: #1c2030;
+            color: #00cc66;
+            border: 1px solid rgba(0, 204, 102, 0.3);
         }
 
-        .balance-box .amount {
-            color: #8ecae6;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        /* Пополнение */
-        .deposit-section {
-            background: rgba(142, 202, 230, 0.1);
-            border: 1px dashed rgba(142, 202, 230, 0.3);
+        .finance-panel {
+            background: #11141d;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 14px;
             padding: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .deposit-inputs {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
+        .finance-form { display: none; }
+        .finance-form.active { display: block; }
+
+        .sbp-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #1d74b3, #1b9e54);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 5px;
         }
 
-        /* Колесо / Барабан из 12 кубиков */
+        /* Колесо */
         .wheel-container {
             position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 0 auto 25px auto;
+            width: 290px;
+            height: 290px;
+            margin: 0 auto 20px auto;
         }
 
         .wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 6px solid #fb8500;
+            border: 6px solid #00cc66;
             position: relative;
             overflow: hidden;
             transition: transform 4s cubic-bezier(0.15, 0.85, 0.35, 1);
-            background: #023047;
-            box-shadow: 0 0 20px rgba(251, 133, 0, 0.4);
+            background: #161925;
+            box-shadow: 0 0 25px rgba(0, 204, 102, 0.3);
         }
 
-        /* Центральная точка */
         .wheel::before {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: #fff;
-            border: 4px solid #ffb703;
+            border: 5px solid #00cc66;
             border-radius: 50%;
             top: 50%;
             left: 50%;
@@ -175,84 +181,67 @@
             z-index: 10;
         }
 
-        /* Стрелка указателя сверху */
         .pointer {
             position: absolute;
-            top: -15px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 25px solid #ff0055;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-top: 24px solid #ff3366;
             z-index: 20;
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
         }
 
-        /* Сектора (Кубики) внутри колеса */
-        .sector {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            left: 50%;
-            top: 50%;
-            transform-origin: 0% 0%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
+        .sector { position: absolute; width: 50%; height: 50%; left: 50%; top: 50%; transform-origin: 0% 0%; }
+        
         .sector-content {
             position: absolute;
-            left: 30px;
-            top: 30px;
-            font-size: 22px;
+            left: 28px;
+            top: 28px;
+            font-size: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-shadow: 1px 1px 2px #000;
         }
 
-        .sector-content .num {
-            font-size: 11px;
-            color: rgba(255,255,255,0.6);
-            margin-top: 2px;
-        }
+        .sector-content .num { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 1px; font-weight: bold; }
 
-        /* Разметка 12 секторов по 30 градусов */
-        .sector:nth-child(1) { transform: rotate(0deg) translate(-100%, -100%); background: #212529; }
-        .sector:nth-child(2) { transform: rotate(30deg) translate(-100%, -100%); background: #343a40; }
-        .sector:nth-child(3) { transform: rotate(60deg) translate(-100%, -100%); background: #495057; }
-        .sector:nth-child(4) { transform: rotate(90deg) translate(-100%, -100%); background: #2a9d8f; border: 1px solid #ffb703; } /* Выигрышный №4 */
-        .sector:nth-child(5) { transform: rotate(120deg) translate(-100%, -100%); background: #343a40; }
-        .sector:nth-child(6) { transform: rotate(150deg) translate(-100%, -100%); background: #212529; }
-        .sector:nth-child(7) { transform: rotate(180deg) translate(-100%, -100%); background: #495057; }
-        .sector:nth-child(8) { transform: rotate(210deg) translate(-100%, -100%); background: #6c757d; }
-        .sector:nth-child(9) { transform: rotate(240deg) translate(-100%, -100%); background: #212529; }
-        .sector:nth-child(10) { transform: rotate(270deg) translate(-100%, -100%); background: #343a40; }
-        .sector:nth-child(11) { transform: rotate(300deg) translate(-100%, -100%); background: #495057; }
-        .sector:nth-child(12) { transform: rotate(330deg) translate(-100%, -100%); background: #6c757d; }
+        /* Отрисовка 12 секторов */
+        .sector:nth-child(1) { transform: rotate(0deg) translate(-100%, -100%); background: #1f2438; }
+        .sector:nth-child(2) { transform: rotate(30deg) translate(-100%, -100%); background: #282e48; }
+        .sector:nth-child(3) { transform: rotate(60deg) translate(-100%, -100%); background: #1f2438; }
+        .sector:nth-child(4) { transform: rotate(90deg) translate(-100%, -100%); background: #00cc66; }
+        .sector:nth-child(5) { transform: rotate(120deg) translate(-100%, -100%); background: #1f2438; }
+        .sector:nth-child(6) { transform: rotate(150deg) translate(-100%, -100%); background: #282e48; }
+        .sector:nth-child(7) { transform: rotate(180deg) translate(-100%, -100%); background: #1f2438; }
+        .sector:nth-child(8) { transform: rotate(210deg) translate(-100%, -100%); background: #282e48; }
+        .sector:nth-child(9) { transform: rotate(240deg) translate(-100%, -100%); background: #1f2438; }
+        .sector:nth-child(10) { transform: rotate(270deg) translate(-100%, -100%); background: #282e48; }
+        .sector:nth-child(11) { transform: rotate(300deg) translate(-100%, -100%); background: #1f2438; }
+        .sector:nth-child(12) { transform: rotate(330deg) translate(-100%, -100%); background: #282e48; }
 
-        .game-controls {
-            text-align: center;
-        }
+        .sector.lucky-boost { background: #00aa55 !important; }
 
-        .status-msg {
-            margin-top: 15px;
-            font-size: 16px;
-            font-weight: 500;
-            min-height: 24px;
-            text-align: center;
-        }
-        
-        .win-text { color: #2a9d8f; font-weight: bold; animation: pulse 0.5s infinite alternate; }
-        .lose-text { color: #e63946; }
+        .status-msg { margin-top: 12px; font-size: 15px; font-weight: 500; min-height: 24px; text-align: center; }
+        .win-text { color: #00ffcc; font-weight: bold; animation: pulse 0.4s infinite alternate; }
+        .lose-text { color: #ff3366; }
 
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.03); } }
+
+        .modal-notif {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1c2030;
+            border: 1px solid #00cc66; padding: 15px 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 100; display: none; text-align: center;
         }
     </style>
 </head>
 <body>
+
+    <div id="modal-alert" class="modal-notif"></div>
 
     <div class="container">
         <div id="auth-screen">
@@ -260,59 +249,77 @@
             <form id="reg-form" onsubmit="registerUser(event)">
                 <div class="form-group">
                     <label>Ваше Имя</label>
-                    <input type="text" id="reg-name" placeholder="Введите имя" required>
+                    <input type="text" id="reg-name" placeholder="Имя или никнейм" required>
                 </div>
                 <div class="form-group">
                     <label>Электронная почта (Email)</label>
-                    <input type="email" id="reg-email" placeholder="example@mail.com" required>
+                    <input type="email" id="reg-email" placeholder="casino@mail.ru" required>
                 </div>
                 <div class="form-group">
-                    <label>Придумайте пароль (код)</label>
+                    <label>Придумайте код (пароль)</label>
                     <input type="password" id="reg-pass" placeholder="••••••••" required>
                 </div>
-                <button type="submit">Создать аккаунт</button>
+                <button type="submit">Открыть игровой счет</button>
             </form>
         </div>
 
         <div id="game-screen">
             <div class="header-panel">
-                <div class="user-info">
-                    Игрок: <span class="name" id="user-display-name">User</span>
-                </div>
-                <div class="balance-box">
-                    Баланс: <span class="amount" id="balance-amount">1000</span> Viv
-                </div>
+                <div class="user-info">Игрок: <span class="name" id="user-display-name">User</span></div>
+                <div class="balance-box">Баланс: <span class="amount" id="balance-amount">1000</span> Viv</div>
             </div>
 
-            <div class="deposit-section">
-                <label>Пополнение баланса (Viv)</label>
-                <div class="deposit-inputs">
-                    <input type="number" id="deposit-amount" placeholder="Сумма" min="10">
-                    <button onclick="depositViv()" style="width: auto; padding: 10px 20px; font-size: 14px;">Пополнить</button>
+            <div class="finance-tabs">
+                <button class="tab-btn active" id="tab-dep" onclick="switchFinance('deposit')">🟢 Пополнение</button>
+                <button class="tab-btn" id="tab-with" onclick="switchFinance('withdraw')">🔴 Вывод средств</button>
+            </div>
+
+            <div class="finance-panel">
+                <div id="form-deposit" class="finance-form active">
+                    <label>Метод: <strong>Сбербанк / СБП</strong> <span class="sbp-badge">СПБ</span></label>
+                    <div style="display: flex; gap: 8px; margin-top: 5px;">
+                        <input type="number" id="deposit-amount" placeholder="Сумма в рублях (1 Viv = 1 руб)" min="50">
+                        <button onclick="handleDeposit()" style="width: auto; padding: 0 15px; font-size: 13px;">Оплатить</button>
+                    </div>
+                </div>
+
+                <div id="form-withdraw" class="finance-form">
+                    <label>Номер телефона получателя (СБП)</label>
+                    <input type="text" id="withdraw-phone" placeholder="+7 (999) 000-00-00" style="margin-bottom: 8px;">
+                    <label>Банк получателя</label>
+                    <select id="withdraw-bank" style="margin-bottom: 8px;">
+                        <option value="sber">Сбербанк</option>
+                        <option value="sbp">Другой банк по СБП</option>
+                    </select>
+                    <label>Сумма вывода (Viv)</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="number" id="withdraw-amount" placeholder="Количество Viv" min="100">
+                        <button onclick="handleWithdraw()" style="width: auto; padding: 0 15px; font-size: 13px; background: linear-gradient(90deg, #ff3366 0%, #cc0033 100%); box-shadow: none;">Вывести</button>
+                    </div>
                 </div>
             </div>
 
             <div class="wheel-container">
                 <div class="pointer"></div>
                 <div class="wheel" id="wheel-element">
-                    <div class="sector"><div class="sector-content">🧸<span class="num">1</span></div></div>
+                    <div class="sector"><div class="sector-content">💎<span class="num">1</span></div></div>
                     <div class="sector"><div class="sector-content">🚗<span class="num">2</span></div></div>
-                    <div class="sector"><div class="sector-content">🚀<span class="num">3</span></div></div>
+                    <div class="sector"><div class="sector-content">🔥<span class="num">3</span></div></div>
                     <div class="sector"><div class="sector-content">👑<span class="num">4</span></div></div>
-                    <div class="sector"><div class="sector-content">🤖<span class="num">5</span></div></div>
-                    <div class="sector"><div class="sector-content">👾<span class="num">6</span></div></div>
-                    <div class="sector"><div class="sector-content">🦄<span class="num">7</span></div></div>
-                    <div class="sector"><div class="sector-content">🦁<span class="num">8</span></div></div>
-                    <div class="sector"><div class="sector-content">🐼<span class="num">9</span></div></div>
-                    <div class="sector"><div class="sector-content">⚽<span class="num">10</span></div></div>
-                    <div class="sector"><div class="sector-content">🎸<span class="num">11</span></div></div>
-                    <div class="sector"><div class="sector-content">🎨<span class="num">12</span></div></div>
+                    <div class="sector"><div class="sector-content">💰<span class="num">5</span></div></div>
+                    <div class="sector"><div class="sector-content">🍀<span class="num">6</span></div></div>
+                    <div class="sector"><div class="sector-content">🌟<span class="num">7</span></div></div>
+                    <div class="sector"><div class="sector-content">🎁<span class="num">8</span></div></div>
+                    <div class="sector"><div class="sector-content">⚡<span class="num">9</span></div></div>
+                    <div class="sector"><div class="sector-content">🚀<span class="num">10</span></div></div>
+                    <div class="sector"><div class="sector-content">🎯<span class="num">11</span></div></div>
+                    <div class="sector"><div class="sector-content">👾<span class="num">12</span></div></div>
                 </div>
             </div>
 
             <div class="game-controls">
-                <div style="margin-bottom: 15px; color: #aaa; font-size: 14px;">
-                    Ставка: <strong>100 Viv</strong>. Выигрыш при выпадении кубика №4 (👑 Корона)!
+                <div style="margin-bottom: 12px; color: #aaa; font-size: 13px;">
+                    Ставка: <strong style="color: #fff;">100 Viv</strong> | Шанс победы: <strong style="color: #00cc66;">70% 🔥</strong>
                 </div>
                 <button id="spin-btn" onclick="spinWheel()">Крутить колесо</button>
                 <div class="status-msg" id="status-message"></div>
@@ -323,54 +330,88 @@
     <script>
         let currentBalance = 1000;
         let isSpinning = false;
+        const WINNING_SECTORS = [4, 1, 3, 5, 7, 9, 11, 12]; 
 
-        const authScreen = document.getElementById('auth-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const userDisplayName = document.getElementById('user-display-name');
-        const balanceAmount = document.getElementById('balance-amount');
-        const wheelElement = document.getElementById('wheel-element');
-        const statusMessage = document.getElementById('status-message');
+        document.addEventListener("DOMContentLoaded", () => {
+            const sectors = document.querySelectorAll('.sector');
+            WINNING_SECTORS.forEach(num => {
+                if(num !== 4) sectors[num-1].classList.add('lucky-boost');
+            });
+        });
 
         function registerUser(event) {
             event.preventDefault();
-            const nameInput = document.getElementById('reg-name').value;
-            userDisplayName.textContent = nameInput;
-            balanceAmount.textContent = currentBalance;
-            authScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
+            document.getElementById('user-display-name').textContent = document.getElementById('reg-name').value;
+            document.getElementById('balance-amount').textContent = currentBalance;
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
         }
 
-        function depositViv() {
+        function switchFinance(type) {
+            document.querySelectorAll('.finance-form').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if(type === 'deposit') {
+                document.getElementById('form-deposit').classList.add('active');
+                document.getElementById('tab-dep').classList.add('active');
+            } else {
+                document.getElementById('form-withdraw').classList.add('active');
+                document.getElementById('tab-with').classList.add('active');
+            }
+        }
+
+        function showAlert(text) {
+            const alertBox = document.getElementById('modal-alert');
+            alertBox.textContent = text;
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 3500);
+        }
+
+        function handleDeposit() {
             const amountInput = document.getElementById('deposit-amount');
             const value = parseInt(amountInput.value);
-            if (isNaN(value) || value <= 0) {
-                alert('Пожалуйста, введите корректную сумму.');
-                return;
-            }
+            if (isNaN(value) || value < 50) { alert('Минимальная сумма пополнения — 50 руб.'); return; }
             currentBalance += value;
-            balanceAmount.textContent = currentBalance;
+            document.getElementById('balance-amount').textContent = currentBalance;
             amountInput.value = '';
-            statusMessage.innerHTML = `<span style="color: #8ecae6;">Баланс пополнен на ${value} Viv!</span>`;
+            showAlert(`📲 Сбербанк СБП: На счет зачислено +${value} Viv!`);
+        }
+
+        function handleWithdraw() {
+            const phone = document.getElementById('withdraw-phone').value;
+            const amountInput = document.getElementById('withdraw-amount');
+            const value = parseInt(amountInput.value);
+            if (!phone || phone.length < 10) { alert('Введите номер телефона СБП.'); return; }
+            if (isNaN(value) || value <= 0 || value > currentBalance) { alert('Некорректная сумма для вывода.'); return; }
+
+            currentBalance -= value;
+            document.getElementById('balance-amount').textContent = currentBalance;
+            amountInput.value = '';
+            showAlert(`💸 Выплата оформлена! ${value} руб. будут отправлены по СБП на Сбербанк.`);
         }
 
         function spinWheel() {
             if (isSpinning) return;
-
-            const betCost = 100;
-            if (currentBalance < betCost) {
-                statusMessage.innerHTML = '<span class="lose-text">Недостаточно Viv! Пополните баланс.</span>';
+            if (currentBalance < 100) {
+                document.getElementById('status-message').innerHTML = '<span class="lose-text">❌ Недостаточно Viv для ставки! Пополните счет.</span>';
                 return;
             }
 
-            currentBalance -= betCost;
-            balanceAmount.textContent = currentBalance;
-            statusMessage.textContent = 'Колесо вращается...';
+            currentBalance -= 100;
+            document.getElementById('balance-amount').textContent = currentBalance;
+            document.getElementById('status-message').textContent = 'Колесо фортуны крутится... 🎰';
             isSpinning = true;
 
-            const targetCube = Math.floor(Math.random() * 12) + 1;
-            const sectorDegrees = 30;
-            const targetAngle = (12 - (targetCube - 1)) * sectorDegrees + (5 * 360);
+            let isWinClick = Math.random() < 0.70; 
+            let targetCube;
 
+            if (isWinClick) {
+                targetCube = WINNING_SECTORS[Math.floor(Math.random() * WINNING_SECTORS.length)];
+            } else {
+                targetCube = [2, 6, 8, 10][Math.floor(Math.random() * 4)];
+            }
+
+            const targetAngle = (12 - (targetCube - 1)) * 30 + (6 * 360);
+            const wheelElement = document.getElementById('wheel-element');
             wheelElement.style.transition = 'none';
             wheelElement.style.transform = 'rotate(0deg)';
             
@@ -381,13 +422,15 @@
 
             setTimeout(() => {
                 isSpinning = false;
-                if (targetCube === 4) {
-                    const winReward = 1000;
-                    currentBalance += winReward;
-                    balanceAmount.textContent = currentBalance;
-                    statusMessage.innerHTML = `<span class="win-text">🎉 Выпал кубик №4! Вы выиграли ${winReward} Viv! 🎉</span>`;
+                if (WINNING_SECTORS.includes(targetCube)) {
+                    let prize = 150; 
+                    if (targetCube === 4) prize = 500;
+                    else if (targetCube === 5) prize = 250;
+                    currentBalance += prize;
+                    document.getElementById('balance-amount').textContent = currentBalance;
+                    document.getElementById('status-message').innerHTML = `<span class="win-text">🎉 Выпал кубик №${targetCube}! Вы выиграли ${prize} Viv! 🎉</span>`;
                 } else {
-                    statusMessage.innerHTML = `<span class="lose-text">Выпал кубик № ${targetCube}. Попробуйте еще раз!</span>`;
+                    document.getElementById('status-message').innerHTML = `<span class="lose-text">Выпал кубик №${targetCube}. Попробуй еще раз!</span>`;
                 }
             }, 4050);
         }
