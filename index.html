@@ -97,7 +97,7 @@
             background: rgba(255,255,255,0.03);
             padding: 8px 14px;
             border-radius: 30px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 13px;
             border: 1px solid #222235;
         }
@@ -106,6 +106,26 @@
             font-weight: bold;
             text-transform: uppercase;
             text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Плашка бонуса */
+        .bonus-alert {
+            background: linear-gradient(90deg, rgba(255, 170, 0, 0.15) 0%, rgba(255, 170, 0, 0.02) 100%);
+            border: 1px dashed var(--gold-color);
+            color: var(--gold-color);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 500;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.9; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.9; }
         }
 
         /* --- КОЛЕСО ФОРТУНЫ --- */
@@ -364,6 +384,11 @@
             <div>Статус: <span class="status-badge">VIP Клиент</span></div>
         </div>
 
+        <!-- Плашка приветственного бонуса -->
+        <div class="bonus-alert" id="bonusBanner">
+            🎁 Вам начислен приветственный VIP-бонус 5 000 ₽!
+        </div>
+
         <!-- Колесо -->
         <div class="wheel-section">
             <div class="wheel-wrapper">
@@ -468,6 +493,7 @@
 <script>
     // --- НАВИГАЦИЯ, ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ И СОХРАНЕНИЕ СОСТОЯНИЯ (LOCALSTORAGE) ---
     let loginState = false;
+    let currentBalance = 0;
 
     function toggleAuth() {
         const title = document.getElementById('auth-title');
@@ -482,13 +508,26 @@
         }
     }
 
+    function updateBalanceUI() {
+        document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + " ₽";
+    }
+
     function enterCasino() {
         const l = document.getElementById('authLogin').value;
         const p = document.getElementById('authPassword').value;
         if(!l || !p) { alert("Пожалуйста, заполните поля формы!"); return; }
         
-        // Автоматически переводим пользователя на форму игры при успешном входе
         localStorage.setItem('isLoggedIn', 'true');
+
+        // Проверяем, заходил ли юзер ранее. Если это первая регистрация — дарим 5000 рублей
+        if (!localStorage.getItem('casinoUserBalance')) {
+            currentBalance = 5000;
+            localStorage.setItem('casinoUserBalance', currentBalance);
+        } else {
+            currentBalance = parseInt(localStorage.getItem('casinoUserBalance'));
+        }
+
+        updateBalanceUI();
         navigate('game');
     }
 
@@ -523,21 +562,24 @@
     window.onload = function() {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         const savedScreen = localStorage.getItem('currentScreen');
+        const savedBalance = localStorage.getItem('casinoUserBalance');
 
         if (isLoggedIn === 'true' && savedScreen) {
+            currentBalance = savedBalance ? parseInt(savedBalance) : 5000;
+            updateBalanceUI();
             navigate(savedScreen);
             initCasinoEffects();
         } else {
             navigate('auth');
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('currentScreen');
+            localStorage.removeItem('casinoUserBalance');
         }
     }
 
 
     // --- ДЕТАЛИ И АТМОСФЕРА КАЗИНО (ДЖЕКПОТ И ТИКЕР) ---
     function initCasinoEffects() {
-        // Проверяем, запущен ли уже интервал, чтобы не дублировать
         if(window.jackpotInterval) clearInterval(window.jackpotInterval);
         if(window.tickerInterval) clearInterval(window.tickerInterval);
 
@@ -634,7 +676,20 @@
         const arcd = arc * 180 / Math.PI;
         const index = Math.floor((360 - (degrees % 360)) / arcd) % numSectors;
         const correctedIndex = (index + numSectors) % numSectors;
-        winMessage.textContent = `Выигрыш: ${prizes[correctedIndex]}!`;
+        
+        const resultText = prizes[correctedIndex];
+        winMessage.textContent = `Выигрыш: ${resultText}!`;
+
+        // Логика изменения баланса на колесе
+        if (resultText.includes("₽")) {
+            const winAmount = parseInt(resultText.replace(/[^0-9]/g, ''));
+            currentBalance += winAmount;
+        } else if (resultText.includes("x2")) {
+            currentBalance *= 2;
+        }
+        
+        localStorage.setItem('casinoUserBalance', currentBalance);
+        updateBalanceUI();
     }
 
     spinBtn.addEventListener('click', rotateWheel);
@@ -649,17 +704,27 @@
     }
 
     function submitDeposit() {
-        const amount = document.getElementById('depositAmount').value;
+        const amount = parseInt(document.getElementById('depositAmount').value);
         if(!amount || amount <= 0) { alert("Введите точную сумму осуществленного пополнения!"); return; }
         alert(`Ваша заявка на пополнение (${amount} ₽) принята. Средства зачислятся на баланс после верификации транзакции в Сбербанк.`);
     }
 
     function submitWithdraw() {
         const phone = document.getElementById('withdrawPhone').value;
-        const amount = document.getElementById('withdrawAmount').value;
+        const amount = parseInt(document.getElementById('withdrawAmount').value);
         
         if(!phone || !amount || amount <= 0) { alert("Пожалуйста, заполните форму вывода полностью!"); return; }
-        alert(`Заявка на выплату сформирована успешно!\nСумма к выводу: ${amount} ₽\nТелефон получателя: ${phone}\nСредства будут отправлены по СБП.`);
+        
+        if(amount > currentBalance) {
+            alert("Недостаточно средств на игровом балансе для совершения выплаты!");
+            return;
+        }
+
+        currentBalance -= amount;
+        localStorage.setItem('casinoUserBalance', currentBalance);
+        updateBalanceUI();
+
+        alert(`Заявка на выплату сформирована успешно!\nСумма к выводу: ${amount} ₽\nТелефон получателя: ${phone}\nСредства списаны с баланса и будут отправлены по СБП.`);
     }
 </script>
 
