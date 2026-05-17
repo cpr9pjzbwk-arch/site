@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игровой Кошелек, Колесо Удачи и Регистрация</title>
+    <title>VIP Casino Fortune</title>
     <style>
         :root {
-            --bg-color: #1a1a24;
-            --card-bg: #242432;
-            --primary-color: #6c5ce7;
-            --accent-color: #00cec9;
+            --bg-color: #0b0b11;
+            --card-bg: #151522;
+            --primary-color: #e61c5d;
+            --accent-color: #00f2fe;
             --text-color: #ffffff;
-            --text-muted: #b2bec3;
-            --warning-color: #ff7675;
-            --gold-color: #fdcb6e;
+            --text-muted: #8a8da2;
+            --warning-color: #ff4757;
+            --gold-color: #ffaa00;
+            --neon-glow: 0 0 15px rgba(230, 28, 93, 0.6);
         }
 
         * {
@@ -30,19 +31,23 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
+            background: radial-gradient(circle at center, #1e112a 0%, #0b0b11 100%);
         }
 
-        .container {
+        .casino-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             background: var(--card-bg);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 24px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid #2a2a40;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Управление экранами */
+        /* Системное управление окнами */
         .screen {
             display: none;
         }
@@ -53,294 +58,301 @@
         h2 {
             margin-bottom: 20px;
             text-align: center;
-            font-size: 22px;
-            letter-spacing: 0.5px;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
 
-        /* --- ЭКРАН РЕГИСТРАЦИИ --- */
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .auth-toggle {
+        /* --- КАЗИНО АНТУРАЖ --- */
+        .jackpot-board {
+            background: linear-gradient(135deg, #2d0c1e 0%, #11071c 100%);
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--neon-glow);
+            padding: 12px;
+            border-radius: 14px;
             text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .jackpot-title {
+            font-size: 11px;
+            text-transform: uppercase;
             color: var(--text-muted);
-            cursor: pointer;
-            text-decoration: underline;
+            letter-spacing: 2px;
+        }
+        .jackpot-amount {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gold-color);
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+            font-family: monospace;
+            margin-top: 4px;
         }
 
-        /* --- СТИЛИ КОЛЕСА ФОРТУНЫ --- */
+        .user-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            padding: 8px 14px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border: 1px solid #222235;
+        }
+        .status-badge {
+            color: var(--accent-color);
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+        }
+
+        /* --- КОЛЕСО ФОРТУНЫ --- */
         .wheel-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .wheel-wrapper {
-            position: relative;
-            width: 320px;
-            height: 320px;
             margin-bottom: 20px;
         }
-
+        .wheel-wrapper {
+            position: relative;
+            width: 310px;
+            height: 310px;
+            margin-bottom: 15px;
+        }
         .pointer {
             position: absolute;
-            top: -15px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid var(--warning-color);
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-top: 28px solid var(--primary-color);
             z-index: 10;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 4px 10px rgba(230,28,93,0.5));
         }
-
         canvas {
             display: block;
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(108, 92, 231, 0.4), inset 0 0 10px rgba(0,0,0,0.5);
-            border: 8px solid #2d2d3f;
+            box-shadow: 0 0 25px rgba(230, 28, 93, 0.2);
+            border: 8px solid #252538;
         }
-
         .spin-btn {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, var(--gold-color) 0%, #e1b12c 100%);
-            border: 4px solid #fff;
+            width: 76px;
+            height: 76px;
+            background: radial-gradient(circle, #fff 0%, var(--gold-color) 60%, #d48800 100%);
+            border: 4px solid #151522;
             border-radius: 50%;
             color: #000;
-            font-weight: bold;
-            font-size: 14px;
+            font-weight: 900;
+            font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
-            transition: transform 0.1s;
+            text-transform: uppercase;
         }
-
-        .spin-btn:active {
-            transform: translate(-50%, -50%) scale(0.95);
-        }
-
         .win-message {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
             color: var(--accent-color);
-            height: 24px;
+            height: 26px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0,242,254,0.3);
+        }
+
+        /* Живой поток выигрышей */
+        .live-stream {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            border: 1px dashed #2a2a40;
+        }
+        .live-user { color: var(--gold-color); font-weight: 600; }
+        .live-prize { color: #20bf6b; font-weight: 600; }
+
+        /* --- НИЖНЕЕ МЕНЮ НАВИГАЦИИ --- */
+        .bottom-nav {
+            display: none; /* Скрыто на экране логина */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 25px;
+            border-top: 1px solid #2a2a40;
+            padding-top: 15px;
+        }
+        .nav-btn {
+            background: #1c1c2e;
+            border: 1px solid #2d2d44;
+            color: var(--text-muted);
+            padding: 12px 6px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
             text-align: center;
         }
-
-        /* --- СТИЛИ ВКЛАДОК ПОПОЛНЕНИЯ/ВЫВОДА --- */
-        .tabs {
-            display: flex;
-            background: #1a1a24;
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 12px;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
+        .nav-btn.active {
             background: var(--primary-color);
             color: #fff;
+            border-color: var(--primary-color);
+            box-shadow: var(--neon-glow);
         }
 
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* --- ДЕТАЛЬНЫЕ ПРЕДУПРЕЖДЕНИЯ И ИНСТРУКЦИИ --- */
-        .warning-block {
-            background: rgba(255, 118, 117, 0.1);
+        /* --- ДЕТАЛИ И КАРТОЧКИ ПОПОЛНЕНИЯ --- */
+        .alert-casino {
+            background: rgba(255, 71, 87, 0.08);
+            border: 1px solid rgba(255, 71, 87, 0.3);
             border-left: 4px solid var(--warning-color);
             padding: 14px;
-            border-radius: 0 12px 12px 0;
+            border-radius: 8px;
             font-size: 13px;
             line-height: 1.6;
             margin-bottom: 20px;
-            color: #ff9f9e;
+            color: #ff8a95;
         }
-
-        .info-card {
-            background: #1e1e2a;
-            border-radius: 14px;
+        .casino-card {
+            background: #1a1a2a;
+            border-radius: 16px;
             padding: 16px;
             margin-bottom: 20px;
-            border: 1px solid #2d2d3f;
+            border: 1px solid #2d2d48;
         }
-
-        .info-row {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-bottom: 14px;
+        .card-row {
+            margin-bottom: 12px;
         }
-
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .info-label {
-            font-size: 12px;
+        .card-row:last-child { margin-bottom: 0; }
+        .label-style {
+            font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 4px;
         }
-
-        .info-value {
+        .value-style {
             font-size: 15px;
             font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-
-        .copy-container {
+        .copy-box {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: #1a1a24;
-            padding: 6px 10px;
-            border-radius: 8px;
-            border: 1px solid #2d2d3f;
-            width: 100%;
             justify-content: space-between;
+            background: #0f0f1a;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #222238;
             margin-top: 4px;
         }
-
         .copy-btn {
             background: var(--primary-color);
             border: none;
             color: white;
             padding: 6px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.2s;
         }
+        .copy-btn:hover { background: #cc1450; }
 
-        .copy-btn:hover {
-            background: #5b4bc4;
-        }
-
-        .instruction-list {
-            margin: 15px 0;
-            padding-left: 20px;
-            font-size: 13.5px;
-            color: #dcdde1;
-            line-height: 1.7;
-        }
-
-        .instruction-list li {
-            margin-bottom: 8px;
-        }
-
-        /* --- ОБЩИЕ ЭЛЕМЕНТЫ ФОРМ --- */
-        .input-group {
+        /* --- ФОРМЫ И КНОПКИ ВВОДА --- */
+        .field-group {
             margin-bottom: 16px;
         }
-
-        .input-group label {
+        .field-group label {
             display: block;
             font-size: 13px;
             color: var(--text-muted);
             margin-bottom: 6px;
-            font-weight: 500;
         }
-
         input, select {
             width: 100%;
-            background: #1a1a24;
-            border: 1px solid #2d2d3f;
+            background: #0f0f1a;
+            border: 1px solid #2d2d48;
             color: #fff;
-            padding: 12px;
-            border-radius: 10px;
+            padding: 14px;
+            border-radius: 12px;
             font-size: 15px;
             outline: none;
-            transition: border-color 0.2s;
         }
-
         input:focus, select:focus {
             border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(230, 28, 93, 0.3);
         }
-
-        .action-btn {
+        .btn-core {
             width: 100%;
             background: var(--primary-color);
             border: none;
             color: white;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 14px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
         }
-
-        .action-btn:hover {
-            background: #5b4bc4;
+        .btn-core:hover {
+            opacity: 0.9;
+            box-shadow: var(--neon-glow);
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="casino-container">
 
-    <!-- ================= ЭКРАН 1: РЕГИСТРАЦИЯ / ВХОД ================= -->
-    <div id="authScreen" class="screen active">
-        <h2 id="authTitle">Регистрация аккаунта</h2>
-        <div class="auth-form">
-            <div class="input-group">
-                <label for="authLogin">Логин / Имя пользователя</label>
-                <input type="text" id="authLogin" placeholder="Придумайте логин">
+    <!-- ================= ФОРМА 1: РЕГИСТРАЦИЯ / ВХОД ================= -->
+    <div id="screen-auth" class="screen active">
+        <h2 id="auth-title" style="color: var(--primary-color); text-shadow: var(--neon-glow);">Регистрация VIP</h2>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="field-group">
+                <label>Логин аккаунта</label>
+                <input type="text" id="authLogin" placeholder="Придумайте уникальный логин">
             </div>
-            <div class="input-group" id="emailGroup">
-                <label for="authEmail">Электронная почта (E-mail)</label>
-                <input type="email" id="authEmail" placeholder="example@mail.ru">
+            <div class="field-group" id="email-field">
+                <label>Электронная почта</label>
+                <input type="email" id="authEmail" placeholder="casino_player@mail.ru">
             </div>
-            <div class="input-group">
-                <label for="authPassword">Пароль</label>
+            <div class="field-group">
+                <label>Пароль</label>
                 <input type="password" id="authPassword" placeholder="••••••••">
             </div>
-            <button class="action-btn" id="authBtn" onclick="handleAuth()">Создать аккаунт</button>
-            <div class="auth-toggle" id="authToggle" onclick="toggleAuthMode()">Уже есть аккаунт? Войти</div>
+            <button class="btn-core" onclick="enterCasino()">Создать Личный Кабинет</button>
+            <div style="text-align: center; font-size: 14px; color: var(--text-muted); cursor: pointer; text-decoration: underline;" onclick="toggleAuth()">
+                Уже зарегистрированы? Войти
+            </div>
         </div>
     </div>
 
+    <!-- ================= ФОРМА 2: ФОРМА ИГРЫ (КАЗИНО СЕКЦИЯ) ================= -->
+    <div id="screen-game" class="screen">
+        <!-- Джекпот Табло -->
+        <div class="jackpot-board">
+            <div class="jackpot-title">🔥 НАКОПИТЕЛЬНЫЙ СУПЕР ДЖЕКПОТ 🔥</div>
+            <div class="jackpot-amount" id="jackpot-counter">748,920 ₽</div>
+        </div>
 
-    <!-- ================= ЭКРАН 2: ГЛАВНЫЙ ИГРОВОЙ ИНТЕРФЕЙС ================= -->
-    <div id="mainScreen" class="screen">
-        
-        <!-- СЕКЦИЯ: КОЛЕСО ФОРТУНЫ -->
+        <div class="user-status-bar">
+            <div>Баланс: <span style="color: #20bf6b; font-weight: bold;" id="user-balance">0 ₽</span></div>
+            <div>Статус: <span class="status-badge">VIP Клиент</span></div>
+        </div>
+
+        <!-- Колесо -->
         <div class="wheel-section">
             <div class="wheel-wrapper">
                 <div class="pointer"></div>
@@ -350,140 +362,163 @@
             <div class="win-message" id="winMessage"></div>
         </div>
 
-        <!-- ТАБЫ: ПОПОЛНЕНИЕ / ВЫВОД -->
-        <div class="tabs">
-            <button class="tab-btn active" id="tab-deposit" onclick="switchTab('deposit')">Пополнение</button>
-            <button class="tab-btn" id="tab-withdraw" onclick="switchTab('withdraw')">Вывод</button>
+        <!-- Лента Казино -->
+        <div class="live-stream" id="live-ticker">
+            Лента: <span class="live-user">Игрок_482x</span> только что выиграл <span class="live-prize">500 ₽</span> в Колесе!
         </div>
-
-        <!-- ВКЛАДКА: ПОПОЛНЕНИЕ -->
-        <div id="deposit" class="tab-content active">
-            <div class="warning-block">
-                <strong>⚠️ ОБРАТИТЕ ВНИМАНИЕ!</strong><br>
-                Пожалуйста, <strong>максимально внимательно</strong> выбирайте банк при отправке перевода. Пишите ровно ту сумму, на которую планируете пополнить баланс в приложении. Переводы принимаются только через Систему Быстрых Платежей (<strong>СБП</strong>).
-            </div>
-
-            <p style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Инструкция по зачислению:</p>
-            <ul class="instruction-list">
-                <li>1. Скопируйте номер телефона ниже и откройте ваше банковское приложение.</li>
-                <li>2. Выберите перевод по номеру телефона <strong>(через СБП)</strong>.</li>
-                <li>3. Вставьте скопированный номер в строку получателя.</li>
-                <li>4. В списке банков обязательно выберите: <strong>Сбербанк</strong>.</li>
-                <li>5. Убедитесь, что ФИО получателя совпадает с указанным ниже.</li>
-                <li>6. После успешной оплаты укажите точную сумму перевода в поле для подтверждения.</li>
-            </ul>
-
-            <div class="info-card">
-                <div class="info-row">
-                    <span class="info-label">Номер телефона (СБП)</span>
-                    <div class="copy-container">
-                        <span id="phoneNum" style="font-family: monospace; font-size: 16px; letter-spacing: 0.5px;">2202206380773270</span>
-                        <button class="copy-btn" onclick="copyNumber()">Скопировать</button>
-                    </div>
-                </div>
-                <div class="info-row" style="margin-top: 10px;">
-                    <span class="info-label">Банк получателя</span>
-                    <span class="info-value" style="color: #4cd137;">Сбербанк</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">ФИО Получателя</span>
-                    <span class="info-value">Содыров Мухаммадрасул Насридинович</span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="depositAmount">Сколько хотите пополнить?</label>
-                <input type="number" id="depositAmount" placeholder="Пишите сумму пополнения в ₽">
-            </div>
-
-            <button class="action-btn" onclick="processDeposit()">Я оплатил(а)</button>
-        </div>
-
-        <!-- ВКЛАДКА: ВЫВОД -->
-        <div id="withdraw" class="tab-content">
-            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px; text-align: center;">
-                ℹ️ Вывод средств осуществляется через СБП на карту любого удобного для вас банка.
-            </p>
-
-            <div class="input-group">
-                <label for="withdrawPhone">Введите номер телефона через СБП</label>
-                <input type="tel" id="withdrawPhone" placeholder="+7 (900) 000-00-00">
-            </div>
-
-            <div class="input-group">
-                <label for="withdrawBank">Выберите банк внимательно</label>
-                <select id="withdrawBank">
-                    <option value="sber">Сбербанк</option>
-                    <option value="tbank">Т-Банк (Тинькофф)</option>
-                    <option value="alfa">Альфа-Банк</option>
-                    <option value="vtb">ВТБ</option>
-                    <option value="rshb">Россельхозбанк</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="withdrawAmount">Сумма для вывода</label>
-                <input type="number" id="withdrawAmount" placeholder="Сколько хотите вывести ₽">
-            </div>
-
-            <button class="action-btn" style="background-color: #20bf6b;" onclick="processWithdraw()">Вывести средства</button>
-        </div>
-
     </div>
+
+    <!-- ================= ФОРМА 3: ФОРМА ПОПОЛНЕНИЯ БАЛАНСА ================= -->
+    <div id="screen-deposit" class="screen">
+        <h2>Пополнение Кассы</h2>
+        
+        <div class="alert-casino">
+            <strong>⚠️ КРИТИЧЕСКОЕ ПРЕДУПРЕЖДЕНИЕ:</strong> Выбирайте банк получателя максимально внимательно! Пишите ровно ту сумму, на которую производите пополнение. Все платежи проводятся строго через Систему Быстрых Платежей (<strong>СБП</strong>).
+        </div>
+
+        <div class="casino-card">
+            <div class="card-row">
+                <span class="label-style">Реквизиты телефона (СБП)</span>
+                <div class="copy-box">
+                    <span id="phoneNum" style="font-family: monospace; font-size: 16px; color: #fff;">2202206380773270</span>
+                    <button class="copy-btn" onclick="copyRequisites()">Скопировать</button>
+                </div>
+            </div>
+            <div class="card-row" style="margin-top: 10px;">
+                <span class="label-style">Целевой Банк</span>
+                <span class="value-style" style="color: #20bf6b;">Сбербанк</span>
+            </div>
+            <div class="card-row">
+                <span class="label-style">Имя Получателя платежа</span>
+                <span class="value-style">Содыров Мухаммадрасул Насридинович</span>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label>Какую сумму вы хотите пополнить?</label>
+            <input type="number" id="depositAmount" placeholder="Укажите точную сумму перевода в ₽">
+        </div>
+
+        <button class="btn-core" onclick="submitDeposit()">Я оплатил(а), проверить зачисление</button>
+    </div>
+
+    <!-- ================= ФОРМА 4: ФОРМА ВЫВОДА СРЕДСТВ ================= -->
+    <div id="screen-withdraw" class="screen">
+        <h2>Выплата Выигрыша</h2>
+        
+        <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 20px;">
+            Вывод средств из системы производится автоматически через СБП на вашу личную карту.
+        </p>
+
+        <div class="field-group">
+            <label>Номер телефона для перевода (СБП)</label>
+            <input type="tel" id="withdrawPhone" placeholder="+7 (999) 000-00-00">
+        </div>
+
+        <div class="field-group">
+            <label>Выберите банк внимательно</label>
+            <select id="withdrawBank">
+                <option value="sber">Сбербанк</option>
+                <option value="tinkoff">Т-Банк (Тинькофф)</option>
+                <option value="alfa">Альфа-Банк</option>
+                <option value="vtb">ВТБ</option>
+                <option value="qiwi">Финам / Другой банк СБП</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label>Сумма для вывода из казино</label>
+            <input type="number" id="withdrawAmount" placeholder="Введите сумму выплаты в ₽">
+        </div>
+
+        <button class="btn-core" style="background: #20bf6b;" onclick="submitWithdraw()">Вывести деньги из игры</button>
+    </div>
+
+    <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
+    <div class="bottom-nav" id="main-navigation">
+        <button class="nav-btn active" id="btn-nav-game" onclick="navigate('game')">🎰 ИГРА</button>
+        <button class="nav-btn" id="btn-nav-deposit" onclick="navigate('deposit')">📥 ПОПОЛНИТЬ</button>
+        <button class="nav-btn" id="btn-nav-withdraw" onclick="navigate('withdraw')">📤 ВЫВОД</button>
+    </div>
+
 </div>
 
 <script>
-    // --- ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ РЕГИСТРАЦИИ / ВХОДА ---
-    let isLoginMode = false;
+    // --- НАВИГАЦИЯ И ПЕРЕКЛЮЧЕНИЕ СЛУЖЕБНЫХ ЭКРАНОВ ---
+    let loginState = false;
 
-    function toggleAuthMode() {
-        const authTitle = document.getElementById('authTitle');
-        const emailGroup = document.getElementById('emailGroup');
-        const authBtn = document.getElementById('authBtn');
-        const authToggle = document.getElementById('authToggle');
-        
-        isLoginMode = !isLoginMode;
-
-        if (isLoginMode) {
-            authTitle.textContent = "Вход в аккаунт";
-            emailGroup.style.display = "none";
-            authBtn.textContent = "Войти";
-            authToggle.textContent = "Нет аккаунта? Зарегистрироваться";
+    function toggleAuth() {
+        const title = document.getElementById('auth-title');
+        const email = document.getElementById('email-field');
+        loginState = !loginState;
+        if(loginState) {
+            title.textContent = "Вход в VIP Casino";
+            email.style.display = "none";
         } else {
-            authTitle.textContent = "Регистрация аккаунта";
-            emailGroup.style.display = "block";
-            authBtn.textContent = "Создать аккаунт";
-            authToggle.textContent = "Уже есть аккаунт? Войти";
+            title.textContent = "Регистрация VIP";
+            email.style.display = "block";
         }
     }
 
-    function handleAuth() {
-        const login = document.getElementById('authLogin').value.trim();
-        const password = document.getElementById('authPassword').value.trim();
-
-        if (!login || !password) {
-            alert("Пожалуйста, заполните все обязательные поля!");
-            return;
-        }
-
-        // Переходим на главный игровой экран
-        document.getElementById('authScreen').classList.remove('active');
-        document.getElementById('mainScreen').classList.add('active');
+    function enterCasino() {
+        const l = document.getElementById('authLogin').value;
+        const p = document.getElementById('authPassword').value;
+        if(!l || !p) { alert("Пожалуйста, заполните поля формы!"); return; }
         
-        // Перерисовываем колесо при входе на экран
-        setTimeout(drawWheel, 100);
+        // Скрываем форму логина, открываем форму игры и меню навигации
+        document.getElementById('screen-auth').classList.remove('active');
+        document.getElementById('screen-game').classList.add('active');
+        document.getElementById('main-navigation').style.display = 'grid';
+        
+        // Запуск фишек казино
+        initCasinoEffects();
+        setTimeout(drawWheel, 150);
+    }
+
+    function navigate(screenId) {
+        // Скрываем все экраны
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+        // Показываем нужную форму
+        document.getElementById('screen-' + screenId).classList.add('active');
+        document.getElementById('btn-nav-' + screenId).classList.add('active');
+
+        if(screenId === 'game') {
+            setTimeout(drawWheel, 50);
+        }
+    }
+
+    // --- ДЕТАЛИ И АТМОСФЕРА КАЗИНО (ДЖЕКПОТ И ТИКЕР) ---
+    function initCasinoEffects() {
+        // Постоянно растущий джекпот
+        setInterval(() => {
+            let current = parseInt(document.getElementById('jackpot-counter').innerText.replace(/[^0-9]/g, ''));
+            current += Math.floor(Math.random() * 45) + 5;
+            document.getElementById('jackpot-counter').innerText = current.toLocaleString() + " ₽";
+        }, 2000);
+
+        // Динамическая лента выигрышей других игроков
+        const users = ["Mamba_77", "X-Player", "User_992", "LuckyBoy", "CasinoKing", "Almaz_Tj"];
+        const sums = ["100 ₽", "500 ₽", "250 ₽", "Бонус x2", "1000 ₽"];
+        setInterval(() => {
+            if(document.getElementById('screen-game').classList.contains('active')) {
+                const randomUser = users[Math.floor(Math.random() * users.length)];
+                const randomSum = sums[Math.floor(Math.random() * sums.length)];
+                document.getElementById('live-ticker').innerHTML = `Лента: <span class="live-user">${randomUser}</span> только что выиграл <span class="live-prize">${randomSum}</span> в Колесе!`;
+            }
+        }, 6000);
     }
 
 
-    // --- ЛОГИКА КОЛЕСА ФОРТУНЫ ---
+    // --- МЕХАНИКА КОЛЕСА УДАЧИ ---
     const canvas = document.getElementById('wheel');
     const ctx = canvas.getContext('2d');
     const spinBtn = document.getElementById('spinBtn');
     const winMessage = document.getElementById('winMessage');
 
-    // Наполнение секторов из дизайн-концепта
     const prizes = ["100 ₽", "Бонус x2", "500 ₽", "Удачи! 💥", "250 ₽", "Фриспин", "1000 ₽", "ГРАН-ПРИ 👑"];
-    const colors = ["#6c5ce7", "#242432", "#00cec9", "#242432", "#fdcb6e", "#242432", "#ff7675", "#242432"];
+    const colors = ["#e61c5d", "#151522", "#00f2fe", "#151522", "#ffaa00", "#151522", "#ff4757", "#151522"];
     
     const numSectors = prizes.length;
     const arc = Math.PI / (numSectors / 2);
@@ -502,7 +537,6 @@
             ctx.lineTo(150, 150);
             ctx.fill();
 
-            // Рендеринг повернутого текста внутри секторов
             ctx.save();
             ctx.fillStyle = "#fff";
             ctx.translate(150, 150);
@@ -519,9 +553,9 @@
         isSpinning = true;
         winMessage.textContent = "";
 
-        const spinAngleStart = Math.random() * 10 + 10;
+        const spinAngleStart = Math.random() * 10 + 15;
         let spinTime = 0;
-        const spinTimeTotal = Math.random() * 3000 + 4000; // Время кручения
+        const spinTimeTotal = Math.random() * 2000 + 4000;
 
         function animate() {
             spinTime += 30;
@@ -548,54 +582,34 @@
         const degrees = startAngle * 180 / Math.PI + 90;
         const arcd = arc * 180 / Math.PI;
         const index = Math.floor((360 - (degrees % 360)) / arcd) % numSectors;
-        
         const correctedIndex = (index + numSectors) % numSectors;
-        winMessage.textContent = `Вы выиграли: ${prizes[correctedIndex]}!`;
+        winMessage.textContent = `Выигрыш: ${prizes[correctedIndex]}!`;
     }
 
     spinBtn.addEventListener('click', rotateWheel);
 
 
-    // --- ЛОГИКА ИНТЕРФЕЙСА В КЛАССИЧЕСКИХ ВКЛАДКАХ ---
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        
-        document.getElementById(tabId).classList.add('active');
-        document.getElementById('tab-' + tabId).classList.add('active');
-    }
-
-    // Полноценная функция копирования
-    function copyNumber() {
+    // --- ОБРАБОТКА ФОРМЫ ПОПОЛНЕНИЯ И ВЫВОДА ---
+    function copyRequisites() {
         const phone = document.getElementById('phoneNum').innerText;
         navigator.clipboard.writeText(phone).then(() => {
-            alert('Номер телефона 2202206380773270 успешно скопирован!');
-        }).catch(err => {
-            alert('Не удалось скопировать автоматически, выделите номер вручную.');
+            alert('Реквизитный номер телефона успешно скопирован!');
         });
     }
 
-    // Обработка отправки форм
-    function processDeposit() {
+    function submitDeposit() {
         const amount = document.getElementById('depositAmount').value;
-        if(!amount || amount <= 0) {
-            alert("Пожалуйста, укажите верную сумму перевода для проверки!");
-            return;
-        }
-        alert(`Заявка на пополнение на сумму ${amount} ₽ отправлена. Ожидайте проверки платежа банком Сбербанк.`);
+        if(!amount || amount <= 0) { alert("Введите точную сумму осуществленного пополнения!"); return; }
+        alert(`Ваша заявка на пополнение (${amount} ₽) принята. Средства зачислятся на баланс после верификации транзакции в Сбербанке.`);
     }
 
-    function processWithdraw() {
-        const phone = document.getElementById('withdrawPhone').value.trim();
+    function submitWithdraw() {
+        const phone = document.getElementById('withdrawPhone').value;
         const amount = document.getElementById('withdrawAmount').value;
-        const bankSelect = document.getElementById('withdrawBank');
-        const bankName = bankSelect.options[bankSelect.selectedIndex].text;
-
-        if(!phone || !amount || amount <= 0) {
-            alert("Пожалуйста, заполните корректно все поля вывода средств!");
-            return;
-        }
-        alert(`Заявка на вывод отправлена!\nСумма: ${amount} ₽\nТелефон: ${phone}\nБанк: ${bankName}\nСрок зачисления — до 15 минут.`);
+        const bank = document.getElementById('withdrawBank').value;
+        
+        if(!phone || !amount || amount <= 0) { alert("Пожалуйста, заполните форму вывода полностью!"); return; }
+        alert(`Заявка на выплату сформирована успешно!\nСумма к выводу: ${amount} ₽\nТелефон получателя: ${phone}\nСредства будут отправлены по СБП.`);
     }
 </script>
 
