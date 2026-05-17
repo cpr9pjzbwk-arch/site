@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP Casino Fortune & Stars</title>
     
-    <!-- Подключаем официальный скрипт Google Identity Services для реального входа -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
-    <!-- Подключаем официальный скрипт Sign in with Apple -->
     <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/auth/document/current/appleid.auth.js"></script>
 
     <style>
@@ -396,7 +394,7 @@
         .casino-card { background: var(--input-bg); border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border-color); position: relative; }
         .card-row { margin-bottom: 12px; }
         
-        /* Стили для брендированных логотипов */
+        /* Брендированные логотипы */
         .brand-header-logos {
             display: flex;
             justify-content: space-between;
@@ -408,7 +406,12 @@
         }
         body.light-theme .brand-header-logos { background: rgba(0,0,0,0.02); }
         
-        .sber-logo-svg { height: 24px; width: auto; }
+        .sber-container-svg { display: flex; align-items: center; gap: 8px; }
+        .sber-logo-svg { height: 32px; width: 32px; }
+        .sber-text { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+        body.light-theme .sber-text { color: #1c1c24; }
+        body:not(.light-theme) .sber-text { color: #ffffff; }
+
         .sbp-logo-svg { height: 26px; width: auto; }
 
         .label-style { font-size: 12px; color: var(--text-muted); display: block; text-transform: uppercase; margin-bottom: 4px; }
@@ -431,7 +434,6 @@
 
 <div class="casino-container">
 
-    <!-- ВЫЕЗЖАЮЩАЯ ШТОРКА МЕНЮ -->
     <div class="sidebar-overlay" id="menuOverlay" onclick="closeMenu()"></div>
     <div class="sidebar-menu" id="sidebarMenu">
         <div class="sidebar-title">🎰 Инструменты VIP</div>
@@ -466,9 +468,9 @@
         </div>
 
         <div class="sidebar-section">
-            <h4>⚙️ Системные уведомления</h4>
+            <h4>🔔 Системные настройки</h4>
             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
-                <input type="checkbox" checked style="width: auto;"> Звуки выигрыша
+                <input type="checkbox" id="soundToggle" checked style="width: auto;"> Звуки выигрыша
             </label>
         </div>
 
@@ -484,7 +486,6 @@
         </div>
     </div>
 
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
     <div class="top-settings-bar">
         <div class="top-row-widgets">
             <button class="burger-menu-btn" id="burgerBtn" onclick="openMenu()">
@@ -503,7 +504,6 @@
         <div class="request-status-badge" id="global-status-badge">Заявок нет</div>
     </div>
 
-    <!-- ================= ЭКРАН 1: РЕГИСТРАЦИЯ / ВХОД ================= -->
     <div id="screen-auth" class="screen active">
         <h2 id="auth-title" style="color: var(--primary-color);">Регистрация VIP</h2>
         <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -523,7 +523,6 @@
             
             <div class="social-divider">или войти через</div>
             
-            <!-- РЕАЛЬНЫЕ КНОПКИ СОЦ.СЕТЕЙ -->
             <div class="social-auth-providers">
                 <button class="btn-oauth" onclick="triggerGoogleLogin()">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G">
@@ -541,7 +540,6 @@
         </div>
     </div>
 
-    <!-- ================= ЭКРАН 2: ИГРОВАЯ СЕКЦИЯ ================= -->
     <div id="screen-game" class="screen">
         <div class="jackpot-board">
             <div class="jackpot-title">🔥 НАКОПИТЕЛЬНЫЙ СУПЕР ДЖЕКПОТ 🔥</div>
@@ -565,7 +563,6 @@
             <div class="game-card-tab" id="tab-slots" onclick="switchGameZone('slots')">🎰 Слоты 4★</div>
         </div>
 
-        <!-- ИГРА 1: КОЛЕСО -->
         <div class="game-zone active" id="zone-wheel">
             <div class="wheel-section">
                 <div class="wheel-wrapper">
@@ -576,7 +573,6 @@
             </div>
         </div>
 
-        <!-- ИГРА 2: МИНЕР -->
         <div class="game-zone" id="zone-miner">
             <div class="bet-box">
                 <label>Ставка:</label>
@@ -586,7 +582,6 @@
             <div class="mine-grid" id="minerGrid"></div>
         </div>
 
-        <!-- ИГРА 3: НАПЕРСТКИ -->
         <div class="game-zone" id="zone-thimbles">
             <div class="bet-box">
                 <label>Ставка:</label>
@@ -600,7 +595,6 @@
             </div>
         </div>
 
-        <!-- ИГРА 4: СЛОТЫ -->
         <div class="game-zone" id="zone-slots">
             <div class="bet-box">
                 <label>Ставка:</label>
@@ -622,7 +616,6 @@
         </div>
     </div>
 
-    <!-- ================= ЭКРАН 3: ПОПОЛНЕНИЕ ================= -->
     <div id="screen-deposit" class="screen">
         <h2>Пополнение Кассы</h2>
         <div class="alert-casino">
@@ -634,15 +627,22 @@
         </ul>
         
         <div class="casino-card">
-            <!-- Блок брендинга с логотипами Сбер и СБП -->
             <div class="brand-header-logos">
-                <!-- Векторный Сбербанк -->
-                <svg class="sber-logo-svg" viewBox="0 0 450 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="35" cy="50" r="30" fill="#21A038"/>
-                    <path d="M15 48 L30 63 L60 33" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                    <text x="85" y="68" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="52" letter-spacing="-1">СБЕР</text>
-                </svg>
-                <!-- Векторный СБП -->
+                <div class="sber-container-svg">
+                    <svg class="sber-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="sberRingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00a3e0"/>
+                                <stop offset="40%" stop-color="#22c34a"/>
+                                <stop offset="100%" stop-color="#ebdf10"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M 50,10 A 40,40 0 1,0 90,50" stroke="url(#sberRingGradient)" stroke-width="12" stroke-linecap="round" fill="none"/>
+                        <path d="M 32,44 L 48,60 L 88,20" stroke="#22c34a" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                    <span class="sber-text">СБЕР</span>
+                </div>
+
                 <svg class="sbp-logo-svg" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10 15 L25 45 L40 15" stroke="#1D72B8" stroke-width="5" fill="none" stroke-linecap="round"/>
                     <path d="M25 45 L50 20 L75 45" stroke="#FFCC00" stroke-width="5" fill="none" stroke-linecap="round"/>
@@ -660,7 +660,7 @@
             </div>
             <div class="card-row" style="margin-top: 10px;">
                 <span class="label-style">Целевой Банк</span>
-                <span class="value-style" style="color: #21A038;">Сбербанк (СБП перевод)</span>
+                <span class="value-style" style="color: #22c34a;">Сбербанк (СБП перевод)</span>
             </div>
             <div class="card-row">
                 <span class="label-style">Имя Получателя платежа</span>
@@ -675,14 +675,12 @@
         <button class="btn-core" onclick="submitDeposit()">Я оплатил(а), проверить зачисление</button>
     </div>
 
-    <!-- ================= ЭКРАН 4: ВЫВОД СРЕДСТВ ================= -->
     <div id="screen-withdraw" class="screen">
         <h2>Выплата Выигрыша</h2>
         <div class="alert-casino" style="background: rgba(255, 170, 0, 0.08); border-color: rgba(255, 170, 0, 0.4); color: var(--gold-color);">
             <strong>🔒 ПРАВИЛО КАЗИНО:</strong> Пополните минимальную сумму <strong>2500 рублей</strong> для вывода бонуса.
         </div>
 
-        <!-- Логотип СБП на выводе средств для солидности -->
         <div class="casino-card" style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <span style="font-size: 13px; font-weight: bold; text-transform: uppercase; color: var(--text-muted);">Мгновенный вывод через:</span>
             <svg class="sbp-logo-svg" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="height: 24px;">
@@ -712,7 +710,6 @@
         <button class="btn-core" style="background: #20bf6b;" onclick="submitWithdraw()">Вывести деньги из игры</button>
     </div>
 
-    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
     <div class="bottom-nav" id="main-navigation">
         <button class="nav-btn" id="btn-nav-game" onclick="navigate('game')">🎰 ИГРА</button>
         <button class="nav-btn" id="btn-nav-deposit" onclick="navigate('deposit')">📥 ПОПОЛНИТЬ</button>
@@ -722,6 +719,91 @@
 </div>
 
 <script>
+    // ================= ЗВУКОВОЙ ДВИЖОК CASINO AUDIO ENGINE =================
+    const AudioEngine = {
+        ctx: null,
+        
+        init() {
+            if (!this.ctx) {
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        },
+
+        isEnabled() {
+            return document.getElementById('soundToggle') ? document.getElementById('soundToggle').checked : true;
+        },
+
+        play(type) {
+            if (!this.isEnabled()) return;
+            this.init();
+            
+            if (this.ctx.state === 'suspended') {
+                this.ctx.resume();
+            }
+
+            const now = this.ctx.currentTime;
+
+            switch(type) {
+                case 'click':
+                    let oscClick = this.ctx.createOscillator();
+                    let gainClick = this.ctx.createGain();
+                    oscClick.type = 'sine';
+                    oscClick.frequency.setValueAtTime(600, now);
+                    oscClick.frequency.exponentialRampToValueAtTime(150, now + 0.05);
+                    gainClick.gain.setValueAtTime(0.1, now);
+                    gainClick.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    oscClick.connect(gainClick);
+                    gainClick.connect(this.ctx.destination);
+                    oscClick.start(now);
+                    oscClick.stop(now + 0.05);
+                    break;
+
+                case 'spin':
+                    let oscSpin = this.ctx.createOscillator();
+                    let gainSpin = this.ctx.createGain();
+                    oscSpin.type = 'triangle';
+                    oscSpin.frequency.setValueAtTime(120, now);
+                    gainSpin.gain.setValueAtTime(0.08, now);
+                    gainSpin.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                    oscSpin.connect(gainSpin);
+                    gainSpin.connect(this.ctx.destination);
+                    oscSpin.start(now);
+                    oscSpin.stop(now + 0.08);
+                    break;
+
+                case 'win':
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, index) => {
+                        let osc = this.ctx.createOscillator();
+                        let gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + index * 0.08);
+                        gain.gain.setValueAtTime(0.15, now + index * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.01, now + index * 0.08 + 0.3);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now + index * 0.08);
+                        osc.stop(now + index * 0.08 + 0.3);
+                    });
+                    break;
+
+                case 'lose':
+                    let oscLose = this.ctx.createOscillator();
+                    let gainLose = this.ctx.createGain();
+                    oscLose.type = 'sawtooth';
+                    oscLose.frequency.setValueAtTime(180, now);
+                    oscLose.frequency.linearRampToValueAtTime(40, now + 0.4);
+                    gainLose.gain.setValueAtTime(0.2, now);
+                    gainLose.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                    oscLose.connect(gainLose);
+                    gainLose.connect(this.ctx.destination);
+                    oscLose.start(now);
+                    oscLose.stop(now + 0.4);
+                    break;
+            }
+        }
+    };
+
     // ================= НАСТРОЙКИ ИНТЕГРАЦИИ GOOGLE И APPLE =================
     const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; 
     const APPLE_CLIENT_ID = "YOUR_APPLE_CLIENT_ID";
@@ -756,6 +838,7 @@
     }
 
     function triggerGoogleLogin() {
+        AudioEngine.play('click');
         if (GOOGLE_CLIENT_ID.startsWith("YOUR_")) {
             alert("⚠️ Режим симуляции! Замените 'YOUR_GOOGLE_CLIENT_ID' в коде для работы с реальными серверами Google.");
             loginSuccessSequence("Игрок Google", "google_test@gmail.com", "Google VIP");
@@ -765,6 +848,7 @@
     }
 
     async function triggerAppleLogin() {
+        AudioEngine.play('click');
         if (APPLE_CLIENT_ID.startsWith("YOUR_")) {
             alert("⚠️ Режим симуляции! Настройте 'YOUR_APPLE_CLIENT_ID' для полноценного подключения к Apple.");
             loginSuccessSequence("Игрок Apple", "apple_test@icloud.com", "Apple VIP");
@@ -789,12 +873,14 @@
         localStorage.setItem('casinoUserBalance', currentBalance);
         document.getElementById('user-status-text').innerText = networkStatus;
         updateBalanceUI();
+        AudioEngine.play('win');
         alert(`🎉 Добро пожаловать, ${name}! Успешный вход через социальную сеть.`);
         navigate('game');
     }
 
     // ================= СИСТЕМНАЯ ЛОГИКА И ХОЛЛ =================
     function switchGameZone(zoneId) {
+        AudioEngine.play('click');
         document.querySelectorAll('.game-card-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.game-zone').forEach(z => z.classList.remove('active'));
         document.getElementById('tab-' + zoneId).classList.add('active');
@@ -807,11 +893,13 @@
     }
 
     function openMenu() {
+        AudioEngine.play('click');
         if(localStorage.getItem('isLoggedIn') !== 'true') { alert('Доступ открывается после входа в кабинет!'); return; }
         document.getElementById('sidebarMenu').classList.add('open');
         document.getElementById('menuOverlay').style.display = 'block';
     }
     function closeMenu() {
+        AudioEngine.play('click');
         document.getElementById('sidebarMenu').classList.remove('open');
         document.getElementById('menuOverlay').style.display = 'none';
     }
@@ -825,17 +913,19 @@
         }
     }
 
-    function applyPromo() { alert('Промокод принят!'); closeMenu(); }
+    function applyPromo() { AudioEngine.play('win'); alert('Промокод принят!'); closeMenu(); }
     function claimCashback() {
         currentBalance += 350;
         localStorage.setItem('casinoUserBalance', currentBalance);
         updateBalanceUI();
+        AudioEngine.play('win');
         alert('Кэшбэк 350 ₽ начислен!');
         closeMenu();
     }
-    function generateNewHash() { document.getElementById('hashBlock').innerText = 'hash_' + Math.random().toString(16).slice(2, 14); }
+    function generateNewHash() { AudioEngine.play('click'); document.getElementById('hashBlock').innerText = 'hash_' + Math.random().toString(16).slice(2, 14); }
 
     function toggleTheme() {
+        AudioEngine.play('click');
         const body = document.body;
         if(body.classList.contains('light-theme')) {
             body.classList.remove('light-theme');
@@ -854,6 +944,7 @@
     let hasDeposited = false;
 
     function toggleAuth() {
+        AudioEngine.play('click');
         loginState = !loginState;
         document.getElementById('auth-title').textContent = loginState ? "Вход в VIP Casino" : "Регистрация VIP";
         document.getElementById('email-field').style.display = loginState ? "none" : "block";
@@ -877,6 +968,7 @@
     }
 
     function navigate(screenId) {
+        AudioEngine.play('click');
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-' + screenId).classList.add('active');
         if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -940,8 +1032,14 @@
     document.getElementById('spinBtn').addEventListener('click', () => {
         if(isSpinning) return; isSpinning = true;
         let start = Math.random() * 10 + 20, time = 0, total = Math.random() * 1000 + 3000;
+        
+        let soundInterval = setInterval(() => {
+            if(isSpinning) AudioEngine.play('spin');
+            else clearInterval(soundInterval);
+        }, 100);
+
         function anim() {
-            time += 30; if(time >= total) { isSpinning = false; finishWheel(); return; }
+            time += 30; if(time >= total) { isSpinning = false; clearInterval(soundInterval); finishWheel(); return; }
             startAngle += ((start - (time/total)*start) * Math.PI / 180); drawWheel(); requestAnimationFrame(anim);
         }
         anim();
@@ -949,13 +1047,19 @@
     function finishWheel() {
         let deg = startAngle * 180 / Math.PI + 90, index = Math.floor((360 - (deg % 360)) / 45) % 8;
         let res = prizes[(index + 8) % 8]; document.getElementById('winMessage').innerText = `Выигрыш в Колесе: ${res}!`;
-        if(res.includes("₽")) { currentBalance += parseInt(res); } else if(res.includes("x2")) { currentBalance *= 2; }
+        if(res.includes("₽") || res.includes("x2")) { 
+            AudioEngine.play('win');
+            if(res.includes("₽")) { currentBalance += parseInt(res); } else if(res.includes("x2")) { currentBalance *= 2; }
+        } else {
+            AudioEngine.play('lose');
+        }
         localStorage.setItem('casinoUserBalance', currentBalance); updateBalanceUI();
     }
 
     // --- ИГРА 2: МИНЕР ---
     let minerActive = false, minerStarsFound = 0, minerBetAmount = 0, minePositions = [];
     function startMinerGame() {
+        AudioEngine.play('click');
         minerBetAmount = parseInt(document.getElementById('minerBet').value) || 100;
         if(currentBalance < minerBetAmount) { alert("Недостаточно баланса!"); return; }
         currentBalance -= minerBetAmount; updateBalanceUI();
@@ -976,9 +1080,11 @@
     function clickMinerCell(cell, idx) {
         if(!minerActive) return;
         if(minePositions.includes(idx)) {
+            AudioEngine.play('lose');
             cell.innerText = "💣"; cell.className = "mine-cell opened bomb"; minerActive = false;
             document.getElementById('winMessage').innerText = "БАБАХ! Вы попали на мину. Ставка сгорела.";
         } else {
+            AudioEngine.play('win');
             cell.innerText = "⭐"; cell.className = "mine-cell opened"; minerStarsFound++;
             let winStep = Math.floor(minerBetAmount * (1 + minerStarsFound * 0.4));
             currentBalance += winStep; localStorage.setItem('casinoUserBalance', currentBalance); updateBalanceUI();
@@ -989,7 +1095,7 @@
     // --- ИГРА 3: НАПЕРСТКИ ---
     let thimbleWinningIdx = 0, thimblesShuffled = false;
     function resetThimbles() {
-        document.querySelectorAll('.thimble').forEach(t => { t.className = "thimble"; t.innerText = "🏺"; });
+        document.querySelectorAll('.thimble').forEach(t => { t.className = "thimble"; t.innerText = "👑"; });
         thimblesShuffled = false;
     }
     function shuffleThimbles() {
@@ -998,14 +1104,20 @@
         currentBalance -= bet; updateBalanceUI();
         resetThimbles();
         thimbleWinningIdx = Math.floor(Math.random() * 3);
+        
         document.getElementById('thimble-0').classList.add('shuffling-0');
         document.getElementById('thimble-2').classList.add('shuffling-1');
         document.getElementById('winMessage').innerText = "Напёрстки крутятся...";
+        
+        AudioEngine.play('spin');
+        let tSound = setInterval(() => { if(!thimblesShuffled) AudioEngine.play('spin'); else clearInterval(tSound); }, 2500);
+
         setTimeout(() => {
             document.getElementById('thimble-0').classList.remove('shuffling-0');
             document.getElementById('thimble-2').classList.remove('shuffling-1');
             document.getElementById('winMessage').innerText = "Угадайте, где счастливая звезда!";
             thimblesShuffled = true;
+            clearInterval(tSound);
         }, 1000);
     }
     function guessThimble(idx) {
@@ -1016,9 +1128,11 @@
             t.innerText = (i === thimbleWinningIdx) ? "⭐" : "❌";
         }
         if(idx === thimbleWinningIdx) {
+            AudioEngine.play('win');
             let win = bet * 2.5; currentBalance += win;
             document.getElementById('winMessage').innerText = `🎉 Победа! Вы нашли звезду: +${win} ₽!`;
         } else {
+            AudioEngine.play('lose');
             document.getElementById('winMessage').innerText = "Увы! Пусто.";
         }
         localStorage.setItem('casinoUserBalance', currentBalance); updateBalanceUI();
@@ -1032,7 +1146,12 @@
         document.getElementById('winMessage').innerText = "Барабаны вращаются...";
         let symbols = ["⭐", "💎", "🍒", "🍀", "👑"];
         for(let i=0; i<4; i++) { document.getElementById('reel-' + i).classList.add('blur'); }
+        
+        AudioEngine.play('spin');
+        let slotSound = setInterval(() => { if(document.getElementById('reel-0').classList.contains('blur')) AudioEngine.play('spin'); else clearInterval(slotSound); }, 150);
+
         setTimeout(() => {
+            clearInterval(slotSound);
             let finalRow = [];
             for(let i=0; i<4; i++) {
                 let rSym = symbols[Math.floor(Math.random() * symbols.length)];
@@ -1041,13 +1160,17 @@
                 reel.classList.remove('blur'); reel.innerText = rSym;
             }
             let starsCount = finalRow.filter(s => s === "⭐").length;
-            if(starsCount === 4) {
-                let megaWin = bet * 10; currentBalance += megaWin;
-                document.getElementById('winMessage').innerText = `💥 СУПЕР 4 ЗВЕЗДЫ! Выигрыш x10: +${megaWin} ₽!`;
-            } else if(starsCount === 3) {
-                let bigWin = bet * 3; currentBalance += bigWin;
-                document.getElementById('winMessage').innerText = `🔥 Отлично! 3 звезды! Выигрыш x3: +${bigWin} ₽!`;
+            if(starsCount >= 3) {
+                AudioEngine.play('win');
+                if(starsCount === 4) {
+                    let megaWin = bet * 10; currentBalance += megaWin;
+                    document.getElementById('winMessage').innerText = `💥 СУПЕР 4 ЗВЕЗДЫ! Выигрыш x10: +${megaWin} ₽!`;
+                } else {
+                    let bigWin = bet * 3; currentBalance += bigWin;
+                    document.getElementById('winMessage').innerText = `🔥 Отлично! 3 звезды! Выигрыш x3: +${bigWin} ₽!`;
+                }
             } else {
+                AudioEngine.play('lose');
                 document.getElementById('winMessage').innerText = "Комбинация не совпала. Пробуйте ещё!";
             }
             localStorage.setItem('casinoUserBalance', currentBalance); updateBalanceUI();
@@ -1055,14 +1178,16 @@
     }
 
     // --- РЕКВИЗИТЫ И ОПЕРАЦИИ ---
-    function copyRequisites() { navigator.clipboard.writeText(document.getElementById('phoneNum').innerText).then(() => alert('Номер скопирован!')); }
+    function copyRequisites() { AudioEngine.play('click'); navigator.clipboard.writeText(document.getElementById('phoneNum').innerText).then(() => alert('Номер скопирован!')); }
     function submitDeposit() {
+        AudioEngine.play('click');
         let amt = parseInt(document.getElementById('depositAmount').value);
         if(!amt || amt <= 0) { alert("Укажите сумму!"); return; }
         if(amt >= 2500) { hasDeposited = true; localStorage.setItem('hasDeposited', 'true'); }
         alert(`Заявка на ${amt} ₽ принята кассой.`);
     }
     function submitWithdraw() {
+        AudioEngine.play('click');
         let amt = parseInt(document.getElementById('withdrawAmount').value);
         if(!document.getElementById('withdrawPhone').value || !amt) { alert("Заполните форму!"); return; }
         if(!hasDeposited) { alert("Пополните минимальную сумму 2500 рублей для вывода бонуса."); return; }
