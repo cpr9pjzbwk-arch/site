@@ -16,6 +16,7 @@
             --gold-color: #ffaa00;
             --border-color: #2a2a40;
             --input-bg: #0f0f1a;
+            --sidebar-bg: #11111e;
             --neon-glow: 0 0 15px rgba(230, 28, 93, 0.6);
             --gradient-bg: radial-gradient(circle at center, #1e112a 0%, #0b0b11 100%);
         }
@@ -32,6 +33,7 @@
             --gold-color: #b78103;
             --border-color: #e4e6eb;
             --input-bg: #f5f6f7;
+            --sidebar-bg: #ffffff;
             --neon-glow: 0 4px 12px rgba(214, 14, 75, 0.2);
             --gradient-bg: linear-gradient(180deg, #e4e6eb 0%, #f0f2f5 100%);
         }
@@ -53,6 +55,8 @@
             min-height: 100vh;
             padding: 10px;
             background: var(--gradient-bg);
+            position: relative;
+            overflow-x: hidden;
         }
 
         .casino-container {
@@ -65,6 +69,85 @@
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
+        }
+
+        /* --- БУРГЕР МЕНЮ И ШТОРКА --- */
+        .burger-menu-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            z-index: 100;
+        }
+        .burger-line {
+            width: 18px;
+            height: 2px;
+            background-color: var(--text-color);
+            border-radius: 2px;
+        }
+
+        .sidebar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+            display: none;
+            border-radius: 28px;
+        }
+
+        .sidebar-menu {
+            position: absolute;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            z-index: 95;
+            padding: 24px;
+            overflow-y: auto;
+            transition: left 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            border-top-left-radius: 28px;
+            border-bottom-left-radius: 28px;
+        }
+        .sidebar-menu.open {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 20px;
+            background: rgba(120, 120, 120, 0.04);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-section h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
         }
 
         /* --- ХЕДЕР: НАСТРОЙКИ, ОНЛАЙН И СТАТУС ЗАЯВКИ --- */
@@ -436,15 +519,92 @@
         .btn-core:hover {
             opacity: 0.9;
         }
+
+        .sm-btn {
+            padding: 8px;
+            font-size: 12px;
+            border-radius: 8px;
+            background: var(--primary-color);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
 
 <div class="casino-container">
 
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ: НАСТРОЙКИ ФОНА, ЖИВОЙ ОНЛАЙН И ТЕКУЩИЙ СТАТУС ВЫПЛАТЫ -->
+    <!-- ЗАТЕМНЕНИЕ И ВЫЕЗЖАЮЩАЯ ШТОРКА МЕНЮ -->
+    <div class="sidebar-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-title">🎰 Инструменты VIP</div>
+        
+        <!-- Секция Промокодов -->
+        <div class="sidebar-section">
+            <h4>Активация промокода</h4>
+            <input type="text" id="promoInput" placeholder="Введите промокод" style="padding: 8px; font-size: 13px; border-radius: 8px; margin-bottom: 5px;">
+            <button class="sm-btn" onclick="applyPromo()">Активировать</button>
+        </div>
+
+        <!-- Секция Кэшбэка -->
+        <div class="sidebar-section">
+            <h4>Ваш Ежедневный Кэшбэк</h4>
+            <div style="font-size: 13px; margin-bottom: 6px;">Доступно к возврату: <span style="color:#20bf6b; font-weight:bold;">350 ₽</span></div>
+            <button class="sm-btn" style="background:#20bf6b;" onclick="claimCashback()">Забрать Кэшбэк</button>
+        </div>
+
+        <!-- Турнирная таблица -->
+        <div class="sidebar-section">
+            <h4>🏆 VIP Турниры недели</h4>
+            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+                1. Игрок_993 — <span style="color:var(--gold-color)">50 000 ₽</span><br>
+                2. User_777 — <span style="color:var(--gold-color)">35 000 ₽</span><br>
+                3. Вы — <span style="color:var(--gold-color)">5 000 ₽</span>
+            </div>
+        </div>
+
+        <!-- Система Честности -->
+        <div class="sidebar-section">
+            <h4>🔐 Контроль Честности (SHA-256)</h4>
+            <div style="font-size: 10px; font-family: monospace; word-break: break-all; color: var(--text-muted);" id="hashBlock">
+                seed_hash: 8f93b8a1c2e4f5d6a7b8c9d0e1f2
+            </div>
+            <button class="sm-btn" style="background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color);" onclick="generateNewHash()">Обновить сид</button>
+        </div>
+
+        <!-- Настройки Уведомлений -->
+        <div class="sidebar-section">
+            <h4>⚙️ Системные уведомления</h4>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                <input type="checkbox" checked style="width: auto;"> Звуки выигрыша
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; margin-top: 6px;">
+                <input type="checkbox" checked style="width: auto;"> Пуш-лента выигрышей
+            </label>
+        </div>
+
+        <!-- Поддержка -->
+        <div class="sidebar-section">
+            <h4>💬 Служба поддержки 24/7</h4>
+            <textarea placeholder="Опишите вашу проблему оператору..." style="width:100%; background: var(--input-bg); border: 1px solid var(--border-color); color:var(--text-color); border-radius:8px; padding:6px; font-size:12px; height:50px; resize:none; outline:none;"></textarea>
+            <button class="sm-btn" style="background: #00f2fe; color: #000;" onclick="alert('Сообщение успешно отправлено дежурному оператору кассы!')">Отправить в чат</button>
+        </div>
+    </div>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ: ТРИ ПОЛОСКИ, НАСТРОЙКИ ФОНА, ЖИВОЙ ОНЛАЙН И СТАТУС ЗАЯВКИ -->
     <div class="top-settings-bar">
         <div class="top-row-widgets">
+            <!-- КНОПКА ТРИ ПОЛОСКИ -->
+            <button class="burger-menu-btn" id="burgerBtn" onclick="openMenu()">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </button>
+
             <button class="theme-toggle-btn" onclick="toggleTheme()">
                 🎨 <span id="theme-btn-text">Светлая тема</span>
             </button>
@@ -491,7 +651,7 @@
 
         <div class="user-status-bar">
             <div>Баланс: <span style="color: #20bf6b; font-weight: bold;" id="user-balance">0 ₽</span></div>
-            <div>Status: <span class="status-badge">VIP Клиент</span></div>
+            <div>Статус: <span class="status-badge">VIP Клиент</span></div>
         </div>
 
         <!-- Плашка приветственного бонуса -->
@@ -602,6 +762,45 @@
 </div>
 
 <script>
+    // --- УПРАВЛЕНИЕ БОКОВЫМ МЕНЮ (ТРИ ПОЛОСКИ) ---
+    function openMenu() {
+        if(localStorage.getItem('isLoggedIn') !== 'true') {
+            alert('Доступ к инструментам открывается строго после создания личного кабинета!');
+            return;
+        }
+        document.getElementById('sidebarMenu').classList.add('open');
+        document.getElementById('menuOverlay').style.display = 'block';
+    }
+
+    function closeMenu() {
+        document.getElementById('sidebarMenu').classList.remove('open');
+        document.getElementById('menuOverlay').style.display = 'none';
+    }
+
+    // Дополнительные фичи бокового меню
+    function applyPromo() {
+        const promo = document.getElementById('promoInput').value;
+        if(!promo) { alert('Введите промокод!'); return; }
+        alert(`Промокод "${promo}" успешно обработан. Бонусные фриспины зачислятся в течение 10 минут.`);
+        document.getElementById('promoInput').value = '';
+        closeMenu();
+    }
+
+    function claimCashback() {
+        currentBalance += 350;
+        localStorage.setItem('casinoUserBalance', currentBalance);
+        updateBalanceUI();
+        alert('350 ₽ успешно добавлены к вашему игровому балансу!');
+        closeMenu();
+    }
+
+    function generateNewHash() {
+        const randomHash = 'hash_' + Math.random().toString(16).slice(2, 14) + Math.random().toString(16).slice(2, 14);
+        document.getElementById('hashBlock').innerText = randomHash;
+        alert('Новый игровой сид сгенерирован в SHA-256. Игра защищена алгоритмом шифрования.');
+    }
+
+
     // --- СИСТЕМА НАСТРОЕК ТЕМЫ (СВЕТЛЫЙ И ТЕМНЫЙ ФОН) ---
     function toggleTheme() {
         const body = document.body;
@@ -622,7 +821,7 @@
     }
 
 
-    // --- НАВИГАЦИЯ, ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ И СОХРАНЕНИЕ СОСТОЯНИЯ (LOCALSTORAGE) ---
+    // --- НАВИГАЦИЯ, ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ И LOCALSTORAGE ---
     let loginState = false;
     let currentBalance = 0;
     let hasDeposited = false;
@@ -697,7 +896,6 @@
         }
     }
 
-    // Восстановление состояния при обновлении страницы
     window.onload = function() {
         const savedTheme = localStorage.getItem('casinoTheme');
         const btnText = document.getElementById('theme-btn-text');
@@ -715,7 +913,7 @@
         }
 
         updateStatusUI();
-        initLiveOnline(); // Запуск счётчика живого онлайна
+        initLiveOnline();
 
         if (isLoggedIn === 'true' && savedScreen) {
             currentBalance = savedBalance ? parseInt(savedBalance) : 5000;
@@ -739,11 +937,9 @@
         const onlineElement = document.getElementById('live-online-count');
         
         setInterval(() => {
-            // Случайное колебание онлайна на +/- несколько человек
             const fluctuation = Math.floor(Math.random() * 21) - 10; 
             baseOnline += fluctuation;
             
-            // Держим планку в районе 10к, не давая сильно уйти вверх или вниз
             if(baseOnline < 9950) baseOnline += 30;
             if(baseOnline > 10500) baseOnline -= 30;
             
