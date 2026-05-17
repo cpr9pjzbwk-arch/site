@@ -207,6 +207,13 @@
             align-items: center;
             justify-content: center;
             font-size: 1.4em;
+            overflow: hidden;
+        }
+
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -292,7 +299,9 @@
                 <p><strong>Выберите способ вывода:</strong></p>
                 
                 <div class="payment-option" onclick="selectPayment(this)">
-                    <div class="logo-placeholder">son.png.PNG</div>
+                    <div class="logo-placeholder">
+                        <img src="sob.png.PNG" alt="СПБ логотип">
+                    </div>
                     <div>
                         <strong>СПБ</strong><br>
                         <small>Быстрый перевод</small>
