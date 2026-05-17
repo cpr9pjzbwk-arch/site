@@ -3,189 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GROK CASINO</title>
+    <title>2 WIN Casino</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@400;700&display=swap');
         
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f001a, #1a0033);
-            color: #00ffcc;
-            font-family: 'Press Start 2P', cursive;
+            background: linear-gradient(135deg, #f8f4eb, #f0e6d2);
+            color: #2c1e0f;
+            font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
-            overflow-y: auto; /* Важно для прокрутки */
+            overflow-y: auto;
         }
         
         .header {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 15px;
+            background: linear-gradient(to right, #1a1a1a, #3a2a1f);
+            color: #ffd700;
+            padding: 18px 15px;
             text-align: center;
-            border-bottom: 4px solid #ff00aa;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
         
         h1 {
             margin: 0;
-            font-size: 1.6em;
-            color: #ff00aa;
+            font-size: 2.2em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+        }
+        
+        .subtitle {
+            margin: 5px 0 0;
+            font-size: 1.1em;
+            color: #e0c080;
         }
         
         .balance {
-            font-size: 1.3em;
-            margin: 10px 0;
-            color: #00ff00;
+            background: rgba(255,255,255,0.95);
+            color: #1a1a1a;
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 15px 0;
+            font-size: 1.35em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 2px solid #ffd700;
         }
 
         .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 15px;
+            max-width: 820px;
+            margin: 25px auto;
+            padding: 0 15px;
         }
 
         .register-form {
-            background: rgba(0,0,0,0.85);
-            border: 4px solid #00ffcc;
-            padding: 25px;
-            margin: 20px auto;
-            max-width: 420px;
-            border-radius: 12px;
+            background: white;
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 460px;
+            margin: 0 auto;
         }
 
         input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 12px 0;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1em;
+            border: 2px solid #e0c080;
+            border-radius: 10px;
+            font-size: 1.05em;
             box-sizing: border-box;
         }
 
         .game-container {
-            background: rgba(0, 0, 0, 0.7);
-            border: 6px solid #ff00aa;
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
+            background: white;
+            border: 4px solid #ffd700;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
         }
         
         .slots {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin: 25px 0;
-            padding: 20px;
-            background: #000;
-            border: 5px solid #00ffff;
-            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(#1a1a1a, #2c2c2c);
+            border: 6px solid #ffd700;
+            border-radius: 16px;
         }
         
         .reel {
-            width: 100px;
-            height: 130px;
+            width: 110px;
+            height: 140px;
             background: #111;
-            border: 4px solid #ffd700;
-            font-size: 3.5em;
+            border: 5px solid #ffd700;
+            font-size: 3.8em;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
         
         button {
             font-family: 'Press Start 2P', cursive;
-            padding: 14px 30px;
+            padding: 16px 35px;
             font-size: 1.1em;
-            margin: 8px;
-            background: #ff00aa;
-            color: white;
+            margin: 10px 8px;
+            background: linear-gradient(#ffd700, #e6b800);
+            color: #2c1e0f;
             border: none;
+            border-radius: 12px;
             cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s;
         }
         
         button:hover {
-            background: #ff66cc;
-            transform: scale(1.05);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
         }
 
         .win {
-            font-size: 1.8em;
-            margin: 20px 0;
-            min-height: 60px;
+            font-size: 2em;
+            margin: 25px 0;
+            min-height: 70px;
+            font-weight: bold;
+            text-shadow: 0 0 15px #00ff88;
+            text-align: center;
         }
 
-        @media (max-width: 600px) {
-            .reel {
-                width: 85px;
-                height: 110px;
-                font-size: 2.8em;
-            }
-            h1 { font-size: 1.4em; }
+        .action-btn {
+            background: linear-gradient(#4ade80, #22c55e);
+            color: white;
+            padding: 12px 25px;
+            font-size: 1em;
+        }
+
+        .withdraw-btn {
+            background: linear-gradient(#f87171, #ef4444);
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>GROK CASINO</h1>
-        <div id="user-info" style="display:none;">
-            Игрок: <span id="username"></span> | Баланс: <span id="balance">10000</span> ₽
+        <h1>2 WIN</h1>
+        <div class="subtitle">КАЗИНО • СЛОТЫ • ПОБЕДЫ</div>
+        <div id="user-info" style="display:none; margin-top:10px;">
+            <div class="balance">👤 <span id="username"></span> | 💰 Баланс: <span id="balance">10000</span> ₽</div>
         </div>
     </div>
 
     <div class="container">
-        <!-- Форма регистрации -->
+        <!-- Регистрация -->
         <div id="register-screen">
             <div class="register-form">
-                <h2>Регистрация</h2>
-                <input type="text" id="reg-username" placeholder="Имя пользователя" required><br>
-                <input type="email" id="reg-email" placeholder="Email (необязательно)"><br>
-                <button onclick="register()" style="width:100%; padding:16px;">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+                <h2 style="text-align:center;">Регистрация в 2 WIN</h2>
+                <input type="text" id="reg-username" placeholder="Имя пользователя" required>
+                <input type="email" id="reg-email" placeholder="Ваша почта" required>
+                <input type="password" id="reg-password" placeholder="Придумайте пароль" required>
+                <button onclick="register()" style="width:100%; padding:18px; font-size:1.2em; margin-top:10px;">
+                    ЗАРЕГИСТРИРОВАТЬСЯ И ПОЛУЧИТЬ 10 000 ₽
+                </button>
             </div>
         </div>
 
         <!-- Игровой экран -->
         <div id="game-screen" style="display:none;">
             <div class="game-container">
-                <h2 style="margin-top:0;">🎰 СЛОТЫ (КАЖДЫЙ СПИН — ВЫИГРЫШ) 🎰</h2>
+                <h2 style="text-align:center; color:#2c1e0f;">🎰 СЛОТЫ — КАЖДЫЙ СПИН ПРИНОСИТ ВЫИГРЫШ 🎰</h2>
                 
                 <div class="slots" id="slots">
                     <div class="reel" id="reel1">🍒</div>
-                    <div class="reel" id="reel2">🍒</div>
-                    <div class="reel" id="reel3">🍒</div>
+                    <div class="reel" id="reel2">⭐</div>
+                    <div class="reel" id="reel3">💎</div>
                 </div>
 
-                <div style="margin:20px 0;">
+                <div style="text-align:center; margin:20px 0; font-size:1.3em;">
                     Ставка: 
-                    <button onclick="changeBet(-100)">-100</button>
-                    <span id="betAmount" style="font-size:1.4em;">500</span> ₽
-                    <button onclick="changeBet(100)">+100</button>
+                    <button onclick="changeBet(-200)" style="padding:10px 18px; font-size:1em;">-200</button>
+                    <span id="betAmount" style="font-size:1.6em; margin:0 15px; color:#2c1e0f;">800</span> ₽
+                    <button onclick="changeBet(200)" style="padding:10px 18px; font-size:1em;">+200</button>
                 </div>
 
-                <button onclick="spin()" style="width:100%; max-width:400px;">КРУТИТЬ</button>
-                <button onclick="addMoney()">+5000 ₽</button>
+                <div style="text-align:center;">
+                    <button onclick="spin()" style="font-size:1.4em; padding:18px 60px;">КРУТИТЬ</button>
+                </div>
+
+                <div style="text-align:center; margin-top:20px;">
+                    <button class="action-btn" onclick="showDeposit()">ПОПОЛНИТЬ</button>
+                    <button class="action-btn withdraw-btn" onclick="showWithdraw()">ВЫВЕСТИ</button>
+                    <button onclick="addMoney()" style="background:#eab308;">+5000 ₽ (тест)</button>
+                </div>
 
                 <div class="win" id="result"></div>
             </div>
         </div>
     </div>
 
+    <!-- Модальное окно Пополнение -->
+    <div id="deposit-modal" class="modal">
+        <div class="modal-content">
+            <h2>Пополнение баланса</h2>
+            <input type="number" id="deposit-amount" placeholder="Сумма пополнения" value="1000">
+            <br><br>
+            <button onclick="makeDeposit()" style="width:100%; padding:15px;">ПОПОЛНИТЬ</button>
+            <button onclick="closeModals()" style="width:100%; padding:15px; background:#999; margin-top:10px;">Отмена</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно Вывод -->
+    <div id="withdraw-modal" class="modal">
+        <div class="modal-content">
+            <h2>Вывод средств</h2>
+            <p>Баланс: <strong><span id="withdraw-balance">10000</span> ₽</strong></p>
+            <input type="number" id="withdraw-amount" placeholder="Сумма вывода" value="5000">
+            <br><br>
+            <button onclick="makeWithdraw()" style="width:100%; padding:15px; background:#ef4444;">ВЫВЕСТИ НА КАРТУ</button>
+            <button onclick="closeModals()" style="width:100%; padding:15px; background:#999; margin-top:10px;">Отмена</button>
+        </div>
+    </div>
+
     <script>
         let balance = 10000;
-        let bet = 500;
+        let bet = 800;
         let currentUser = "";
+        let userEmail = "";
+        let userPassword = "";
 
-        const symbols = ['🍒', '🍋', '🍉', '⭐', '💎', '🔔', '7️⃣', '🍓', '🍊'];
+        const symbols = ['🍒', '🍋', '🍉', '⭐', '💎', '🔔', '7️⃣', '🍓', '🍊', '👑'];
 
         function updateBalance() {
-            document.getElementById('balance').textContent = balance;
+            document.getElementById('balance').textContent = balance.toLocaleString('ru-RU');
+            document.getElementById('withdraw-balance').textContent = balance.toLocaleString('ru-RU');
         }
 
         function register() {
             const username = document.getElementById('reg-username').value.trim();
-            if (!username) {
-                alert("Введите имя пользователя!");
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value.trim();
+
+            if (!username || !email || !password) {
+                alert("Заполните все поля: имя, почту и пароль!");
                 return;
             }
+
             currentUser = username;
+            userEmail = email;
+            userPassword = password;
+
+            // Бонус при регистрации
+            balance = 10000;
             
+            alert(`✅ Регистрация успешна!\nДобро пожаловать, ${username}!\nВам начислено 10 000 ₽`);
+
             document.getElementById('register-screen').style.display = 'none';
             document.getElementById('game-screen').style.display = 'block';
             document.getElementById('user-info').style.display = 'block';
@@ -194,7 +291,7 @@
         }
 
         function changeBet(amount) {
-            bet = Math.max(100, Math.min(5000, bet + amount));
+            bet = Math.max(200, Math.min(10000, bet + amount));
             document.getElementById('betAmount').textContent = bet;
         }
 
@@ -211,8 +308,7 @@
             balance -= bet;
             updateBalance();
             
-            const resultEl = document.getElementById('result');
-            resultEl.textContent = 'КРУТИМ...';
+            document.getElementById('result').innerHTML = '<span style="color:#ffd700;">КРУТИМ...</span>';
             
             let spins = 0;
             const interval = setInterval(() => {
@@ -220,11 +316,11 @@
                 document.getElementById('reel2').textContent = getRandomSymbol();
                 document.getElementById('reel3').textContent = getRandomSymbol();
                 spins++;
-                if (spins > 14) {
+                if (spins > 16) {
                     clearInterval(interval);
                     finishSpin();
                 }
-            }, 90);
+            }, 85);
         }
 
         function finishSpin() {
@@ -237,20 +333,61 @@
             document.getElementById('reel3').textContent = s3;
             
             let multiplier = 3;
-            if (s1 === s2 && s2 === s3) multiplier = 12;
-            else if (s1 === s2 || s2 === s3 || s1 === s3) multiplier = 4;
+            if (s1 === s2 && s2 === s3) multiplier = (s1 === '💎' || s1 === '👑') ? 18 : 10;
+            else if (s1 === s2 || s2 === s3 || s1 === s3) multiplier = 5;
             
             const winAmount = Math.floor(bet * multiplier);
             balance += winAmount;
             
-            document.getElementById('result').innerHTML = `🎉 +${winAmount} ₽ (x${multiplier})`;
+            document.getElementById('result').innerHTML = 
+                `🎉 ВЫИГРЫШ +${winAmount.toLocaleString('ru-RU')} ₽ <span style="color:#00ff88;">(x${multiplier})</span>`;
+            
             updateBalance();
         }
 
         function addMoney() {
             balance += 5000;
             updateBalance();
-            document.getElementById('result').innerHTML = '💰 +5000 ₽';
+            document.getElementById('result').innerHTML = '💰 +5000 ₽ (тестовое пополнение)';
+        }
+
+        // Пополнение
+        function showDeposit() {
+            document.getElementById('deposit-modal').style.display = 'flex';
+        }
+
+        function makeDeposit() {
+            const amount = parseInt(document.getElementById('deposit-amount').value) || 0;
+            if (amount > 0) {
+                balance += amount;
+                updateBalance();
+                document.getElementById('result').innerHTML = `✅ Пополнено +${amount.toLocaleString('ru-RU')} ₽`;
+                closeModals();
+            }
+        }
+
+        // Вывод
+        function showWithdraw() {
+            document.getElementById('withdraw-modal').style.display = 'flex';
+        }
+
+        function makeWithdraw() {
+            const amount = parseInt(document.getElementById('withdraw-amount').value) || 0;
+            if (amount > balance) {
+                alert("Недостаточно средств!");
+                return;
+            }
+            if (amount > 0) {
+                balance -= amount;
+                updateBalance();
+                document.getElementById('result').innerHTML = `💸 Вывод на сумму ${amount.toLocaleString('ru-RU')} ₽ отправлен на вашу карту`;
+                closeModals();
+            }
+        }
+
+        function closeModals() {
+            document.getElementById('deposit-modal').style.display = 'none';
+            document.getElementById('withdraw-modal').style.display = 'none';
         }
     </script>
 </body>
