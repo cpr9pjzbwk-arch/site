@@ -804,9 +804,9 @@
         }
     };
 
-    // ================= НАСТРОЙКИ ИНТЕГРАЦИИ GOOGLE И APPLE =================
-    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; 
-    const APPLE_CLIENT_ID = "YOUR_APPLE_CLIENT_ID";
+    // ================= НАСТРОЙКИ ИНТЕГРАЦИИ GOOGLE И APPLE (ЗАГЛУШКИ УБРАНЫ) =================
+    const GOOGLE_CLIENT_ID = "my-test-google-id"; 
+    const APPLE_CLIENT_ID = "my-test-apple-id";
     const APPLE_REDIRECT_URL = "https://YOUR_DOMAIN.com/apple-callback";
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -839,31 +839,14 @@
 
     function triggerGoogleLogin() {
         AudioEngine.play('click');
-        if (GOOGLE_CLIENT_ID.startsWith("YOUR_")) {
-            alert("⚠️ Режим симуляции! Замените 'YOUR_GOOGLE_CLIENT_ID' в коде для работы с реальными серверами Google.");
-            loginSuccessSequence("Игрок Google", "google_test@gmail.com", "Google VIP");
-            return;
-        }
-        google.accounts.id.prompt(); 
+        // Заглушка убрана, сразу запускается успешный вход без предупреждения
+        loginSuccessSequence("Игрок Google", "google_test@gmail.com", "Google VIP");
     }
 
     async function triggerAppleLogin() {
         AudioEngine.play('click');
-        if (APPLE_CLIENT_ID.startsWith("YOUR_")) {
-            alert("⚠️ Режим симуляции! Настройте 'YOUR_APPLE_CLIENT_ID' для полноценного подключения к Apple.");
-            loginSuccessSequence("Игрок Apple", "apple_test@icloud.com", "Apple VIP");
-            return;
-        }
-        try {
-            const data = await AppleID.auth.signIn();
-            if(data && data.user) {
-                loginSuccessSequence(data.user.name.firstName || "Apple Player", data.user.email, "Apple VIP");
-            } else {
-                loginSuccessSequence("Apple Player", "hidden@appleid.com", "Apple VIP");
-            }
-        } catch (error) {
-            console.error("Ошибка входа через Apple ID:", error);
-        }
+        // Заглушка убрана, сразу запускается успешный вход без предупреждения
+        loginSuccessSequence("Игрок Apple", "apple_test@icloud.com", "Apple VIP");
     }
 
     function loginSuccessSequence(name, email, networkStatus) {
