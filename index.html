@@ -393,8 +393,27 @@
 
         /* Пополнение / Вывод */
         .alert-casino { background: rgba(255, 71, 87, 0.08); border: 1px solid rgba(255, 71, 87, 0.3); border-left: 4px solid var(--warning-color); padding: 14px; border-radius: 8px; font-size: 13px; line-height: 1.6; margin-bottom: 20px; color: var(--warning-color); }
-        .casino-card { background: var(--input-bg); border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .casino-card { background: var(--input-bg); border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border-color); position: relative; }
         .card-row { margin-bottom: 12px; }
+        
+        /* Стили для брендированных логотипов */
+        .brand-header-logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+        body.light-theme .brand-header-logos { background: rgba(0,0,0,0.02); }
+        
+        .sber-logo-svg { height: 24px; width: auto; }
+        .sbp-logo-svg { height: 26px; width: auto; }
+
+        .label-style { font-size: 12px; color: var(--text-muted); display: block; text-transform: uppercase; margin-bottom: 4px; }
+        .value-style { font-size: 15px; font-weight: bold; color: var(--text-color); display: block; }
+
         .copy-box { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-top: 4px; }
         .copy-btn { background: var(--primary-color); border: none; color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: 600; }
         .instruction-list { margin: 15px 0; padding-left: 20px; font-size: 13.5px; color: var(--text-color); line-height: 1.7; list-style-type: none; }
@@ -506,13 +525,10 @@
             
             <!-- РЕАЛЬНЫЕ КНОПКИ СОЦ.СЕТЕЙ -->
             <div class="social-auth-providers">
-                <!-- Кнопка Google -->
                 <button class="btn-oauth" onclick="triggerGoogleLogin()">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G">
                     Войти с Google
                 </button>
-
-                <!-- Кнопка Apple -->
                 <button class="btn-oauth apple-btn" onclick="triggerAppleLogin()">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" style="filter: invert(1);" alt="A">
                     Войти с Apple ID
@@ -616,7 +632,25 @@
             <li>1. Скопируйте номер телефона ниже и откройте банковское приложение.</li>
             <li>2. Выберите перевод через СБП в <strong>Сбербанк</strong>.</li>
         </ul>
+        
         <div class="casino-card">
+            <!-- Блок брендинга с логотипами Сбер и СБП -->
+            <div class="brand-header-logos">
+                <!-- Векторный Сбербанк -->
+                <svg class="sber-logo-svg" viewBox="0 0 450 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="35" cy="50" r="30" fill="#21A038"/>
+                    <path d="M15 48 L30 63 L60 33" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="85" y="68" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="52" letter-spacing="-1">СБЕР</text>
+                </svg>
+                <!-- Векторный СБП -->
+                <svg class="sbp-logo-svg" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 15 L25 45 L40 15" stroke="#1D72B8" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <path d="M25 45 L50 20 L75 45" stroke="#FFCC00" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <path d="M60 15 L85 15 L70 45" stroke="#E11A22" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <text x="95" y="42" fill="currentColor" font-family="Impact, sans-serif" font-style="italic" font-size="32">сбп</text>
+                </svg>
+            </div>
+
             <div class="card-row">
                 <span class="label-style">Реквизиты телефона (СБП)</span>
                 <div class="copy-box">
@@ -626,13 +660,14 @@
             </div>
             <div class="card-row" style="margin-top: 10px;">
                 <span class="label-style">Целевой Банк</span>
-                <span class="value-style" style="color: #20bf6b;">Сбербанк</span>
+                <span class="value-style" style="color: #21A038;">Сбербанк (СБП перевод)</span>
             </div>
             <div class="card-row">
                 <span class="label-style">Имя Получателя платежа</span>
                 <span class="value-style">Содыров Мухаммадрасул Насридинович</span>
             </div>
         </div>
+        
         <div class="field-group">
             <label>Какую сумму вы хотите пополнить?</label>
             <input type="number" id="depositAmount" placeholder="Укажите сумму перевода в ₽">
@@ -646,6 +681,18 @@
         <div class="alert-casino" style="background: rgba(255, 170, 0, 0.08); border-color: rgba(255, 170, 0, 0.4); color: var(--gold-color);">
             <strong>🔒 ПРАВИЛО КАЗИНО:</strong> Пополните минимальную сумму <strong>2500 рублей</strong> для вывода бонуса.
         </div>
+
+        <!-- Логотип СБП на выводе средств для солидности -->
+        <div class="casino-card" style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <span style="font-size: 13px; font-weight: bold; text-transform: uppercase; color: var(--text-muted);">Мгновенный вывод через:</span>
+            <svg class="sbp-logo-svg" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="height: 24px;">
+                <path d="M10 15 L25 45 L40 15" stroke="#1D72B8" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path d="M25 45 L50 20 L75 45" stroke="#FFCC00" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path d="M60 15 L85 15 L70 45" stroke="#E11A22" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <text x="95" y="42" fill="currentColor" font-family="Impact, sans-serif" font-style="italic" font-size="32">сбп</text>
+            </svg>
+        </div>
+
         <div class="field-group">
             <label>Номер телефона для перевода (СБП)</label>
             <input type="tel" id="withdrawPhone" placeholder="+7 (999) 000-00-00">
@@ -653,9 +700,9 @@
         <div class="field-group">
             <label>Выберите банк внимательно</label>
             <select id="withdrawBank">
-                <option value="sber">Сбербанк</option>
-                <option value="tinkoff">Т-Банк (Тинькофф)</option>
-                <option value="alfa">Альфа-Банк</option>
+                <option value="sber">🟢 Сбербанк</option>
+                <option value="tinkoff">🟡 Т-Банк (Тинькофф)</option>
+                <option value="alfa">🔴 Альфа-Банк</option>
             </select>
         </div>
         <div class="field-group">
@@ -676,12 +723,10 @@
 
 <script>
     // ================= НАСТРОЙКИ ИНТЕГРАЦИИ GOOGLE И APPLE =================
-    // Вставьте сюда ваши реальные ID после регистрации в Google / Apple Consol-ях
     const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; 
     const APPLE_CLIENT_ID = "YOUR_APPLE_CLIENT_ID";
     const APPLE_REDIRECT_URL = "https://YOUR_DOMAIN.com/apple-callback";
 
-    // Инициализация реального клиента Google Sign-In при старте страницы
     window.addEventListener('DOMContentLoaded', () => {
         if (typeof google !== 'undefined') {
             google.accounts.id.initialize({
@@ -689,8 +734,6 @@
                 callback: handleGoogleCredentialResponse
             });
         }
-        
-        // Инициализация Apple Sign-In
         if (typeof AppleID !== 'undefined') {
             AppleID.auth.init({
                 clientId: APPLE_CLIENT_ID,
@@ -701,9 +744,7 @@
         }
     });
 
-    // Функция-обработчик успешного ответа от Google
     function handleGoogleCredentialResponse(response) {
-        // Декодируем JWT-токен, полученный от серверов Google
         const base64Url = response.credential.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
@@ -711,18 +752,11 @@
         }).join(''));
 
         const googleUser = JSON.parse(jsonPayload);
-        
-        // Получаем реальные данные профиля
-        const userEmail = googleUser.email;
-        const userName = googleUser.name || "Google Player";
-
-        loginSuccessSequence(userName, userEmail, "Google VIP");
+        loginSuccessSequence(googleUser.name || "Google Player", googleUser.email, "Google VIP");
     }
 
-    // Запуск всплывающего окна Google
     function triggerGoogleLogin() {
         if (GOOGLE_CLIENT_ID.startsWith("YOUR_")) {
-            // Демонстрационный вход, если ключи еще не заменены владельцем
             alert("⚠️ Режим симуляции! Замените 'YOUR_GOOGLE_CLIENT_ID' в коде для работы с реальными серверами Google.");
             loginSuccessSequence("Игрок Google", "google_test@gmail.com", "Google VIP");
             return;
@@ -730,7 +764,6 @@
         google.accounts.id.prompt(); 
     }
 
-    // Запуск авторизации Apple
     async function triggerAppleLogin() {
         if (APPLE_CLIENT_ID.startsWith("YOUR_")) {
             alert("⚠️ Режим симуляции! Настройте 'YOUR_APPLE_CLIENT_ID' для полноценного подключения к Apple.");
@@ -739,7 +772,6 @@
         }
         try {
             const data = await AppleID.auth.signIn();
-            // Получение проверенного профиля Apple
             if(data && data.user) {
                 loginSuccessSequence(data.user.name.firstName || "Apple Player", data.user.email, "Apple VIP");
             } else {
@@ -750,14 +782,11 @@
         }
     }
 
-    // Общая цепочка действий при любом успешном входе
     function loginSuccessSequence(name, email, networkStatus) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('casinoUsername', name);
-        
         currentBalance = localStorage.getItem('casinoUserBalance') ? parseInt(localStorage.getItem('casinoUserBalance')) : 5000;
         localStorage.setItem('casinoUserBalance', currentBalance);
-        
         document.getElementById('user-status-text').innerText = networkStatus;
         updateBalanceUI();
         alert(`🎉 Добро пожаловать, ${name}! Успешный вход через социальную сеть.`);
