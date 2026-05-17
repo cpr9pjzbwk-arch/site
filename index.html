@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игровой Кошелек и Колесо Удачи</title>
+    <title>Игровой Кошелек, Колесо Удачи и Регистрация</title>
     <style>
         :root {
             --bg-color: #1a1a24;
@@ -42,7 +42,37 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
 
-        /* --- Стили Колеса --- */
+        /* Управление экранами */
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- ЭКРАН РЕГИСТРАЦИИ --- */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .auth-toggle {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* --- СТИЛИ КОЛЕСА ФОРТУНЫ --- */
         .wheel-section {
             display: flex;
             flex-direction: column;
@@ -113,7 +143,7 @@
             text-align: center;
         }
 
-        /* --- Стили Вкладок Пополнения/Вывода --- */
+        /* --- СТИЛИ ВКЛАДОК ПОПОЛНЕНИЯ/ВЫВОДА --- */
         .tabs {
             display: flex;
             background: #1a1a24;
@@ -147,21 +177,21 @@
             display: block;
         }
 
-        /* --- Общие элементы форм --- */
+        /* --- ДЕТАЛЬНЫЕ ПРЕДУПРЕЖДЕНИЯ И ИНСТРУКЦИИ --- */
         .warning-block {
             background: rgba(255, 118, 117, 0.1);
             border-left: 4px solid var(--warning-color);
-            padding: 12px;
-            border-radius: 0 8px 8px 0;
+            padding: 14px;
+            border-radius: 0 12px 12px 0;
             font-size: 13px;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-bottom: 20px;
             color: #ff9f9e;
         }
 
         .info-card {
             background: #1e1e2a;
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 16px;
             margin-bottom: 20px;
             border: 1px solid #2d2d3f;
@@ -171,7 +201,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .info-row:last-child {
@@ -181,6 +211,8 @@
         .info-label {
             font-size: 12px;
             color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .info-value {
@@ -191,20 +223,48 @@
             align-items: center;
         }
 
+        .copy-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1a1a24;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid #2d2d3f;
+            width: 100%;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
         .copy-btn {
             background: var(--primary-color);
             border: none;
             color: white;
-            padding: 4px 8px;
+            padding: 6px 12px;
             border-radius: 6px;
             font-size: 12px;
             cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
         }
 
         .copy-btn:hover {
             background: #5b4bc4;
         }
 
+        .instruction-list {
+            margin: 15px 0;
+            padding-left: 20px;
+            font-size: 13.5px;
+            color: #dcdde1;
+            line-height: 1.7;
+        }
+
+        .instruction-list li {
+            margin-bottom: 8px;
+        }
+
+        /* --- ОБЩИЕ ЭЛЕМЕНТЫ ФОРМ --- */
         .input-group {
             margin-bottom: 16px;
         }
@@ -214,6 +274,7 @@
             font-size: 13px;
             color: var(--text-muted);
             margin-bottom: 6px;
+            font-weight: 500;
         }
 
         input, select {
@@ -225,6 +286,7 @@
             border-radius: 10px;
             font-size: 15px;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         input:focus, select:focus {
@@ -253,89 +315,174 @@
 
 <div class="container">
 
-    <!-- СЕКЦИЯ: КОЛЕСО ФОРТУНЫ -->
-    <div class="wheel-section">
-        <div class="wheel-wrapper">
-            <div class="pointer"></div>
-            <canvas id="wheel" width="300" height="300"></canvas>
-            <div class="spin-btn" id="spinBtn">КРУТИТЬ</div>
-        </div>
-        <div class="win-message" id="winMessage"></div>
-    </div>
-
-    <!-- ТАБЫ: ПОПОЛНЕНИЕ / ВЫВОД -->
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('deposit')">Пополнение</button>
-        <button class="tab-btn" onclick="switchTab('withdraw')">Вывод</button>
-    </div>
-
-    <!-- ВКЛАДКА: ПОПОЛНЕНИЕ -->
-    <div id="deposit" class="tab-content active">
-        <div class="warning-block">
-            <strong>⚠️ ВНИМАНИЕ:</strong> Пожалуйста, внимательно выбирайте банк при переводе! Пишите ровно ту сумму, на которую хотите пополнить счет. Перевод осуществляется строго по Системе Быстрых Платежей (СБП).
-        </div>
-
-        <div class="info-card">
-            <div class="info-row">
-                <span class="info-label">Номер телефона (СБП)</span>
-                <span class="info-value">
-                    <span id="phoneNum">2202206380773270</span>
-                    <button class="copy-btn" onclick="copyNumber()">Копировать</button>
-                </span>
+    <!-- ================= ЭКРАН 1: РЕГИСТРАЦИЯ / ВХОД ================= -->
+    <div id="authScreen" class="screen active">
+        <h2 id="authTitle">Регистрация аккаунта</h2>
+        <div class="auth-form">
+            <div class="input-group">
+                <label for="authLogin">Логин / Имя пользователя</label>
+                <input type="text" id="authLogin" placeholder="Придумайте логин">
             </div>
-            <div class="info-row">
-                <span class="info-label">Банк получателя</span>
-                <span class="info-value">Сбербанк</span>
+            <div class="input-group" id="emailGroup">
+                <label for="authEmail">Электронная почта (E-mail)</label>
+                <input type="email" id="authEmail" placeholder="example@mail.ru">
             </div>
-            <div class="info-row">
-                <span class="info-label">ФИО Получателя</span>
-                <span class="info-value">Содыров Мухаммадрасул Насридинович</span>
+            <div class="input-group">
+                <label for="authPassword">Пароль</label>
+                <input type="password" id="authPassword" placeholder="••••••••">
             </div>
+            <button class="action-btn" id="authBtn" onclick="handleAuth()">Создать аккаунт</button>
+            <div class="auth-toggle" id="authToggle" onclick="toggleAuthMode()">Уже есть аккаунт? Войти</div>
         </div>
-
-        <div class="input-group">
-            <label for="depositAmount">Сколько хотите пополнить?</label>
-            <input type="number" id="depositAmount" placeholder="Введите сумму в ₽">
-        </div>
-
-        <button class="action-btn" onclick="alert('Заявка отправлена на проверку!')">Я оплатил(а)</button>
     </div>
 
-    <!-- ВКЛАДКА: ВЫВОД -->
-    <div id="withdraw" class="tab-content">
-        <div class="input-group">
-            <label for="withdrawPhone">Номер телефона через СБП</label>
-            <input type="tel" id="withdrawPhone" placeholder="+7 (900) 000-00-00">
+
+    <!-- ================= ЭКРАН 2: ГЛАВНЫЙ ИГРОВОЙ ИНТЕРФЕЙС ================= -->
+    <div id="mainScreen" class="screen">
+        
+        <!-- СЕКЦИЯ: КОЛЕСО ФОРТУНЫ -->
+        <div class="wheel-section">
+            <div class="wheel-wrapper">
+                <div class="pointer"></div>
+                <canvas id="wheel" width="300" height="300"></canvas>
+                <div class="spin-btn" id="spinBtn">КРУТИТЬ</div>
+            </div>
+            <div class="win-message" id="winMessage"></div>
         </div>
 
-        <div class="input-group">
-            <label for="withdrawBank">Выберите банк внимательно</label>
-            <select id="withdrawBank">
-                <option value="sber">Сбербанк</option>
-                <option value="tbank">Т-Банк (Тинькофф)</option>
-                <option value="alfa">Альфа-Банк</option>
-                <option value="vtb">ВТБ</option>
-            </select>
+        <!-- ТАБЫ: ПОПОЛНЕНИЕ / ВЫВОД -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tab-deposit" onclick="switchTab('deposit')">Пополнение</button>
+            <button class="tab-btn" id="tab-withdraw" onclick="switchTab('withdraw')">Вывод</button>
         </div>
 
-        <div class="input-group">
-            <label for="withdrawAmount">Сумма вывода</label>
-            <input type="number" id="withdrawAmount" placeholder="Введите сумму для вывода в ₽">
+        <!-- ВКЛАДКА: ПОПОЛНЕНИЕ -->
+        <div id="deposit" class="tab-content active">
+            <div class="warning-block">
+                <strong>⚠️ ОБРАТИТЕ ВНИМАНИЕ!</strong><br>
+                Пожалуйста, <strong>максимально внимательно</strong> выбирайте банк при отправке перевода. Пишите ровно ту сумму, на которую планируете пополнить баланс в приложении. Переводы принимаются только через Систему Быстрых Платежей (<strong>СБП</strong>).
+            </div>
+
+            <p style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Инструкция по зачислению:</p>
+            <ul class="instruction-list">
+                <li>1. Скопируйте номер телефона ниже и откройте ваше банковское приложение.</li>
+                <li>2. Выберите перевод по номеру телефона <strong>(через СБП)</strong>.</li>
+                <li>3. Вставьте скопированный номер в строку получателя.</li>
+                <li>4. В списке банков обязательно выберите: <strong>Сбербанк</strong>.</li>
+                <li>5. Убедитесь, что ФИО получателя совпадает с указанным ниже.</li>
+                <li>6. После успешной оплаты укажите точную сумму перевода в поле для подтверждения.</li>
+            </ul>
+
+            <div class="info-card">
+                <div class="info-row">
+                    <span class="info-label">Номер телефона (СБП)</span>
+                    <div class="copy-container">
+                        <span id="phoneNum" style="font-family: monospace; font-size: 16px; letter-spacing: 0.5px;">2202206380773270</span>
+                        <button class="copy-btn" onclick="copyNumber()">Скопировать</button>
+                    </div>
+                </div>
+                <div class="info-row" style="margin-top: 10px;">
+                    <span class="info-label">Банк получателя</span>
+                    <span class="info-value" style="color: #4cd137;">Сбербанк</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ФИО Получателя</span>
+                    <span class="info-value">Содыров Мухаммадрасул Насридинович</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="depositAmount">Сколько хотите пополнить?</label>
+                <input type="number" id="depositAmount" placeholder="Пишите сумму пополнения в ₽">
+            </div>
+
+            <button class="action-btn" onclick="processDeposit()">Я оплатил(а)</button>
         </div>
 
-        <button class="action-btn" onclick="alert('Заявка на вывод средств успешно создана!')">Вывести</button>
+        <!-- ВКЛАДКА: ВЫВОД -->
+        <div id="withdraw" class="tab-content">
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px; text-align: center;">
+                ℹ️ Вывод средств осуществляется через СБП на карту любого удобного для вас банка.
+            </p>
+
+            <div class="input-group">
+                <label for="withdrawPhone">Введите номер телефона через СБП</label>
+                <input type="tel" id="withdrawPhone" placeholder="+7 (900) 000-00-00">
+            </div>
+
+            <div class="input-group">
+                <label for="withdrawBank">Выберите банк внимательно</label>
+                <select id="withdrawBank">
+                    <option value="sber">Сбербанк</option>
+                    <option value="tbank">Т-Банк (Тинькофф)</option>
+                    <option value="alfa">Альфа-Банк</option>
+                    <option value="vtb">ВТБ</option>
+                    <option value="rshb">Россельхозбанк</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="withdrawAmount">Сумма для вывода</label>
+                <input type="number" id="withdrawAmount" placeholder="Сколько хотите вывести ₽">
+            </div>
+
+            <button class="action-btn" style="background-color: #20bf6b;" onclick="processWithdraw()">Вывести средства</button>
+        </div>
+
     </div>
-
 </div>
 
 <script>
-    // --- Логика Колеса Фортуны ---
+    // --- ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ РЕГИСТРАЦИИ / ВХОДА ---
+    let isLoginMode = false;
+
+    function toggleAuthMode() {
+        const authTitle = document.getElementById('authTitle');
+        const emailGroup = document.getElementById('emailGroup');
+        const authBtn = document.getElementById('authBtn');
+        const authToggle = document.getElementById('authToggle');
+        
+        isLoginMode = !isLoginMode;
+
+        if (isLoginMode) {
+            authTitle.textContent = "Вход в аккаунт";
+            emailGroup.style.display = "none";
+            authBtn.textContent = "Войти";
+            authToggle.textContent = "Нет аккаунта? Зарегистрироваться";
+        } else {
+            authTitle.textContent = "Регистрация аккаунта";
+            emailGroup.style.display = "block";
+            authBtn.textContent = "Создать аккаунт";
+            authToggle.textContent = "Уже есть аккаунт? Войти";
+        }
+    }
+
+    function handleAuth() {
+        const login = document.getElementById('authLogin').value.trim();
+        const password = document.getElementById('authPassword').value.trim();
+
+        if (!login || !password) {
+            alert("Пожалуйста, заполните все обязательные поля!");
+            return;
+        }
+
+        // Переходим на главный игровой экран
+        document.getElementById('authScreen').classList.remove('active');
+        document.getElementById('mainScreen').classList.add('active');
+        
+        // Перерисовываем колесо при входе на экран
+        setTimeout(drawWheel, 100);
+    }
+
+
+    // --- ЛОГИКА КОЛЕСА ФОРТУНЫ ---
     const canvas = document.getElementById('wheel');
     const ctx = canvas.getContext('2d');
     const spinBtn = document.getElementById('spinBtn');
     const winMessage = document.getElementById('winMessage');
 
-    const prizes = ["100 ₽", "Бонус x2", "500 ₽", "Удачи!", "250 ₽", "Фриспин", "1000 ₽", "ГРАН-ПРИ"];
+    // Наполнение секторов из дизайн-концепта
+    const prizes = ["100 ₽", "Бонус x2", "500 ₽", "Удачи! 💥", "250 ₽", "Фриспин", "1000 ₽", "ГРАН-ПРИ 👑"];
     const colors = ["#6c5ce7", "#242432", "#00cec9", "#242432", "#fdcb6e", "#242432", "#ff7675", "#242432"];
     
     const numSectors = prizes.length;
@@ -355,7 +502,7 @@
             ctx.lineTo(150, 150);
             ctx.fill();
 
-            // Текст внутри секторов
+            // Рендеринг повернутого текста внутри секторов
             ctx.save();
             ctx.fillStyle = "#fff";
             ctx.translate(150, 150);
@@ -374,7 +521,7 @@
 
         const spinAngleStart = Math.random() * 10 + 10;
         let spinTime = 0;
-        const spinTimeTotal = Math.random() * 3000 + 4000;
+        const spinTimeTotal = Math.random() * 3000 + 4000; // Время кручения
 
         function animate() {
             spinTime += 30;
@@ -387,7 +534,6 @@
             drawWheel();
             requestAnimationFrame(animate);
         }
-
         animate();
     }
 
@@ -403,29 +549,53 @@
         const arcd = arc * 180 / Math.PI;
         const index = Math.floor((360 - (degrees % 360)) / arcd) % numSectors;
         
-        // Корректируем индекс из-за направления отрисовки
         const correctedIndex = (index + numSectors) % numSectors;
         winMessage.textContent = `Вы выиграли: ${prizes[correctedIndex]}!`;
     }
 
     spinBtn.addEventListener('click', rotateWheel);
-    drawWheel();
 
-    // --- Логика переключения Вкладок ---
+
+    // --- ЛОГИКА ИНТЕРФЕЙСА В КЛАССИЧЕСКИХ ВКЛАДКАХ ---
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         
         document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+        document.getElementById('tab-' + tabId).classList.add('active');
     }
 
-    // --- Копирование номера ---
+    // Полноценная функция копирования
     function copyNumber() {
         const phone = document.getElementById('phoneNum').innerText;
         navigator.clipboard.writeText(phone).then(() => {
-            alert('Номер скопирован в буфер обмена!');
+            alert('Номер телефона 2202206380773270 успешно скопирован!');
+        }).catch(err => {
+            alert('Не удалось скопировать автоматически, выделите номер вручную.');
         });
+    }
+
+    // Обработка отправки форм
+    function processDeposit() {
+        const amount = document.getElementById('depositAmount').value;
+        if(!amount || amount <= 0) {
+            alert("Пожалуйста, укажите верную сумму перевода для проверки!");
+            return;
+        }
+        alert(`Заявка на пополнение на сумму ${amount} ₽ отправлена. Ожидайте проверки платежа банком Сбербанк.`);
+    }
+
+    function processWithdraw() {
+        const phone = document.getElementById('withdrawPhone').value.trim();
+        const amount = document.getElementById('withdrawAmount').value;
+        const bankSelect = document.getElementById('withdrawBank');
+        const bankName = bankSelect.options[bankSelect.selectedIndex].text;
+
+        if(!phone || !amount || amount <= 0) {
+            alert("Пожалуйста, заполните корректно все поля вывода средств!");
+            return;
+        }
+        alert(`Заявка на вывод отправлена!\nСумма: ${amount} ₽\nТелефон: ${phone}\nБанк: ${bankName}\nСрок зачисления — до 15 минут.`);
     }
 </script>
 
