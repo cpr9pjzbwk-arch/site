@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Quantum Impulse | Физический Пазл</title>
+    <title>Quantum Impulse | Адекватная Версия</title>
     <style>
         :root {
             --bg: #060913;
@@ -26,7 +26,6 @@
             display: flex; flex-direction: column; align-items: center; overflow: hidden;
         }
 
-        /* --- ИНТЕРФЕЙС / МЕНЮ --- */
         .screen { display: none; width: 100%; max-width: 400px; flex-direction: column; height: 92vh; }
         .screen.active { display: flex; }
 
@@ -35,19 +34,16 @@
 
         .glass { background: var(--panel); border: 1px solid var(--border); border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        /* Меню уровней */
         .level-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
         .lvl-btn { 
             background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; 
-            padding: 20px 10px; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center;
-            position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 15px 10px; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
         }
         .lvl-btn:active { transform: scale(0.95); }
-        .lvl-btn.locked { opacity: 0.4; pointer-events: none; }
         
-        .medal-badge { font-size: 20px; margin-top: 4px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+        .medal-badge { font-size: 20px; }
 
-        /* Игровой экран */
         .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px; font-weight: bold; }
         .hud-item { background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border); }
         
@@ -58,16 +54,12 @@
             background: linear-gradient(135deg, #4facfe, #00f2fe); border: none; color: white;
             padding: 15px; border-radius: 16px; font-weight: 700; font-size: 16px; text-align: center; cursor: pointer; margin-top: 10px;
         }
-        .btn:active { transform: scale(0.98); }
 
-        /* Окно результатов */
         .modal { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6,9,19,0.95); 
             z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
         }
-        .modal h2 { font-size: 32px; margin-bottom: 15px; }
-        .big-medal { font-size: 80px; margin: 20px 0; animation: bounce 1s infinite alternate; }
-        @keyframes bounce { from { transform: scale(0.95); } to { transform: scale(1.05); } }
+        .big-medal { font-size: 80px; margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -75,181 +67,128 @@
     <div id="menu-screen" class="screen active">
         <header>
             <h1>QUANTUM IMPULSE</h1>
-            <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Физическая пространственная головоломка</p>
+            <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Исправленная комфортная версия</p>
         </header>
         <div class="glass" style="flex: 1; display:flex; flex-direction:column; justify-content: space-between;">
             <div>
-                <h3 style="font-size: 15px; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 1px;">Выберите сектор постройки:</h3>
-                <div class="level-grid" id="levels-wrapper">
-                    </div>
+                <h3 style="font-size: 15px; color: var(--neon-cyan); text-transform: uppercase;">Выберите уровень:</h3>
+                <div class="level-grid" id="levels-wrapper"></div>
             </div>
-            <div style="font-size: 11px; color:#516383; text-align:center; line-height: 1.4;">
-                💡 <b>Управление:</b> Нажимайте на экран возле белого ядра. Сила импульса (взрыва) толкнет его в противоположную сторону! Избегайте красных лазеров и доберитесь до зеленого портала.
+            <div style="font-size: 13px; color:#8ba2cc; text-align:center; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                🎯 <b>Новое управление:</b> Зажмите пальцем белый шар, потяните назад (как рогатку) и отпустите, чтобы запустить его!
             </div>
         </div>
     </div>
 
     <div id="game-screen" class="screen">
         <div class="hud">
-            <button onclick="exitToMenu()" style="background:none; border:none; color:var(--neon-magenta); font-weight:bold;">⬅ Меню</button>
+            <button onclick="exitToMenu()" style="background:none; border:none; color:var(--neon-magenta); font-weight:bold; font-size: 16px;">⬅ Выйти</button>
             <div class="hud-item" id="hud-level">Уровень: 1</div>
             <div class="hud-item" id="hud-time">Время: 0.0с</div>
         </div>
-        
         <div id="canvas-container">
             <canvas id="gameCanvas"></canvas>
         </div>
-
-        <button class="btn" style="background: #202744; border: 1px solid var(--border);" onclick="restartCurrentLevel()">🔄 Перезапустить сектор</button>
+        <button class="btn" style="background: #202744; border: 1px solid var(--border);" onclick="restartCurrentLevel()">🔄 Сбросить уровень</button>
     </div>
 
     <div class="modal" id="win-modal">
-        <h2 id="win-title">СЕКТОР СТАБИЛИЗИРОВАН!</h2>
-        <p id="win-time-desc">Вы прошли уровень за 0.0 секунд.</p>
+        <h2>УРОВЕНЬ ПРОЙДЕН!</h2>
+        <p id="win-time-desc">Вы справились за 0.0 сек.</p>
         <div class="big-medal" id="win-medal-icon">🥇</div>
-        <h3 id="win-medal-name" style="color: var(--neon-gold); margin-bottom: 30px;">ЗОЛОТАЯ МЕДАЛЬ</h3>
-        <button class="btn" style="width: 80%;" onclick="exitToMenu()">Вернуться в штаб управления</button>
+        <h3 id="win-medal-name" style="color: var(--neon-gold); margin-bottom: 30px;">ЗОЛОТО</h3>
+        <button class="btn" style="width: 80%;" onclick="exitToMenu()">Отлично</button>
     </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Логическое разрешение внутренней физики (фиксированное)
         const WIDTH = 450;
         const HEIGHT = 650;
         canvas.width = WIDTH;
         canvas.height = HEIGHT;
 
-        // Хранилище результатов (Медали)
         let levelProgress = {
-            1: { unlocked: true, medal: '', bestTime: null, gold: 5, silver: 12 },
-            2: { unlocked: false, medal: '', bestTime: null, gold: 8, silver: 18 },
-            3: { unlocked: false, medal: '', bestTime: null, gold: 10, silver: 22 },
-            4: { unlocked: false, medal: '', bestTime: null, gold: 12, silver: 25 },
-            5: { unlocked: false, medal: '', bestTime: null, gold: 15, silver: 30 }
+            1: { medal: '', bestTime: null, gold: 6, silver: 15 },
+            2: { medal: '', bestTime: null, gold: 10, silver: 20 },
+            3: { medal: '', bestTime: null, gold: 12, silver: 25 },
+            4: { medal: '', bestTime: null, gold: 15, silver: 30 },
+            5: { medal: '', bestTime: null, gold: 18, silver: 35 }
         };
-
-        // Загрузка сохранений из памяти браузера, если есть
-        if(localStorage.getItem('quantum_progress')) {
-            levelProgress = JSON.parse(localStorage.getItem('quantum_progress'));
-        }
 
         let currentLevel = 1;
         let gameActive = false;
         let startTime = 0;
         let timerInterval;
 
-        // Физические параметры Ядра (Игрока)
-        let player = { x: 0, y: 0, vx: 0, vy: 0, radius: 14, elasticity: 0.65 };
-        const GRAVITY = 0.18;
-        const FRICTION = 0.99;
+        // Физика стала мягкой и послушной
+        let player = { x: 0, y: 0, vx: 0, vy: 0, radius: 16 };
+        const GRAVITY = 0.09; // Уменьшил в 2 раза, шар парит плавно
+        const FRICTION = 0.96; // Повысил торможение, шар сам останавливается
 
-        // Игровые объекты на уровне
+        // Для управления рогаткой
+        let isDragging = false;
+        let dragStart = { x: 0, y: 0 };
+        let dragCurrent = { x: 0, y: 0 };
+
         let platforms = [];
-        let hazards = []; // Красные смертоносные зоны
-        let portal = { x: 0, y: 0, radius: 25 };
-        let particles = [];
+        let hazards = []; 
+        let portal = { x: 0, y: 0, radius: 35 }; // Увеличил портал, чтобы легче попадать
 
-        // --- КОНФИГУРАТОР ОРГАНИЗАЦИИ УРОВНЕЙ (РАЗНООБРАЗИЕ И СЛОЖНОСТЬ) ---
         function loadLevelData(lvlNum) {
-            platforms = [];
-            hazards = [];
+            platforms = []; hazards = [];
             
-            // Базовые невидимые границы сцены
-            platforms.push({x: 0, y: HEIGHT - 15, w: WIDTH, h: 15, type: 'normal'}); // Пол
-            platforms.push({x: 0, y: 0, w: 15, h: HEIGHT, type: 'normal'}); // Лев. стена
-            platforms.push({x: WIDTH - 15, y: 0, w: 15, h: HEIGHT, type: 'normal'}); // Прав. стена
+            // Стены
+            platforms.push({x: 0, y: HEIGHT - 15, w: WIDTH, h: 15, type: 'normal'});
+            platforms.push({x: 0, y: 0, w: 15, h: HEIGHT, type: 'normal'});
+            platforms.push({x: WIDTH - 15, y: 0, w: 15, h: HEIGHT, type: 'normal'});
+            platforms.push({x: 0, y: 0, w: WIDTH, h: 15, type: 'normal'});
 
-            switch(lvlNum) {
-                case 1: // Сектор 1: Обучение физике прыжка
-                    player.x = 60; player.y = 550;
-                    portal.x = 380; portal.y = 120;
-                    platforms.push({x: 15, y: 400, w: 250, h: 20, type: 'normal'});
-                    platforms.push({x: 180, y: 220, w: 260, h: 20, type: 'normal'});
-                    break;
-
-                case 2: // Сектор 2: Опасные Лазерные барьеры
-                    player.x = 60; player.y = 580;
-                    portal.x = 380; portal.y = 80;
-                    platforms.push({x: 15, y: 450, w: 300, h: 20, type: 'normal'});
-                    platforms.push({x: 120, y: 260, w: 320, h: 20, type: 'normal'});
-                    // Ловушки (Красные)
-                    hazards.push({x: 150, y: 435, w: 40, h: 15});
-                    hazards.push({x: 220, y: 245, w: 80, h: 15});
-                    break;
-
-                case 3: // Сектор 3: Ультра-Батуты (Высокая упругость)
-                    player.x = 225; player.y = 580;
-                    portal.x = 225; portal.y = 80;
-                    platforms.push({x: 60, y: 420, w: 330, h: 20, type: 'bouncy'}); // Прыгучая плита
-                    platforms.push({x: 15, y: 240, w: 160, h: 20, type: 'normal'});
-                    platforms.push({x: 275, y: 240, w: 160, h: 20, type: 'normal'});
-                    hazards.push({x: 140, y: 405, w: 170, h: 15});
-                    break;
-
-                case 4: // Сектор 4: Шахта Лабиринта
-                    player.x = 50; player.y = 80;
-                    portal.x = 380; portal.y = 570;
-                    platforms.push({x: 15, y: 160, w: 320, h: 20, type: 'normal'});
-                    platforms.push({x: 120, y: 300, w: 320, h: 20, type: 'normal'});
-                    platforms.push({x: 15, y: 450, w: 320, h: 20, type: 'normal'});
-                    // Шипы на пути падения
-                    hazards.push({x: 350, y: 180, w: 80, h: 30});
-                    hazards.push({x: 15, y: 320, w: 60, h: 30});
-                    break;
-
-                case 5: // Сектор 5: Адская Инерция (Максимальная сложность)
-                    player.x = 225; player.y = 580;
-                    portal.x = 225; portal.y = 180;
-                    platforms.push({x: 110, y: 320, w: 230, h: 20, type: 'bouncy'});
-                    // Перекрестные лазеры в центре карты
-                    hazards.push({x: 15, y: 440, w: 180, h: 15});
-                    hazards.push({x: 255, y: 440, w: 180, h: 15});
-                    hazards.push({x: 15, y: 120, w: 420, h: 15});
-                    break;
+            if (lvlNum === 1) {
+                player.x = 70; player.y = 550; portal.x = 370; portal.y = 120;
+                platforms.push({x: 15, y: 400, w: 220, h: 20, type: 'normal'});
+                platforms.push({x: 200, y: 250, w: 240, h: 20, type: 'normal'});
+            } else if (lvlNum === 2) {
+                player.x = 70; player.y = 580; portal.x = 370; portal.y = 100;
+                platforms.push({x: 15, y: 450, w: 260, h: 20, type: 'normal'});
+                platforms.push({x: 150, y: 280, w: 290, h: 20, type: 'normal'});
+                hazards.push({x: 180, y: 435, w: 30, h: 15}); // Маленький лазер
+            } else if (lvlNum === 3) {
+                player.x = 225; player.y = 580; portal.x = 225; portal.y = 100;
+                platforms.push({x: 80, y: 420, w: 290, h: 20, type: 'bouncy'}); // Прыгучая
+                hazards.push({x: 190, y: 405, w: 70, h: 15});
+            } else if (lvlNum === 4) {
+                player.x = 70; player.y = 100; portal.x = 370; portal.y = 550;
+                platforms.push({x: 15, y: 220, w: 300, h: 20, type: 'normal'});
+                platforms.push({x: 130, y: 400, w: 310, h: 20, type: 'normal'});
+            } else if (lvlNum === 5) {
+                player.x = 70; player.y = 580; portal.x = 370; portal.y = 550;
+                platforms.push({x: 15, y: 350, w: 420, h: 20, type: 'normal'});
+                portal.x = 225; portal.y = 120;
             }
         }
 
-        // --- ОТРИСОВКА ИМПУЛЬСНОГО МЕНЮ И СТАТУСА МЕДАЛЕЙ ---
         function buildMenu() {
             const container = document.getElementById('levels-wrapper');
             container.innerHTML = '';
-            
             Object.keys(levelProgress).forEach(id => {
                 const lvl = levelProgress[id];
                 const btn = document.createElement('button');
-                btn.className = `lvl-btn ${lvl.unlocked ? '' : 'locked'}`;
-                
-                let medalIcon = '🔒';
-                if(lvl.unlocked) {
-                    if(lvl.medal === 'gold') medalIcon = '🥇';
-                    else if(lvl.medal === 'silver') medalIcon = '🥈';
-                    else if(lvl.medal === 'bronze') medalIcon = '🥉';
-                    else medalIcon = '⚪';
-                }
-
-                btn.innerHTML = `
-                    <span style="font-size:12px; color:#94a3b8">СЕКТОР 0${id}</span>
-                    <span class="medal-badge">${medalIcon}</span>
-                    <span style="font-size:11px; color:#4facfe">${lvl.bestTime ? lvl.bestTime+'с' : 'Нет данных'}</span>
-                `;
-                
+                btn.className = 'lvl-btn';
+                let medalIcon = lvl.medal === 'gold' ? '🥇' : lvl.medal === 'silver' ? '🥈' : lvl.medal === 'bronze' ? '🥉' : '⚪';
+                btn.innerHTML = `<span>Уровень ${id}</span><span class="medal-badge">${medalIcon}</span>`;
                 btn.onclick = () => startLevel(parseInt(id));
                 container.appendChild(btn);
             });
         }
 
-        // --- ИГРОВОЙ ЦИКЛ И ДВИЖОК ДИНАМИКИ ---
         function startLevel(num) {
             currentLevel = num;
             document.getElementById('menu-screen').classList.remove('active');
             document.getElementById('game-screen').classList.add('active');
-            document.getElementById('hud-level').innerText = `Сектор: ${num}`;
-            
+            document.getElementById('hud-level').innerText = `Уровень: ${num}`;
             loadLevelData(num);
-            
-            // Запуск таймера ядра
             player.vx = 0; player.vy = 0;
             startTime = Date.now();
             gameActive = true;
@@ -266,216 +205,161 @@
         function updatePhysics() {
             if(!gameActive) return;
 
-            // Считаем гравитацию и трение воздушной среды
-            player.vy += GRAVITY;
-            player.vx *= FRICTION;
-            player.vy *= FRICTION;
+            if (!isDragging) {
+                player.vy += GRAVITY;
+                player.vx *= FRICTION;
+                player.vy *= FRICTION;
+                player.x += player.vx;
+                player.y += player.vy;
+            }
 
-            player.x += player.vx;
-            player.y += player.vy;
-
-            // СТОЛКНОВЕНИЯ С ПЛАТФОРМАМИ (Честная твердая физика)
+            // Столкновения с платформами
             platforms.forEach(p => {
-                // Ближайшая точка платформы к центру сферы игрока
                 let closestX = Math.max(p.x, Math.min(player.x, p.x + p.w));
                 let closestY = Math.max(p.y, Math.min(player.y, p.y + p.h));
+                let dx = player.x - closestX;
+                let dy = player.y - closestY;
+                let dist = Math.sqrt(dx*dx + dy*dy);
 
-                let distanceX = player.x - closestX;
-                let distanceY = player.y - closestY;
-                let distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+                if (dist < player.radius) {
+                    let overlap = player.radius - dist;
+                    if (dist === 0) { dx = 0; dy = -1; dist = 1; }
+                    player.x += (dx / dist) * overlap;
+                    player.y += (dy / dist) * overlap;
 
-                if (distanceSquared < (player.radius * player.radius)) {
-                    let distance = Math.sqrt(distanceSquared);
-                    let overlap = player.radius - distance;
-
-                    // Выталкиваем сферу наружу для предотвращения застревания
-                    if (distance === 0) { distanceX = 0; distanceY = -1; distance = 1; }
-                    player.x += (distanceX / distance) * overlap;
-                    player.y += (distanceY / distance) * overlap;
-
-                    // Рассчитываем отскок по нормали импульса
-                    let nx = distanceX / distance;
-                    let ny = distanceY / distance;
-                    let impulse = -(1 + (p.type === 'bouncy' ? 1.1 : player.elasticity)) * (player.vx * nx + player.vy * ny);
-                    
+                    let nx = dx / dist;
+                    let ny = dy / dist;
+                    let bounce = p.type === 'bouncy' ? 1.3 : 0.4; // Мягкий отскок
+                    let impulse = -(1 + bounce) * (player.vx * nx + player.vy * ny);
                     player.vx += nx * impulse;
                     player.vy += ny * impulse;
-
-                    if(p.type === 'bouncy') {
-                        createExplosion(player.x, player.y, varName='--neon-magenta');
-                    }
                 }
             });
 
-            // ПРОВЕРКА СМЕРТИ (Касание лазеров)
+            // Лазеры
             hazards.forEach(h => {
                 if (player.x + player.radius > h.x && player.x - player.radius < h.x + h.w &&
                     player.y + player.radius > h.y && player.y - player.radius < h.y + h.h) {
-                    // Взрыв ядра и рестарт
-                    createExplosion(player.x, player.y, '--neon-magenta');
                     restartCurrentLevel();
                 }
             });
 
-            // ПРОВЕРКА ТРИГГЕРА ПОБЕДЫ (Портал)
-            let dx = player.x - portal.x;
-            let dy = player.y - portal.y;
-            if (Math.sqrt(dx*dx + dy*dy) < player.radius + portal.radius) {
+            // Портал (Победа)
+            let pdx = player.x - portal.x;
+            let pdy = player.y - portal.y;
+            if (Math.sqrt(pdx*pdx + pdy*pdy) < player.radius + portal.radius) {
                 triggerWin();
                 return;
             }
 
-            // Рендеринг кадра
             render();
             requestAnimationFrame(updatePhysics);
         }
 
-        // --- ГРАФИЧЕСКИЙ СЛОЙ (RENDER) ---
         function render() {
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-            // 1. Рисуем фон-сетку киберпространства
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
-            ctx.lineWidth = 1;
-            for(let i=0; i<WIDTH; i+=30) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,HEIGHT); ctx.stroke(); }
-            for(let j=0; j<HEIGHT; j+=30) { ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(WIDTH,j); ctx.stroke(); }
-
-            // 2. Отрисовка стабильных и прыгучих платформ
+            // Платформы
             platforms.forEach(p => {
-                let gradient = ctx.createLinearGradient(p.x, p.y, p.x, p.y + p.h);
-                if(p.type === 'bouncy') {
-                    gradient.addColorStop(0, '#f355da'); gradient.addColorStop(1, '#6e0d61');
-                    ctx.shadowColor = '#f355da'; ctx.shadowBlur = 10;
-                } else {
-                    gradient.addColorStop(0, '#1e293b'); gradient.addColorStop(1, '#0f172a');
-                    ctx.shadowBlur = 0;
-                }
-                ctx.fillStyle = gradient;
+                ctx.fillStyle = p.type === 'bouncy' ? '#f355da' : '#1e293b';
                 ctx.fillRect(p.x, p.y, p.w, p.h);
             });
-            ctx.shadowBlur = 0;
 
-            // 3. Рисуем смертоносные ловушки (Лазеры)
+            // Лазеры
             hazards.forEach(h => {
-                ctx.fillStyle = 'rgba(243, 85, 218, 0.2)';
+                ctx.fillStyle = '#ff0055';
                 ctx.fillRect(h.x, h.y, h.w, h.h);
-                ctx.strokeStyle = '#ff0055';
-                ctx.lineWidth = 3;
-                ctx.strokeRect(h.x, h.y, h.w, h.h);
             });
 
-            // 4. Отрисовка квантового портала
-            let portalGrad = ctx.createRadialGradient(portal.x, portal.y, 5, portal.x, portal.y, portal.radius);
-            portalGrad.addColorStop(0, '#00ff87'); portalGrad.addColorStop(1, 'transparent');
-            ctx.fillStyle = portalGrad;
+            // Портал
+            ctx.fillStyle = 'rgba(0, 255, 135, 0.3)';
             ctx.beginPath(); ctx.arc(portal.x, portal.y, portal.radius, 0, Math.PI*2); ctx.fill();
+            ctx.strokeStyle = '#00ff87'; ctx.lineWidth = 3; ctx.stroke();
 
-            // 5. Отрисовка Энерго-Ядра (Игрока)
-            ctx.shadowColor = varName = '#00f2fe';
-            ctx.shadowBlur = 15;
+            // Линия прицеливания рогатки
+            if (isDragging) {
+                ctx.strokeStyle = varName = '#00f2fe';
+                ctx.lineWidth = 4;
+                ctx.setLineDash([6, 6]);
+                ctx.beginPath();
+                ctx.moveTo(player.x, player.y);
+                // Показываем куда полетит (в противоположную сторону от оттяжки)
+                let targetX = player.x + (dragStart.x - dragCurrent.x) * 0.5;
+                let targetY = player.y + (dragStart.y - dragCurrent.y) * 0.5;
+                ctx.lineTo(targetX, targetY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Шар
             ctx.fillStyle = '#ffffff';
             ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI*2); ctx.fill();
-            ctx.shadowBlur = 0;
-
-            // Отрисовка спецэффектов (Частицы взрывов)
-            particles.forEach((part, index) => {
-                part.x += part.vx; part.y += part.vy; part.alpha -= 0.02;
-                if(part.alpha <= 0) { particles.splice(index, 1); return; }
-                ctx.fillStyle = `rgba(${part.color}, ${part.alpha})`;
-                ctx.beginPath(); ctx.arc(part.x, part.y, part.size, 0, Math.PI*2); ctx.fill();
-            });
         }
 
-        // --- УПРАВЛЕНИЕ КИНЕТИЧЕСКИМ ИМПУЛЬСОМ (Для iPhone / Тач-скринов) ---
+        // --- НОВОЕ СЕНСОРНОЕ УПРАВЛЕНИЕ (РОГАТКА) ---
         canvas.addEventListener('touchstart', (e) => {
-            if(!gameActive) return;
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches[0];
-            
-            // Вычисляем координаты тапа с масштабированием под Canvas
-            const clickX = (touch.clientX - rect.left) * (WIDTH / rect.width);
-            const clickY = (touch.clientY - rect.top) * (HEIGHT / rect.height);
+            const tX = (touch.clientX - rect.left) * (WIDTH / rect.width);
+            const tY = (touch.clientY - rect.top) * (HEIGHT / rect.height);
 
-            // Рассчитываем вектор от точки клика к центру ядра
-            let dx = player.x - clickX;
-            let dy = player.y - clickY;
-            let distance = Math.sqrt(dx*dx + dy*dy);
-
-            // Ограничиваем радиус действия взрывной волны для честного баланса умственной задачи
-            if (distance < 180) {
-                if (distance === 0) distance = 1;
-                // Чем ближе клик к шару — тем мощнее толчок физики!
-                let force = (180 - distance) / 14; 
-                player.vx += (dx / distance) * force;
-                player.vy += (dy / distance) * force;
-
-                createExplosion(clickX, clickY, '--neon-cyan');
+            // Проверяем, зажал ли игрок пальцем шарик
+            let dist = Math.sqrt((tX - player.x)**2 + (tY - player.y)**2);
+            if (dist < player.radius + 30) { // Даем небольшую погрешность под палец
+                isDragging = true;
+                player.vx = 0; player.vy = 0; // Останавливаем шар при захвате
+                dragStart = { x: tX, y: tY };
+                dragCurrent = { x: tX, y: tY };
             }
         });
 
-        function createExplosion(x, y, colorVar) {
-            let rgb = colorVar === '--neon-cyan' ? '0, 242, 254' : '243, 85, 218';
-            for(let i=0; i<12; i++) {
-                particles.push({
-                    x: x, y: y,
-                    vx: (Math.random() - 0.5) * 6,
-                    vy: (Math.random() - 0.5) * 6,
-                    size: Math.random() * 3 + 1,
-                    alpha: 1,
-                    color: rgb
-                });
-            }
-        }
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            dragCurrent.x = (touch.clientX - rect.left) * (WIDTH / rect.width);
+            dragCurrent.y = (touch.clientY - rect.top) * (HEIGHT / rect.height);
+        });
 
-        // --- ФУНКЦИЯ ФИКСАЦИИ МЕДАЛЕЙ И ПОБЕДЫ ---
+        canvas.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+
+            // Считаем силу запуска
+            let dx = dragStart.x - dragCurrent.x;
+            let dy = dragStart.y - dragCurrent.y;
+
+            // Запускаем шар в сторону натяжения (умножаем на адекватный коэффициент скорости)
+            player.vx = dx * 0.12;
+            player.vy = dy * 0.12;
+        });
+
         function triggerWin() {
-            gameActive = false;
-            clearInterval(timerInterval);
-            
+            gameActive = false; clearInterval(timerInterval);
             let finalTime = parseFloat(((Date.now() - startTime) / 1000).toFixed(1));
             let cfg = levelProgress[currentLevel];
             cfg.bestTime = cfg.bestTime ? Math.min(cfg.bestTime, finalTime) : finalTime;
 
-            // Распределение медалей по логике времени
-            let medal = 'bronze';
-            let medalIcon = '🥉';
-            let medalName = 'БРОНЗОВАЯ МЕДАЛЬ';
-            
-            if(finalTime <= cfg.gold) { medal = 'gold'; medalIcon = '🥇'; medalName = 'ЗОЛОТАЯ МЕДАЛЬ'; }
-            else if(finalTime <= cfg.silver) { medal = 'silver'; medalIcon = '🥈'; medalName = 'СЕРЕБРЯНАЯ МЕДАЛЬ'; }
-            
+            let medal = 'bronze'; let icon = '🥉'; let name = 'БРОНЗА';
+            if(finalTime <= cfg.gold) { medal = 'gold'; icon = '🥇'; name = 'ЗОЛОТО'; }
+            else if(finalTime <= cfg.silver) { medal = 'silver'; icon = '🥈'; name = 'СЕРЕБРО'; }
             cfg.medal = medal;
 
-            // Разблокируем следующий сектор сложности
-            if(currentLevel < 5) {
-                levelProgress[currentLevel + 1].unlocked = true;
-            }
-
-            // Запись результата
-            localStorage.setItem('quantum_progress', JSON.stringify(levelProgress));
-
-            // Показ модального окна наград
-            document.getElementById('win-title').innerText = `СЕКТОР 0${currentLevel} СТАБИЛИЗИРОВАН!`;
-            document.getElementById('win-time-desc').innerText = `Время прохождения: ${finalTime} секунд.`;
-            document.getElementById('win-medal-icon').innerText = medalIcon;
-            document.getElementById('win-medal-name').innerText = medalName;
+            document.getElementById('win-time-desc').innerText = `Время: ${finalTime} сек.`;
+            document.getElementById('win-medal-icon').innerText = icon;
+            document.getElementById('win-medal-name').innerText = name;
             document.getElementById('win-modal').style.display = 'flex';
         }
 
-        function restartCurrentLevel() {
-            startLevel(currentLevel);
-        }
-
+        function restartCurrentLevel() { startLevel(currentLevel); }
         function exitToMenu() {
-            gameActive = false;
-            clearInterval(timerInterval);
+            gameActive = false; clearInterval(timerInterval);
             document.getElementById('win-modal').style.display = 'none';
             document.getElementById('game-screen').classList.remove('active');
             document.getElementById('menu-screen').classList.add('active');
             buildMenu();
         }
 
-        // Автоматический сборщик меню при первом старте
         window.onload = buildMenu;
     </script>
 </body>
