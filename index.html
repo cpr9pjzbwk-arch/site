@@ -3,334 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameVerse | Скачать Лучшие Игры</title>
+    <title>NexusGame X - Самый Расширенный Игровой Портал</title>
     <style>
-        /* --- Общие стили и Переменные --- */
+        /* --- Базовые Установки и Переменные --- */
         :root {
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --panel-bg: rgba(255, 255, 255, 0.65);
-            --panel-border: rgba(255, 255, 255, 0.4);
-            --primary-color: #6c5ce7;
-            --secondary-color: #00cec9;
-            --text-main: #2d3436;
-            --text-muted: #636e72;
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --bg-dark: #0f111a;
+            --panel-glass: rgba(30, 41, 59, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --neon-cyan: #00f2fe;
+            --neon-purple: #4facfe;
+            --neon-green: #00ff87;
+            --text-light: #f8fafc;
+            --text-dim: #94a3b8;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            background: var(--bg-gradient);
-            background-size: 400% 400%;
-            animation: gradientBg 15s ease infinite;
-            color: var(--text-main);
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, var(--bg-dark) 100%);
+            color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        /* Анимация «живого» заднего фона */
-        @keyframes gradientBg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Элемент скрытия страниц */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: pageIn 0.6s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* --- Шапка сайта (Header) --- */
-        header {
-            width: 90%;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px 40px;
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--panel-border);
-            border-radius: 24px;
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            animation: slideDown 1s ease;
+        .page.active {
+            display: block;
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .logo:hover {
-            transform: scale(1.05) rotate(-2deg);
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 600;
-            margin-left: 30px;
-            position: relative;
-            padding: 5px 0;
-        }
-
-        /* Красивая анимация подчеркивания ссылок */
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--primary-color);
-            text-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        /* --- Главный блок (Hero Section) --- */
-        .hero {
-            text-align: center;
-            margin: 60px auto 40px;
-            max-width: 800px;
-            padding: 0 20px;
-            animation: fadeIn 1.2s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
+        @keyframes pageIn {
             to { opacity: 1; transform: scale(1); }
         }
 
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            color: #1e272e;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-
-        /* --- Сетка с играми (Grid) --- */
-        .catalog {
-            width: 90%;
-            max-width: 1200px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            padding-bottom: 60px;
-        }
-
-        /* --- Карточка игры --- */
-        .game-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--panel-border);
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        /* Эффект при наведении на всю карточку */
-        .game-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
-            border-color: rgba(108, 92, 231, 0.4);
-        }
-
-        .game-img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .game-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Плавное увеличение картинки */
-        .game-card:hover img {
-            transform: scale(1.1);
-        }
-
-        /* Световой блик, пробегающий по картинке при наведении */
-        .game-img-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -75%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 100%);
-            transform: skewX(-25deg);
-        }
-
-        .game-card:hover .game-img-wrapper::after {
-            animation: shine 0.75s;
-        }
-
-        @keyframes shine {
-            100% { left: 125%; }
-        }
-
-        .game-info {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .game-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #1e272e;
-        }
-
-        .game-desc {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        /* --- Супер-кнопка скачать --- */
-        .btn-download {
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            padding: 14px 20px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        /* --- ГЛОБАЛЬНЫЕ КРАСИВЫЕ КНОПКИ И ЭЛЕМЕНТЫ --- */
+        .btn-neon {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+            border: none;
             color: white;
-            font-weight: 700;
-            border-radius: 18px;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
             position: relative;
             overflow: hidden;
-            z-index: 1;
         }
 
-        /* Анимация увеличения кнопки и свечения */
-        .btn-download:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 206, 201, 0.6);
+        .btn-neon:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.6);
         }
 
-        .btn-download:active {
-            transform: scale(0.98);
-        }
-
-        /* Эффект пульсации внутри кнопки */
-        .btn-download::before {
+        .btn-neon::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            top: -50%; left: -60%; width: 30%; height: 200%;
+            background: rgba(255,255,255,0.4);
+            transform: rotate(35deg);
+            transition: 0.5s;
         }
 
-        .btn-download:hover::before {
-            opacity: 1;
+        .btn-neon:hover::after { left: 130%; }
+
+        /* Контейнеры-стекла */
+        .glass-panel {
+            background: var(--panel-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
+
+        .glass-panel:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 242, 254, 0.1);
+        }
+
+        /* --- СТРАНИЦА 1: ГЛАВНЫЙ МУЛЬТИ-ХАБ --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(15, 17, 26, 0.8);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .logo-area {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00ff87, #60efff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        /* Боковая панель расширенных настроек */
+        .sidebar-settings h3 {
+            margin-bottom: 15px;
+            color: var(--neon-cyan);
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .setting-item {
+            margin-bottom: 20px;
+        }
+
+        .setting-item label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        select, input[type="range"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--neon-cyan);
+        }
+
+        /* Сетка игр и торрентов */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-overlay {
+            background: linear-gradient(to top, rgba(15,17,26,1) 0%, rgba(15,17,26,0.4) 60%, transparent 100%);
+            padding: 25px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .torrent-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--neon-green);
+            margin: 10px 0;
+        }
+
+        /* --- СТРАНИЦА 2: РАСШИРЕННАЯ ПАНЕЛЬ УПРАВЛЕНИЯ (ПМ / СТРОИТЕЛЬСТВО) --- */
+        .pml-container {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .pml-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed var(--border-glass);
+            padding-bottom: 20px;
+        }
+
+        .constructor-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Интерактивное рабочее поле (Постройка темы) */
+        .canvas-area {
+            height: 500px;
+            background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 24px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .grid-lines {
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Мультифункциональный блок инструментов */
+        .tool-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .tool-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-glass);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-btn:hover {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            transform: translateX(5px);
+        }
+
+        .tool-btn span {
+            font-size: 20px;
+        }
+
+        /* Всплывающий статус сохранения */
+        .toast {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background: var(--neon-green);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,255,135,0.4);
+            display: none;
+            animation: slideUp 0.3s forwards;
+            z-index: 9999;
+        }
+
+        @keyframes slideUp { from { transform: translateY(100px); opacity:0;} to { transform: translateY(0); opacity:1;} }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">GameVerse</div>
-        <nav>
-            <a href="#">Главная</a>
-            <a href="#">Топ игр</a>
-            <a href="#">Новинки</a>
-            <a href="#">Контакты</a>
-        </nav>
-    </header>
+    <div id="page1" class="page active">
+        <header>
+            <div class="logo-area">NEXUS.TORNADO</div>
+            <button class="btn-neon" onclick="switchPage('page2')">Открыть Панель ПМ (Строительство)</button>
+        </header>
 
-    <section class="hero">
-        <h1>Самые культовые игры в один клик</h1>
-        <p>Добро пожаловать на самый красивый портал рунета. Мы собрали лучшие шедевры игровой индустрии с высокой скоростью скачивания и полной безопасностью.</p>
-    </section>
+        <div class="main-container">
+            <aside class="glass-panel sidebar-settings">
+                <h3>Расширенные Фильтры</h3>
+                <div class="setting-item">
+                    <label>Тип шифрования трекера</label>
+                    <select>
+                        <option>DHT + Peer Exchange (Макс. Скорость)</option>
+                        <option>Приватный Прокси HTTP</option>
+                        <option>Зашифрованный UDP соединение</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Ограничение загрузки (Мб/с)</label>
+                    <input type="range" min="10" max="1000" value="500">
+                </div>
+                <div class="setting-item">
+                    <label>Хэширование постройки модов</label>
+                    <select>
+                        <option>SHA-256 Многопоточный</option>
+                        <option>Быстрый CRC32</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Приоритет движка ввода-вывода</label>
+                    <select>
+                        <option>Режим Realtime (Высокая нагрузка)</option>
+                        <option>Фоновый режим</option>
+                    </select>
+                </div>
+                <hr style="border-color: var(--border-glass); margin: 20px 0;">
+                <h3>Архитектура Постройки</h3>
+                <button class="tool-btn" style="width:100%; margin-bottom:10px;" onclick="switchPage('page2')">⚡ Конструктор Ядра</button>
+                <button class="tool-btn" style="width:100%;" onclick="alert('Глобальный Кэш Очищен!')">🗑 Сбросить Хэш-таблицы</button>
+            </aside>
 
-    <main class="catalog">
-        
-        <div class="game-card">
-            <div class="game-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" alt="Киберпанк мир">
-            </div>
-            <div class="game-info">
-                <div class="game-title">CyberNeon 2077</div>
-                <div class="game-desc">Погрузитесь в футуристический мегаполис, где технологии переплелись с криминалом. Неоновые улицы и продвинутый сюжет ждут вас.</div>
-                <a href="#" class="btn-download">Скачать Торрент</a>
+            <div class="content-area">
+                <div class="glass-panel" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <h2>Глобальный Банк Данных Торрентов</h2>
+                        <p style="color: var(--text-dim); font-size:14px;">Выгрузка напрямую из зашифрованных пиринговых сетей Torn.</p>
+                    </div>
+                    <input type="text" placeholder="Умный поиск по коду игры..." style="width: 300px;">
+                </div>
+
+                <div class="games-grid">
+                    <div class="game-card" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600');">
+                        <div class="card-overlay">
+                            <h3>Cyber-Torn Pro 2026</h3>
+                            <div class="torrent-meta">
+                                <span>Сиды: 14,820</span>
+                                <span>Размер: 112.4 Гб</span>
+                            </div>
+                            <button class="btn-neon" style="width: 100%;" onclick="goToAdvancedPage('Cyber-Torn Pro')">Скачать TORRENT</button>
+                        </div>
+                    </div>
+
+                    <div class="game-card" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600');">
+                        <div class="card-overlay">
+                            <h3>Shadow Forge RPG</h3>
+                            <div class="torrent-meta">
+                                <span>Сиды: 9,411</span>
+                                <span>Размер: 45.1 Гб</span>
+                            </div>
+                            <button class="btn-neon" style="width: 100%;" onclick="goToAdvancedPage('Shadow Forge')">Скачать TORRENT</button>
+                        </div>
+                    </div>
+
+                    <div class="game-card" style="background-image: url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=600');">
+                        <div class="card-overlay">
+                            <h3>Hyper Velocity: Overdrive</h3>
+                            <div class="torrent-meta">
+                                <span>Сиды: 22,054</span>
+                                <span>Размер: 78.9 Гб</span>
+                            </div>
+                            <button class="btn-neon" style="width: 100%;" onclick="goToAdvancedPage('Hyper Velocity')">Скачать TORRENT</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="game-card">
-            <div class="game-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" alt="Фэнтези">
+
+    <div id="page2" class="page">
+        <header>
+            <div class="logo-area" id="target-title">ИНСТРУМЕНТЫ РАЗРАБОТКИ & ПОСТРОЙКИ</div>
+            <button class="btn-neon" style="background:linear-gradient(135deg, #ff416c, #ff4b2b)" onclick="switchPage('page1')">⬅ Вернуться к Торрентам</button>
+        </header>
+
+        <div class="pml-container">
+            <div class="glass-panel pml-header">
+                <div>
+                    <h1>Визуальный Конструктор Структур и Скриптов</h1>
+                    <p style="color: var(--text-dim);">Каждая кнопка активирует внедрение микрокода в выбранную графическую ячейку.</p>
+                </div>
+                <button class="btn-neon" style="background:var(--neon-green); color:#000;" onclick="triggerToast()">Сохранить Конфигурацию Постройки</button>
             </div>
-            <div class="game-info">
-                <div class="game-title">Realm of Sword</div>
-                <div class="game-desc">Масштабная RPG в открытом фэнтезийном мире. Сражайтесь с мифическими существами, осваивайте магию и постройте свою империю.</div>
-                <a href="#" class="btn-download">Скачать Торрент</a>
+
+            <div class="constructor-grid">
+                <div class="glass-panel" style="display:flex; flex-direction:column; gap:20px;">
+                    <div class="canvas-area" id="canvas">
+                        <div class="grid-lines"></div>
+                        <div id="canvas-status" style="z-index: 2; font-weight: bold; font-size: 18px; color: var(--neon-cyan); text-align:center;">
+                            [ Поле Постройки Активно ]<br>
+                            <span style="font-size:12px; color:white;">Нажимайте на инструменты справа для рендеринга объектов</span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:15px;">
+                        <input type="text" id="custom-object" placeholder="Ввести собственный тег постройки..." style="flex:1;">
+                        <button class="btn-neon" onclick="injectCustom()">Внедрить объект</button>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="display:flex; flex-direction:column; gap:20px;">
+                    <h3>Инструменты Рендеринга</h3>
+                    <div class="tool-box">
+                        <button class="tool-btn" onclick="addNode('💠 Модуль Загрузки Torn')"><span>💠</span> Torn Мод</button>
+                        <button class="tool-btn" onclick="addNode('🔥 Графический Шейдер')"><span>🔥</span> Шейдер</button>
+                        <button class="tool-btn" onclick="addNode('⚙️ Скрипт Сжатия Ресурсов')"><span>⚙️</span> Сжатие</button>
+                        <button class="tool-btn" onclick="addNode('🛡️ Защита Трафика Peer-to-Peer')"><span>🛡️</span> Защита P2P</button>
+                        <button class="tool-btn" onclick="addNode('📊 Монитор Нагрузки ЦП')"><span>📊</span> Оптимизатор</button>
+                        <button class="tool-btn" onclick="addNode('🌌 Элемент Интерфейса Светлая Тема')"><span>🌌</span> UI Светлый</button>
+                    </div>
+
+                    <hr style="border-color: var(--border-glass)">
+
+                    <h3>Параметры Матрицы (ПМ)</h3>
+                    <div class="setting-item">
+                        <label>Сетка привязки объектов</label>
+                        <select>
+                            <option>Адаптивная 20x20 пикселей</option>
+                            <option>Свободное позиционирование</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>Интенсивность свечения деталей</label>
+                        <input type="range" min="0" max="100" value="85" oninput="document.getElementById('canvas').style.boxShadow = 'inset 0 0 '+this.value+'px rgba(0,242,254,0.6)'">
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="game-card">
-            <div class="game-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=600&auto=format&fit=crop" alt="Гонки">
-            </div>
-            <div class="game-info">
-                <div class="game-title">Velocity: Horizon</div>
-                <div class="game-desc">Умопомрачительный симулятор гонок. Ощутите настоящую скорость на самых опасных и красивых трассах планеты на суперкарах.</div>
-                <a href="#" class="btn-download">Скачать Торрент</a>
-            </div>
-        </div>
+    <div class="toast" id="toast">✅ Архитектура успешно скомпилирована в Хэш-код!</div>
 
-    </main>
+    <script>
+        // Функция переключения между двумя полноценными страницами
+        function switchPage(pageId) {
+            // Скрываем все страницы
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            // Показываем нужную страницу
+            const targetPage = document.getElementById(pageId);
+            targetPage.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
+        // Перенаправление на страницу постройки с кастомным заголовком скачиваемой игры
+        function goToAdvancedPage(gameName) {
+            document.getElementById('target-title').innerText = `РЕНДЕРИНГ И ПОСТРОЙКА ДЛЯ: ${gameName.toUpperCase()}`;
+            document.getElementById('canvas-status').innerHTML = `[ Инициализация Постройки для ${gameName} ]<br><span style="font-size:12px; color:var(--neon-green);">Пакеты Торрента Torn готовы к внедрению инструментов</span>`;
+            switchPage('page2');
+        }
+
+        // Логика добавления графических блоков в конструктор
+        function addNode(name) {
+            const canvas = document.getElementById('canvas');
+            const status = document.getElementById('canvas-status');
+            
+            // Убираем стартовую надпись
+            if(status) status.style.display = 'none';
+
+            // Создаем новый уникальный красивый блок на холсте
+            const block = document.createElement('div');
+            block.style.position = 'absolute';
+            block.style.padding = '12px 18px';
+            block.style.background = 'rgba(0, 242, 254, 0.2)';
+            block.style.border = '2px solid var(--neon-cyan)';
+            block.style.borderRadius = '10px';
+            block.style.color = '#fff';
+            block.style.cursor = 'move';
+            block.style.fontWeight = 'bold';
+            block.style.fontSize = '12px';
+            block.style.boxShadow = '0 0 15px rgba(0, 242, 254, 0.4)';
+            block.style.left = Math.random() * (canvas.offsetWidth - 200) + 'px';
+            block.style.top = Math.random() * (canvas.offsetHeight - 60) + 'px';
+            block.innerText = name;
+
+            // Делаем элемент удаляемым по двойному клику
+            block.title = "Двойной клик для удаления элемента";
+            block.ondblclick = function() { this.remove(); };
+
+            canvas.appendChild(block);
+        }
+
+        // Внедрение кастомного объекта пользователя
+        function injectCustom() {
+            const input = document.getElementById('custom-object');
+            if(input.value.trim() !== "") {
+                addNode("🚀 " + input.value);
+                input.value = "";
+            } else {
+                alert("Введите название элемента кода!");
+            }
+        }
+
+        // Показ уведомления о сохранении
+        function triggerToast() {
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
