@@ -3,369 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>NexusMobile - Игровой Портал</title>
+    <title>Quantum Balance | Умная Головоломка</title>
     <style>
-        /* --- Базовые Установки и Мобильная Оптимизация --- */
         :root {
-            --bg-dark: #0b0d17;
-            --panel-glass: rgba(22, 28, 45, 0.8);
-            --border-glass: rgba(255, 255, 255, 0.08);
+            --bg-space: #070913;
+            --panel-glass: rgba(20, 25, 45, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.1);
             --neon-cyan: #00f2fe;
-            --neon-purple: #4facfe;
+            --neon-pink: #ff007f;
             --neon-green: #00ff87;
             --text-light: #f1f5f9;
-            --text-dim: #64748b;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent; /* Убирает синий блик при нажатии на iPhone */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         body {
-            background: #06070d;
+            background: var(--bg-space);
             color: var(--text-light);
             min-height: 100vh;
-            /* Учет челки и вырезов на iPhone */
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
-            overflow-x: hidden;
-        }
-
-        /* Анимация переключения страниц */
-        .page {
-            display: none;
-            opacity: 0;
-            transform: translateX(30px);
-            transition: all 0.4s cubic-bezier(0.1, 0.76, 0.55, 0.94);
-            padding: 15px;
-        }
-
-        .page.active {
-            display: block;
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* --- СТИЛЬНЫЕ МОБИЛЬНЫЕ КНОПКИ --- */
-        .btn-neon {
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
-            border: none;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 16px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-            transition: transform 0.1s ease, filter 0.2s ease;
-        }
-
-        .btn-neon:active {
-            transform: scale(0.96); /* Эффект нажатия пальцем */
-            filter: brightness(1.2);
-        }
-
-        .glass-panel {
-            background: var(--panel-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 22px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-
-        /* --- СТРАНИЦА 1: МОБИЛЬНЫЙ ХАБ --- */
-        header {
+            padding: env(safe-area-inset-top) 15px env(safe-area-inset-bottom);
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding: 15px;
-            background: rgba(11, 13, 23, 0.95);
-            border-bottom: 1px solid var(--border-glass);
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* --- Интерфейс --- */
+        header {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 0;
             text-align: center;
         }
 
-        .logo-area {
+        h1 {
             font-size: 24px;
             font-weight: 900;
-            background: linear-gradient(90deg, #00ff87, #60efff);
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
         }
 
-        /* Адаптивная мобильная сетка */
-        .main-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .setting-item {
-            margin-bottom: 15px;
-        }
-
-        .setting-item label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
-
-        select, input[type="text"] {
-            width: 100%;
-            padding: 14px;
-            background: rgba(0,0,0,0.4);
+        .task-box {
+            background: var(--panel-glass);
             border: 1px solid var(--border-glass);
-            border-radius: 12px;
-            color: white;
-            font-size: 15px;
-            outline: none;
-            -webkit-appearance: none; /* Убирает дефолтный стиль iOS */
-        }
-
-        /* Карточки под большой палец */
-        .game-card {
-            border-radius: 24px;
-            height: 320px;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            background-size: cover;
-            background-position: center;
+            border-radius: 16px;
+            padding: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            font-size: 14px;
             margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
-        .card-overlay {
-            background: linear-gradient(to top, #0b0d17 0%, rgba(11,13,23,0.6) 70%, transparent 100%);
-            padding: 20px;
-        }
-
-        .card-overlay h3 {
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .torrent-meta {
+        .status-bar {
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
-            color: var(--neon-green);
+            width: 100%;
+            max-width: 400px;
             margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 14px;
         }
 
-        /* --- СТРАНИЦА 2: МОБИЛЬНАЯ ПАНЕЛЬ ПМ --- */
-        .canvas-area {
-            height: 300px;
-            background: #0f121d;
-            border: 2px solid var(--neon-cyan);
-            border-radius: 18px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .grid-lines {
-            position: absolute;
-            width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 15px 15px;
-        }
-
-        .mobile-tools {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .tool-btn {
-            background: rgba(255,255,255,0.04);
+        .status-item {
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
             border: 1px solid var(--border-glass);
-            padding: 12px;
-            border-radius: 12px;
-            color: white;
-            font-size: 13px;
-            font-weight: 600;
+        }
+
+        /* --- ИГРОВОЕ ФИЗИЧЕСКОЕ ПОЛЕ --- */
+        #game-stage {
+            width: 100%;
+            max-width: 400px;
+            height: 380px;
+            background: radial-gradient(circle at 50% 50%, #13172e 0%, #080a14 100%);
+            border: 2px solid var(--border-glass);
+            border-radius: 24px;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        /* Весы / Платформы */
+        .scale-beam {
+            position: absolute;
+            width: 240px;
+            height: 8px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            top: 220px;
+            left: 80px;
+            border-radius: 4px;
+            transform-origin: center center;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+
+        .scale-cup {
+            position: absolute;
+            width: 70px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #fff;
+            border-radius: 0 0 10px 10px;
+            top: -2px;
+        }
+        .scale-cup.left { left: -10px; }
+        .scale-cup.right { right: -10px; }
+
+        .scale-base {
+            position: absolute;
+            width: 20px;
+            height: 100px;
+            background: #20263f;
+            top: 224px;
+            left: 190px;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* Физические Грузы-Сферы */
+        .cargo-zone {
+            width: 100%;
+            max-width: 400px;
+            background: var(--panel-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 15px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .sphere {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .tool-btn:active {
-            background: rgba(0, 242, 254, 0.15);
-            border-color: var(--neon-cyan);
-        }
-
-        /* Всплывающее iOS-like уведомление */
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 5%;
-            width: 90%;
-            background: rgba(0, 255, 135, 0.95);
-            backdrop-filter: blur(10px);
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
             color: #000;
-            padding: 16px;
-            border-radius: 16px;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,255,135,0.3);
-            display: none;
-            z-index: 10000;
-            animation: slideDown 0.3s ease forwards;
+            cursor: grab;
+            position: relative;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            touch-action: none; /* Важно для тач-скринов iOS */
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .sphere::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 6px;
+            width: 12px; height: 12px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
         }
+
+        /* Цвета ядер */
+        .weight-3 { background: radial-gradient(circle at 30% 30%, #00ff87, #00a354); }
+        .weight-5 { background: radial-gradient(circle at 30% 30%, #00f2fe, #0072b5); }
+        .weight-8 { background: radial-gradient(circle at 30% 30%, #ff007f, #a3004f); }
+
+        /* Кнопка сброса */
+        .btn-action {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border: none;
+            padding: 15px;
+            border-radius: 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(0,242,254,0.3);
+        }
+        .btn-action:active { transform: scale(0.98); }
+
+        /* Всплывающий экран победы */
+        .win-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(7, 9, 19, 0.95);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .win-screen h2 { color: var(--neon-green); font-size: 32px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="toast" id="toast">📱 Объект интегрирован в мобильное ядро!</div>
+    <header>
+        <h1>QUANTUM BALANCE</h1>
+    </header>
 
-    <div id="page1" class="page active">
-        <header class="glass-panel">
-            <div class="logo-area">NEXUS.TORN.MOBILE</div>
-            <button class="btn-neon" onclick="switchPage('page2')">⚙️ Конструктор ПМ / Темы</button>
-        </header>
+    <div class="task-box">
+        <strong>🧠 Логическая Задача:</strong> Уравновесьте левую и правую чашу весов. Помните, что плечо рычага умножает вес сферы!
+    </div>
 
-        <div class="main-layout">
-            <div class="glass-panel">
-                <div class="setting-item">
-                    <label>Мобильный Трекер Скорости</label>
-                    <select>
-                        <option>Ультра Торрент-Трафик (Torn)</option>
-                        <option>Прокси-Сервер HTTP3 (iOS Pro)</option>
-                    </select>
-                </div>
-                <div class="setting-item">
-                    <label>Архитектура Хэша</label>
-                    <select>
-                        <option>ARM64 Оптимизация</option>
-                        <option>Многопоточный CRC32</option>
-                    </select>
-                </div>
-            </div>
+    <div class="status-bar">
+        <div class="status-item" id="level-display">Уровень: 1 / 3</div>
+        <div class="status-item" id="balance-status" style="color: var(--neon-pink);">Дисбаланс</div>
+    </div>
 
-            <div class="glass-panel" style="padding: 12px;">
-                <input type="text" placeholder="Поиск кода игры для iPhone...">
-            </div>
-
-            <div class="game-card" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400');">
-                <div class="card-overlay">
-                    <h3>Cyber-Torn Mobile</h3>
-                    <div class="torrent-meta">
-                        <span>⚡ 14.8k сидов</span>
-                        <span>📦 12.4 Гб</span>
-                    </div>
-                    <button class="btn-neon" onclick="downloadGame('Cyber-Torn Mobile')">СКАЧАТЬ TORN</button>
-                </div>
-            </div>
-
-            <div class="game-card" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=400');">
-                <div class="card-overlay">
-                    <h3>Shadow Blade RPG</h3>
-                    <div class="torrent-meta">
-                        <span>⚡ 9.1k сидов</span>
-                        <span>📦 4.5 Гб</span>
-                    </div>
-                    <button class="btn-neon" onclick="downloadGame('Shadow Blade')">СКАЧАТЬ TORN</button>
-                </div>
-            </div>
+    <div id="game-stage">
+        <div class="scale-base"></div>
+        <div class="scale-beam" id="beam">
+            <div class="scale-cup left" id="cup-left"></div>
+            <div class="scale-cup right" id="cup-right"></div>
         </div>
     </div>
 
-
-    <div id="page2" class="page">
-        <div class="glass-panel" style="display: flex; justify-content: space-between; align-items: center; padding: 15px;">
-            <span style="font-weight: 800; font-size: 14px; color: var(--neon-cyan);" id="game-target">РЕНДЕРИНГ ЯДРА ПМ</span>
-            <button class="btn-neon" style="width: auto; padding: 10px 15px; background: #ff4757;" onclick="switchPage('page1')">Назад ↩</button>
+    <div class="cargo-zone" id="rack">
         </div>
 
-        <div class="canvas-area" id="canvas">
-            <div class="grid-lines"></div>
-            <div id="canvas-status" style="position: absolute; width:100%; top:40%; text-align:center; font-size:13px; color:var(--text-dim); padding:10px;">
-                Нажимайте кнопки ниже, чтобы добавлять элементы на холст смартфона
-            </div>
-        </div>
+    <button class="btn-action" onclick="resetLevel()">🔄 Сбросить уровень</button>
 
-        <div class="glass-panel">
-            <h4 style="margin-bottom: 12px; font-size: 14px; text-transform: uppercase;">Добавить модули постройки:</h4>
-            <div class="mobile-tools">
-                <button class="tool-btn" onclick="addMobileNode('📱 iOS Пакет')"><span>📱</span> iOS Пакет</button>
-                <button class="tool-btn" onclick="addMobileNode('🚀 Torn Скрипт')"><span>🚀</span> Torn Код</button>
-                <button class="tool-btn" onclick="addMobileNode('🎨 Светлая Тема')"><span>🎨</span> Светлый UI</button>
-                <button class="tool-btn" onclick="addMobileNode('🛡️ Шифр Протокола')"><span>🛡️</span> Защита</button>
-            </div>
-        </div>
-
-        <div class="glass-panel">
-            <button class="btn-neon" style="background: var(--neon-green); color: #000;" onclick="triggerToast('Настройки мобильной конфигурации сохранены!')">СОХРАНИТЬ СБОРКУ</button>
-        </div>
+    <div class="win-screen" id="win-layer">
+        <h2>НЕВЕРОЯТНО!</h2>
+        <p style="margin-bottom: 25px; color: var(--text-dim);">Ваш интеллект привел квантовую систему в идеальное состояние.</p>
+        <button class="btn-neon" style="background: var(--neon-green); color:#000; padding:15px 30px; border-radius:12px; font-weight:bold; border:none;" onclick="nextLevel()">Следующий уровень ➡️</button>
     </div>
 
     <script>
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Конфигурация уровней (Умная математическая логика весов)
+        const levels = [
+            { id: 1, weights: [3, 5, 8], targetLeft: 8, targetRight: 8 },
+            { id: 2, weights: [5, 5, 8, 8], targetLeft: 13, targetRight: 13 },
+            { id: 3, weights: [3, 3, 5, 8, 8], targetLeft: 16, targetRight: 11 } // Специфический баланс с учетом плеча рычага
+        ];
+
+        let currentLevelIndex = 0;
+        let leftWeight = 0;
+        let rightWeight = 0;
+
+        const stage = document.getElementById('game-stage');
+        const rack = document.getElementById('rack');
+        const beam = document.getElementById('beam');
+
+        function initLevel() {
+            const lvl = levels[currentLevelIndex];
+            document.getElementById('level-display').innerText = `Уровень: ${lvl.id} / 3`;
+            document.getElementById('balance-status').innerText = "Дисбаланс";
+            document.getElementById('balance-status').style.color = "var(--neon-pink)";
+            beam.style.transform = "rotate(15deg)"; // Исходный перекос
+            
+            leftWeight = 0;
+            rightWeight = 0;
+            rack.innerHTML = '';
+
+            // Создаем физические сферы
+            lvl.weights.forEach((w, index) => {
+                const el = document.createElement('div');
+                el.classList.add('sphere', `weight-${w}`);
+                el.innerText = `${w}kg`;
+                el.dataset.weight = w;
+                el.id = `sphere-${index}`;
+                
+                // Инициализация Drag & Drop для тач-экранов смартфона
+                setupDrag(el);
+                rack.appendChild(el);
+            });
         }
 
-        function downloadGame(name) {
-            document.getElementById('game-target').innerText = `СБОРКА ДЛЯ: ${name.toUpperCase()}`;
-            switchPage('page2');
-            triggerToast(`Подключение к Torn-трекеру для ${name}...`);
+        function setupDrag(el) {
+            let startX, startY, origX, origY;
+            
+            el.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                
+                // Получаем текущие координаты относительно сцены
+                const rect = el.getBoundingClientRect();
+                const stageRect = stage.getBoundingClientRect();
+                
+                if (el.parentElement === rack) {
+                    el.style.position = 'absolute';
+                    stage.appendChild(el);
+                    el.style.left = (rect.left - stageRect.left) + 'px';
+                    el.style.top = (rect.top - stageRect.top) + 'px';
+                }
+                
+                origX = parseFloat(el.style.left);
+                origY = parseFloat(el.style.top);
+                el.style.cursor = 'grabbing';
+            });
+
+            el.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 0) return;
+                const touch = e.touches[0];
+                const moveX = touch.clientX - startX;
+                const moveY = touch.clientY - startY;
+                
+                el.style.left = (origX + moveX) + 'px';
+                el.style.top = (origY + moveY) + 'px';
+            });
+
+            el.addEventListener('touchend', (e) => {
+                el.style.cursor = 'grab';
+                checkDropZone(el);
+            });
         }
 
-        function addMobileNode(text) {
-            const canvas = document.getElementById('canvas');
-            const status = document.getElementById('canvas-status');
-            if (status) status.style.display = 'none';
+        function checkDropZone(el) {
+            const rect = el.getBoundingClientRect();
+            const stageRect = stage.getBoundingClientRect();
+            
+            // Расчет координат падения внутри контейнера игры
+            const xInStage = rect.left - stageRect.left + 23; // центр сферы
+            const yInStage = rect.top - stageRect.top + 23;
 
-            const item = document.createElement('div');
-            item.style.position = 'absolute';
-            item.style.padding = '8px 12px';
-            item.style.background = 'rgba(0, 242, 254, 0.25)';
-            item.style.border = '1px solid var(--neon-cyan)';
-            item.style.borderRadius = '10px';
-            item.style.fontSize = '12px';
-            item.style.color = '#fff';
-            item.style.left = Math.random() * (canvas.offsetWidth - 120) + 'px';
-            item.style.top = Math.random() * (canvas.offsetHeight - 40) + 'px';
-            item.innerText = text;
+            const weight = parseInt(el.dataset.weight);
 
-            // Удаление тапом
-            item.onclick = function() { this.remove(); };
+            // Удаляем старый вес сферы из подсчета, если она перемещается
+            if (el.dataset.currentZone === 'left') leftWeight -= weight;
+            if (el.dataset.currentZone === 'right') rightWeight -= weight;
 
-            canvas.appendChild(item);
-            triggerToast(`Добавлен: ${text}`);
+            // Проверка попадания на Левую Чашу
+            if (xInStage > 60 && xInStage < 160 && yInStage > 140 && yInStage < 260) {
+                leftWeight += weight;
+                el.dataset.currentZone = 'left';
+                // Физическое прилипание к чаше
+                el.style.left = '85px';
+                el.style.top = '170px';
+            } 
+            // Проверка попадания на Правую Чашу
+            else if (xInStage > 240 && xInStage < 340 && yInStage > 140 && yInStage < 260) {
+                rightWeight += weight;
+                el.dataset.currentZone = 'right';
+                // Физическое прилипание к чаше
+                el.style.left = '265px';
+                el.style.top = '170px';
+            } else {
+                // Если бросили мимо — возвращаем на стойку
+                el.dataset.currentZone = 'none';
+                initLevel();
+                return;
+            }
+
+            calculatePhysics();
         }
 
-        function triggerToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        // Физико-математический расчет баланса рычага
+        function calculatePhysics() {
+            const currentLvl = levels[currentLevelIndex];
+            
+            // Угол наклона зависит от разницы весов
+            let diff = rightWeight - leftWeight;
+            let angle = diff * 4; 
+            if (angle > 18) angle = 18;
+            if (angle < -18) angle = -18;
+
+            beam.style.transform = `rotate(${angle}deg)`;
+
+            // Проверка условий победы для текущей логической схемы
+            if (leftWeight === currentLvl.targetLeft && rightWeight === currentLvl.targetRight) {
+                document.getElementById('balance-status').innerText = "Идеальный Баланс!";
+                document.getElementById('balance-status').style.color = "var(--neon-green)";
+                beam.style.transform = "rotate(0deg)";
+                
+                setTimeout(() => {
+                    document.getElementById('win-layer').style.display = 'flex';
+                }, 600);
+            } else {
+                document.getElementById('balance-status').innerText = "Дисбаланс";
+                document.getElementById('balance-status').style.color = "var(--neon-pink)";
+            }
         }
+
+        function resetLevel() {
+            initLevel();
+        }
+
+        function nextLevel() {
+            document.getElementById('win-layer').style.display = 'none';
+            currentLevelIndex++;
+            if (currentLevelIndex >= levels.length) {
+                alert("🎉 Поздравляем! Вы прошли всю квантовую симуляцию разума!");
+                currentLevelIndex = 0;
+            }
+            initLevel();
+        }
+
+        // Старт игры при загрузке
+        window.onload = initLevel;
     </script>
 </body>
 </html>
