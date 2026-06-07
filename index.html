@@ -1,78 +1,336 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Простой шутер</title>
-<style>
-    body {
-        margin: 0;
-        overflow: hidden;
-        background-color: #333;
-        color: white;
-        font-family: Arial, sans-serif;
-    }
-    #gameArea {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-        cursor: crosshair;
-    }
-    .target {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background-color: red;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        cursor: pointer;
-    }
-    #scoreBoard {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        font-size: 24px;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameVerse | Скачать Лучшие Игры</title>
+    <style>
+        /* --- Общие стили и Переменные --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --panel-bg: rgba(255, 255, 255, 0.65);
+            --panel-border: rgba(255, 255, 255, 0.4);
+            --primary-color: #6c5ce7;
+            --secondary-color: #00cec9;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBg 15s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Анимация «живого» заднего фона */
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Шапка сайта (Header) --- */
+        header {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px 40px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--panel-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            animation: slideDown 1s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .logo:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            margin-left: 30px;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        /* Красивая анимация подчеркивания ссылок */
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- Главный блок (Hero Section) --- */
+        .hero {
+            text-align: center;
+            margin: 60px auto 40px;
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: #1e272e;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        /* --- Сетка с играми (Grid) --- */
+        .catalog {
+            width: 90%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding-bottom: 60px;
+        }
+
+        /* --- Карточка игры --- */
+        .game-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--panel-border);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        /* Эффект при наведении на всю карточку */
+        .game-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
+            border-color: rgba(108, 92, 231, 0.4);
+        }
+
+        .game-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Плавное увеличение картинки */
+        .game-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Световой блик, пробегающий по картинке при наведении */
+        .game-img-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 100%);
+            transform: skewX(-25deg);
+        }
+
+        .game-card:hover .game-img-wrapper::after {
+            animation: shine 0.75s;
+        }
+
+        @keyframes shine {
+            100% { left: 125%; }
+        }
+
+        .game-info {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .game-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e272e;
+        }
+
+        .game-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* --- Супер-кнопка скачать --- */
+        .btn-download {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 14px 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 700;
+            border-radius: 18px;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Анимация увеличения кнопки и свечения */
+        .btn-download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 206, 201, 0.6);
+        }
+
+        .btn-download:active {
+            transform: scale(0.98);
+        }
+
+        /* Эффект пульсации внутри кнопки */
+        .btn-download::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .btn-download:hover::before {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
 
-<div id="gameArea">
-    <div id="scoreBoard">Счет: <span id="score">0</span></div>
-</div>
+    <header>
+        <div class="logo">GameVerse</div>
+        <nav>
+            <a href="#">Главная</a>
+            <a href="#">Топ игр</a>
+            <a href="#">Новинки</a>
+            <a href="#">Контакты</a>
+        </nav>
+    </header>
 
-<script>
-    const gameArea = document.getElementById('gameArea');
-    const scoreDisplay = document.getElementById('score');
-    let score = 0;
+    <section class="hero">
+        <h1>Самые культовые игры в один клик</h1>
+        <p>Добро пожаловать на самый красивый портал рунета. Мы собрали лучшие шедевры игровой индустрии с высокой скоростью скачивания и полной безопасностью.</p>
+    </section>
 
-    function createTarget() {
-        const target = document.createElement('div');
-        target.classList.add('target');
+    <main class="catalog">
         
-        const x = Math.random() * (window.innerWidth - 100) + 50;
-        const y = Math.random() * (window.innerHeight - 100) + 50;
-        
-        target.style.left = `${x}px`;
-        target.style.top = `${y}px`;
+        <div class="game-card">
+            <div class="game-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" alt="Киберпанк мир">
+            </div>
+            <div class="game-info">
+                <div class="game-title">CyberNeon 2077</div>
+                <div class="game-desc">Погрузитесь в футуристический мегаполис, где технологии переплелись с криминалом. Неоновые улицы и продвинутый сюжет ждут вас.</div>
+                <a href="#" class="btn-download">Скачать Торрент</a>
+            </div>
+        </div>
 
-        target.addEventListener('click', () => {
-            score++;
-            scoreDisplay.textContent = score;
-            target.remove();
-        });
+        <div class="game-card">
+            <div class="game-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" alt="Фэнтези">
+            </div>
+            <div class="game-info">
+                <div class="game-title">Realm of Sword</div>
+                <div class="game-desc">Масштабная RPG в открытом фэнтезийном мире. Сражайтесь с мифическими существами, осваивайте магию и постройте свою империю.</div>
+                <a href="#" class="btn-download">Скачать Торрент</a>
+            </div>
+        </div>
 
-        gameArea.appendChild(target);
+        <div class="game-card">
+            <div class="game-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=600&auto=format&fit=crop" alt="Гонки">
+            </div>
+            <div class="game-info">
+                <div class="game-title">Velocity: Horizon</div>
+                <div class="game-desc">Умопомрачительный симулятор гонок. Ощутите настоящую скорость на самых опасных и красивых трассах планеты на суперкарах.</div>
+                <a href="#" class="btn-download">Скачать Торрент</a>
+            </div>
+        </div>
 
-        setTimeout(() => {
-            if (target.parentElement) {
-                target.remove();
-            }
-        }, 2000);
-    }
-
-    setInterval(createTarget, 1000);
-</script>
+    </main>
 
 </body>
 </html>
