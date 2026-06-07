@@ -3,60 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Quantum Impulse: 50 Вызовов</title>
+    <title>Quantum Impulse: Ultra Mobile</title>
     <style>
         :root {
             --bg-space: #04060f;
             --panel: rgba(13, 17, 33, 0.95);
-            --border-glow: rgba(0, 242, 254, 0.2);
             --neon-cyan: #00f2fe;
             --neon-magenta: #f355da;
-            --neon-gold: #ffb300;
             --ice-blue: #00bfff;
         }
 
+        /* Полная блокировка системного зума, лупы и выделений текста */
         * {
             margin: 0; padding: 0; box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            user-select: none; -webkit-tap-highlight-color: transparent;
+            user-select: none; 
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: none; /* Жёсткий запрет на лупу и двойной тап на iOS/Android */
         }
 
         body {
             background: var(--bg-space); color: #fff; min-height: 100vh;
             padding: env(safe-area-inset-top) 8px env(safe-area-inset-bottom);
             display: flex; flex-direction: column; align-items: center; overflow: hidden;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; /* Фиксирует экран намертво */
         }
 
-        /* Экраны игры */
         .screen { display: none; width: 100%; max-width: 420px; flex-direction: column; height: 94vh; }
         .screen.active { display: flex; }
 
         header { padding: 10px 0; text-align: center; }
-        h1 { font-size: 24px; font-weight: 900; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
+        h1 { font-size: 24px; font-weight: 900; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .glass-container { 
             background: var(--panel); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; 
             padding: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); flex: 1; display: flex; flex-direction: column;
         }
         
-        /* Сетка выбора уровней на 50 позиций с прокруткой */
         .level-scroll-area { 
-            flex: 1; overflow-y: auto; margin-top: 15px; padding-right: 5px;
+            flex: 1; overflow-y: auto; margin-top: 15px;
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
         }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
 
         .lvl-card { 
             background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; 
             padding: 12px 5px; color: #fff; font-size: 14px; font-weight: bold; cursor: pointer; text-align: center;
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
         }
-        .lvl-card:active { transform: scale(0.92); }
         .lvl-card.locked { opacity: 0.25; pointer-events: none; }
         .lvl-card.completed { border-color: var(--neon-cyan); background: rgba(0, 242, 254, 0.05); }
 
-        /* Игровой интерфейс */
         .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: bold; width: 100%; max-width: 420px;}
         .hud-item { background: rgba(255,255,255,0.04); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
         
@@ -65,13 +61,12 @@
 
         .btn-ui {
             background: linear-gradient(135deg, #4facfe, #00f2fe); border: none; color: white;
-            padding: 14px; border-radius: 16px; font-weight: 700; font-size: 15px; text-align: center; cursor: pointer; margin-top: 8px; width: 100%; max-width: 420px;
+            padding: 14px; border-radius: 16px; font-weight: 700; font-size: 15px; text-align: center; margin-top: 8px; width: 100%;
         }
 
-        /* Окно результатов */
         .modal { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,6,15,0.97); 
-            z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
+            z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
         }
     </style>
 </head>
@@ -80,33 +75,31 @@
     <div id="menu-screen" class="screen active">
         <header>
             <h1>QUANTUM OVERDRIVE</h1>
-            <p style="color: #4b5563; font-size: 13px; margin-top: 2px;">50 Уровней Разной Архитектуры Физики</p>
+            <p style="color: #4b5563; font-size: 13px;">Исправленный Full-Screen Тач</p>
         </header>
         <div class="glass-container">
-            <h3 style="font-size: 14px; color: var(--neon-cyan); text-transform: uppercase;">Выбор Пространственного Сектора:</h3>
-            <div class="level-scroll-area" id="grid-container">
-                </div>
-            <p style="font-size: 11px; color:#475569; text-align:center; margin-top:10px;">С каждым сектором гравитация нестабильнее, лазеры быстрее, а дроны агрессивнее.</p>
+            <h3 style="font-size: 14px; color: var(--neon-cyan);">ВЫБОР СЕКТОРА (1-50):</h3>
+            <div class="level-scroll-area" id="grid-container"></div>
+            <p style="font-size: 12px; color:#55657e; text-align:center; margin-top:10px;">🚀 Тяни экран в <b>любом месте</b>, чтобы запустить ядро!</p>
         </div>
     </div>
 
     <div id="game-screen" class="screen">
         <div class="hud">
-            <button onclick="backToMenu()" style="background:none; border:none; color:var(--neon-magenta); font-weight:bold; font-size: 15px;">⬅ Назад</button>
+            <button onclick="backToMenu()" style="background:none; border:none; color:var(--neon-magenta); font-weight:bold; font-size: 16px;">⬅ Выйти</button>
             <div class="hud-item" id="hud-level">Сектор: 1</div>
-            <div class="hud-item" id="hud-type">Тип: Базовый</div>
+            <div class="hud-item" id="hud-type">Тип: База</div>
         </div>
         <div id="canvas-wrapper">
             <canvas id="physicsCanvas"></canvas>
         </div>
-        <button class="btn-ui" style="background: #1e293b;" onclick="resetCurrentLevel()">🔄 Перезагрузить матрицу</button>
+        <button class="btn-ui" style="background: #1e293b;" onclick="resetCurrentLevel()">🔄 Перезапустить сектор</button>
     </div>
 
     <div class="modal" id="win-modal">
-        <h2 style="color: var(--neon-cyan); font-size: 28px;">СЕКТОР ОЧИЩЕН</h2>
-        <p id="win-info" style="margin: 15px 0; color:#94a3b8;"></p>
-        <div style="font-size: 60px; margin: 15px 0;">🏆</div>
-        <button class="btn-ui" style="width: 80%;" onclick="loadNextLevel()">Загрузить следующий сектор ➡️</button>
+        <h2 style="color: var(--neon-cyan); font-size: 28px;">СЕКТОР ПРОЙДЕН</h2>
+        <div style="font-size: 60px; margin: 20px 0;">🏆</div>
+        <button class="btn-ui" style="width: 80%;" onclick="loadNextLevel()">Дальше ➡️</button>
     </div>
 
     <script>
@@ -118,127 +111,104 @@
         canvas.width = WIDTH;
         canvas.height = HEIGHT;
 
-        // Сохранение прогресса
         let maxUnlockedLevel = 1;
-        if(localStorage.getItem('quantum_max_lvl')) {
-            maxUnlockedLevel = parseInt(localStorage.getItem('quantum_max_lvl'));
+        if(localStorage.getItem('q_max_lvl_v2')) {
+            maxUnlockedLevel = parseInt(localStorage.getItem('q_max_lvl_v2'));
         }
 
         let currentLevel = 1;
         let gameActive = false;
 
-        // Игрок
         let player = { x: 50, y: 600, vx: 0, vy: 0, radius: 15 };
         const FRICTION = 0.97;
         let levelGravity = 0.1;
 
-        // Механика рогатки
+        // Полноэкранный Drag-and-Drop (независимый от шара)
         let isDragging = false;
         let dragStart = { x: 0, y: 0 };
         let dragCurrent = { x: 0, y: 0 };
 
-        // Массивы объектов на карте
         let platforms = [];
         let lasers = [];
         let enemies = [];
         let vortexes = [];
-        let portal = { x: 380, y: 100, radius: 30 };
-
-        // Временной сдвиг для анимации движущихся лазеров
+        let portal = { x: 380, y: 100, radius: 32 };
         let animTime = 0;
 
-        // --- ГЕНЕРАТОР 50 УНИКАЛЬНЫХ КАРТ (МАТЕМАТИЧЕСКАЯ ПРОЦЕДУРА) ---
+        // Жесткое гашение дабл-тапов на уровне JS (для Safari iPhone)
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) e.preventDefault(); // Гасит быстрый второй тап
+            lastTouchEnd = now;
+        }, { passive: false });
+
         function generateProceduralLevel(lvl) {
             platforms = []; lasers = []; enemies = []; vortexes = [];
             animTime = 0;
+            levelGravity = 0.08 + (lvl * 0.002);
 
-            // Настройка усложнения физики
-            levelGravity = 0.08 + (lvl * 0.003); // С каждым уровнем падать тяжелее
-
-            // Точки старта и финиша меняются в зависимости от четности уровня
             if (lvl % 2 === 0) {
-                player.x = 390; player.y = 630;
-                portal.x = 60; portal.y = 90;
+                player.x = 390; player.y = 630; portal.x = 60; portal.y = 90;
             } else {
-                player.x = 60; player.y = 630;
-                portal.x = 390; portal.y = 90;
+                player.x = 60; player.y = 630; portal.x = 390; portal.y = 90;
             }
 
-            // Ограничительные стены
+            // Границы карты
             platforms.push({x: 0, y: HEIGHT - 15, w: WIDTH, h: 15, type: 'normal'});
             platforms.push({x: 0, y: 0, w: 15, h: HEIGHT, type: 'normal'});
             platforms.push({x: WIDTH - 15, y: 0, w: 15, h: HEIGHT, type: 'normal'});
             platforms.push({x: 0, y: 0, w: WIDTH, h: 15, type: 'normal'});
 
-            // ГЕНЕРАЦИЯ ОСТРОВОВ И ЛАБИРИНТА
-            let floorCount = 3 + Math.floor(lvl / 12); // Больше этажей на высоких уровнях
+            let floorCount = 3 + Math.floor(lvl / 12);
             let floorSpacing = 500 / floorCount;
 
             for (let i = 1; i <= floorCount; i++) {
                 let yPos = HEIGHT - 100 - (i * floorSpacing);
-                let gapWidth = 110 - Math.min(lvl * 1, 50); // Проходы становятся уже
+                let gapWidth = 110 - Math.min(lvl * 0.8, 45);
                 let gapX = (Math.sin(lvl * i * 45) * 0.5 + 0.5) * (WIDTH - 180) + 40;
 
-                // Разделяем платформу на две части, создавая проход
                 platforms.push({x: 15, y: yPos, w: gapX - 15, h: 18, type: getRandomType(lvl, i)});
                 platforms.push({x: gapX + gapWidth, y: yPos, w: WIDTH - (gapX + gapWidth) - 15, h: 18, type: getRandomType(lvl, i + 1)});
 
-                // Размещаем лазеры (начиная со 2 уровня)
                 if (lvl > 1 && i % 2 === 0) {
                     lasers.push({
                         x: gapX + 10, y: yPos - 25, w: 35, h: 10, 
-                        moveRange: 60 + Math.min(lvl, 40), 
-                        startX: gapX + 10, 
-                        speed: 0.02 + (lvl * 0.001)
+                        moveRange: 60 + Math.min(lvl, 40), startX: gapX + 10, speed: 0.02 + (lvl * 0.001)
                     });
                 }
-
-                // Ставим Вихри (начиная с 12 уровня)
-                if (lvl >= 12 && i === 1) {
-                    vortexes.push({ x: WIDTH / 2, y: yPos + 40, radius: 25 });
-                }
+                if (lvl >= 12 && i === 1) vortexes.push({ x: WIDTH / 2, y: yPos + 40, radius: 25 });
             }
 
-            // СПАВН ЗЛОДЕЕВ: ДРОНЫ-ОХОТНИКИ (С 5 уровня)
             if (lvl >= 5) {
                 let enemyCount = 1 + Math.floor(lvl / 15);
                 for (let e = 0; e < enemyCount; e++) {
-                    enemies.push({
-                        x: 100 + (e * 120),
-                        y: 150 + (e * 60),
-                        vx: 0, vy: 0,
-                        radius: 12,
-                        speedFactor: 0.3 + (lvl * 0.015) // Дроны ускоряются
-                    });
+                    enemies.push({ x: 100 + (e * 120), y: 150 + (e * 60), vx: 0, vy: 0, radius: 11, speedFactor: 0.25 + (lvl * 0.01) });
                 }
             }
         }
 
         function getRandomType(lvl, seed) {
             let r = Math.abs(Math.sin(seed * 99)) * 100;
-            if (lvl >= 8 && r > 75) return 'bouncy'; // Прыгучая
-            if (lvl >= 15 && r < 25) return 'ice';   // Ледяная скользкая
+            if (lvl >= 8 && r > 75) return 'bouncy';
+            if (lvl >= 15 && r < 25) return 'ice';
             return 'normal';
         }
 
-        // --- ИНТЕРФЕЙС МЕНЮ СЕТКИ ---
         function initMenuGrid() {
             const container = document.getElementById('grid-container');
             container.innerHTML = '';
             for (let i = 1; i <= 50; i++) {
                 const card = document.createElement('div');
                 card.className = `lvl-card ${i <= maxUnlockedLevel ? '' : 'locked'} ${i < maxUnlockedLevel ? 'completed' : ''}`;
-                card.innerHTML = `<div>${i}</div><div style="font-size:9px; color:#4facfe">${getLvlTypeName(i)}</div>`;
+                card.innerHTML = `<div>${i}</div>`;
                 card.onclick = () => launchLevel(i);
                 container.appendChild(card);
             }
-        }
-
-        function getLvlTypeName(lvl) {
-            if(lvl >= 25) return "⚡Ад";
-            if(lvl >= 15) return "❄️Лед";
-            if(lvl >= 8) return "🔮Прыг";
-            return "• База";
         }
 
         function launchLevel(num) {
@@ -246,187 +216,134 @@
             document.getElementById('menu-screen').classList.remove('active');
             document.getElementById('game-screen').classList.add('active');
             document.getElementById('hud-level').innerText = `Сектор: ${num}`;
-            document.getElementById('hud-type').innerText = `Режим: ${getLvlTypeName(num)}`;
             
+            let modes = ["База", "Прыгучесть", "Лед", "Ад"];
+            document.getElementById('hud-type').innerText = `Режим: ${num >= 25 ? modes[3] : num >= 15 ? modes[2] : num >= 8 ? modes[1] : modes[0]}`;
+
             generateProceduralLevel(num);
             player.vx = 0; player.vy = 0;
             gameActive = true;
             requestAnimationFrame(runGameLoop);
         }
 
-        // --- СЕРДЦЕ ДВИЖКА: СИСТЕМА ФИЗИКИ И ИИ ОХОТНИКОВ ---
         function runGameLoop() {
             if (!gameActive) return;
-
             animTime += 1;
 
-            // Физика игрока (если не перетаскиваем)
             if (!isDragging) {
                 player.vy += levelGravity;
-                player.vx *= FRICTION;
-                player.vy *= FRICTION;
-                player.x += player.vx;
-                player.y += player.vy;
+                player.vx *= FRICTION; player.vy *= FRICTION;
+                player.x += player.vx; player.y += player.vy;
             }
 
-            // ОБРАБОТКА ИИ ЗЛОДЕЕВ (ДРОНЫ ПРЕСЛЕДУЮТ НАД КАРТОЙ)
+            // Логика Охотников
             enemies.forEach(en => {
-                let dx = player.x - en.x;
-                let dy = player.y - en.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-
+                let dx = player.x - en.x; let dy = player.y - en.y; let dist = Math.sqrt(dx*dx + dy*dy);
                 if (dist > 5) {
-                    en.vx += (dx / dist) * en.speedFactor * 0.1;
-                    en.vy += (dy / dist) * en.speedFactor * 0.1;
-                    en.vx *= 0.93; en.vy *= 0.93; // Ограничение разгона
+                    en.vx += (dx / dist) * en.speedFactor * 0.1; en.vy += (dy / dist) * en.speedFactor * 0.1;
+                    en.vx *= 0.93; en.vy *= 0.93;
                 }
                 en.x += en.vx; en.y += en.vy;
-
-                // Столкновение врага с игроком
-                if (dist < player.radius + en.radius) {
-                    resetCurrentLevel(); // Потери ядра, рестарт
-                }
+                if (dist < player.radius + en.radius) resetCurrentLevel();
             });
 
-            // АНИМАЦИЯ И СТОЛКНОВЕНИЕ ДВИЖУЩИХСЯ ЛАЗЕРОВ
+            // Лазеры
             lasers.forEach(lz => {
                 lz.x = lz.startX + Math.sin(animTime * lz.speed) * lz.moveRange;
-
                 if (player.x + player.radius > lz.x && player.x - player.radius < lz.x + lz.w &&
                     player.y + player.radius > lz.y && player.y - player.radius < lz.y + lz.h) {
                     resetCurrentLevel();
                 }
             });
 
-            // ОБРАБОТКА СТОЛКНОВЕНИЙ С ТИПАМИ ПЛАТФОРМ
+            // Платформы
             platforms.forEach(p => {
                 let closestX = Math.max(p.x, Math.min(player.x, p.x + p.w));
                 let closestY = Math.max(p.y, Math.min(player.y, p.y + p.h));
-                let dx = player.x - closestX;
-                let dy = player.y - closestY;
-                let dist = Math.sqrt(dx*dx + dy*dy);
+                let dx = player.x - closestX; let dy = player.y - closestY; let dist = Math.sqrt(dx*dx + dy*dy);
 
                 if (dist < player.radius) {
                     let overlap = player.radius - dist;
                     if (dist === 0) { dx = 0; dy = -1; dist = 1; }
-                    player.x += (dx / dist) * overlap;
-                    player.y += (dy / dist) * overlap;
+                    player.x += (dx / dist) * overlap; player.y += (dy / dist) * overlap;
 
-                    let nx = dx / dist;
-                    let ny = dy / dist;
-
-                    let bounce = 0.3; // Обычный отскок
-                    if (p.type === 'bouncy') bounce = 1.4; // Розовая прыгучесть
-                    if (p.type === 'ice') {
-                        player.vx += nx * 0.4; // Скольжение по синему льду без потери энерции
-                        bounce = 0.1;
-                    }
+                    let nx = dx / dist; let ny = dy / dist;
+                    let bounce = p.type === 'bouncy' ? 1.4 : p.type === 'ice' ? 0.1 : 0.3;
+                    if (p.type === 'ice') player.vx += nx * 0.4;
 
                     let impulse = -(1 + bounce) * (player.vx * nx + player.vy * ny);
-                    player.vx += nx * impulse;
-                    player.vy += ny * impulse;
+                    player.vx += nx * impulse; player.vy += ny * impulse;
                 }
             });
 
-            // АНТИГРАВИТАЦИОННЫЕ ВИХРИ (ГРАВИТАЦИОННОЕ ИСКАЖЕНИЕ)
+            // Вихри
             vortexes.forEach(vx => {
-                let vdx = vx.x - player.x;
-                let vdy = vx.y - player.y;
-                let vdist = Math.sqrt(vdx*vdx + vdy*vdy);
-
-                if (vdist < vx.radius + 50) {
-                    // Затягивание центра массы
-                    player.vx += (vdx / vdist) * 0.25;
-                    player.vy += (vdy / vdist) * 0.25;
-                }
+                let vdx = vx.x - player.x; let vdy = vx.y - player.y; let vdist = Math.sqrt(vdx*vdx + vdy*vdy);
+                if (vdist < vx.radius + 50) { player.vx += (vdx / vdist) * 0.25; player.vy += (vdy / vdist) * 0.25; }
             });
 
-            // ТРИГГЕР ВЫХОДА В ПОРТАЛ
-            let pdx = player.x - portal.x;
-            let pdy = player.y - portal.y;
+            // Финиш
+            let pdx = player.x - portal.x; let pdy = player.y - portal.y;
             if (Math.sqrt(pdx*pdx + pdy*pdy) < player.radius + portal.radius) {
-                triggerWin();
-                return;
+                triggerWin(); return;
             }
 
             drawScene();
             requestAnimationFrame(runGameLoop);
         }
 
-        // --- РЕНДЕРИНГ ГРАФИКИ И СЕТКИ ТРАЕКТОРИИ ---
         function drawScene() {
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-            // 1. Платформы
             platforms.forEach(p => {
-                if(p.type === 'bouncy') ctx.fillStyle = '#f355da';
-                else if(p.type === 'ice') ctx.fillStyle = 'var(--ice-blue)';
-                else ctx.fillStyle = '#1e293b';
+                ctx.fillStyle = p.type === 'bouncy' ? '#f355da' : p.type === 'ice' ? 'var(--ice-blue)' : '#1e293b';
                 ctx.fillRect(p.x, p.y, p.w, p.h);
             });
 
-            // 2. Вихри аномалий
             vortexes.forEach(vx => {
                 ctx.strokeStyle = '#8a2be2'; ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.arc(vx.x, vx.y, vx.radius + Math.sin(animTime*0.1)*5, 0, Math.PI*2); ctx.stroke();
+                ctx.beginPath(); ctx.arc(vx.x, vx.y, vx.radius + Math.sin(animTime*0.1)*4, 0, Math.PI*2); ctx.stroke();
             });
 
-            // 3. Лазеры
-            lasers.forEach(lz => {
-                ctx.fillStyle = '#ff0055';
-                ctx.fillRect(lz.x, lz.y, lz.w, lz.h);
-            });
+            lasers.forEach(lz => { ctx.fillStyle = '#ff0055'; ctx.fillRect(lz.x, lz.y, lz.w, lz.h); });
+            enemies.forEach(en => { ctx.fillStyle = '#ff3333'; ctx.beginPath(); ctx.arc(en.x, en.y, en.radius, 0, Math.PI*2); ctx.fill(); });
 
-            // 4. Дроны-Злодеи
-            enemies.forEach(en => {
-                ctx.fillStyle = '#ff3333';
-                ctx.beginPath(); ctx.arc(en.x, en.y, en.radius, 0, Math.PI*2); ctx.fill();
-                // Глаз дрона
-                ctx.fillStyle = '#000';
-                ctx.beginPath(); ctx.arc(en.x, en.y, 4, 0, Math.PI*2); ctx.fill();
-            });
-
-            // 5. Финишный Портал
-            ctx.fillStyle = 'rgba(0, 255, 135, 0.15)';
-            ctx.beginPath(); ctx.arc(portal.x, portal.y, portal.radius, 0, Math.PI*2); ctx.fill();
+            // Портал
+            ctx.fillStyle = 'rgba(0, 255, 135, 0.15)'; ctx.beginPath(); ctx.arc(portal.x, portal.y, portal.radius, 0, Math.PI*2); ctx.fill();
             ctx.strokeStyle = '#00ff87'; ctx.lineWidth = 3; ctx.stroke();
 
-            // 6. Линия рогатки (Прицел)
+            // Линия вектора рогатки (Рисуется РЯДОМ с шаром для наглядности прицела)
             if (isDragging) {
-                ctx.strokeStyle = 'var(--neon-cyan)'; ctx.lineWidth = 3;
-                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = 'var(--neon-cyan)'; ctx.lineWidth = 4;
                 ctx.beginPath(); ctx.moveTo(player.x, player.y);
-                let tX = player.x + (dragStart.x - dragCurrent.x) * 0.45;
-                let tY = player.y + (dragStart.y - dragCurrent.y) * 0.45;
-                ctx.lineTo(targetX = tX, targetY = tY); ctx.stroke();
-                ctx.setLineDash([]);
+                let targetX = player.x + (dragStart.x - dragCurrent.x) * 0.45;
+                let targetY = player.y + (dragStart.y - dragCurrent.y) * 0.45;
+                ctx.lineTo(targetX, targetY); ctx.stroke();
             }
 
-            // 7. Ядро Игрока
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI*2); ctx.fill();
+            // Шар
+            ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI*2); ctx.fill();
         }
 
-        // --- ОБРАБОТКА СЕНСОРНЫХ ТАПОВ СМАРТФОНА ---
+        // --- ПОЛНОЭКРАННОЕ УПРАВЛЕНИЕ: НАЖИМАЙ ГДЕ УГОДНО ---
         canvas.addEventListener('touchstart', (e) => {
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches[0];
-            const tX = (touch.clientX - rect.left) * (WIDTH / rect.width);
-            const tY = (touch.clientY - rect.top) * (HEIGHT / rect.height);
+            
+            isDragging = true;
+            player.vx = 0; player.vy = 0; // Гасим скорость при новом зажатии
 
-            let dist = Math.sqrt((tX - player.x)**2 + (tY - player.y)**2);
-            if (dist < player.radius + 35) {
-                isDragging = true;
-                player.vx = 0; player.vy = 0;
-                dragStart = { x: tX, y: tY };
-                dragCurrent = { x: tX, y: tY };
-            }
+            // Запоминаем точку входа пальца на экране
+            dragStart.x = (touch.clientX - rect.left) * (WIDTH / rect.width);
+            dragStart.y = (touch.clientY - rect.top) * (HEIGHT / rect.height);
+            dragCurrent = { ...dragStart };
         });
 
         canvas.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches[0];
+
             dragCurrent.x = (touch.clientX - rect.left) * (WIDTH / rect.width);
             dragCurrent.y = (touch.clientY - rect.top) * (HEIGHT / rect.height);
         });
@@ -434,37 +351,33 @@
         canvas.addEventListener('touchend', () => {
             if (!isDragging) return;
             isDragging = false;
+
             let dx = dragStart.x - dragCurrent.x;
             let dy = dragStart.y - dragCurrent.y;
+
+            // Запуск
             player.vx = dx * 0.11;
             player.vy = dy * 0.11;
         });
 
-        // --- УПРАВЛЕНИЕ УРОВНЯМИ И ФИКСАЦИЯ СБОРКИ ---
         function triggerWin() {
             gameActive = false;
             if (currentLevel === maxUnlockedLevel && maxUnlockedLevel < 50) {
                 maxUnlockedLevel++;
-                localStorage.setItem('quantum_max_lvl', maxUnlockedLevel);
+                localStorage.setItem('q_max_lvl_v2', maxUnlockedLevel);
             }
-            document.getElementById('win-info').innerText = `Сектор 0${currentLevel} успешно деактивирован. Квантовая решетка стабильна.`;
             document.getElementById('win-modal').style.display = 'flex';
         }
 
         function loadNextLevel() {
             document.getElementById('win-modal').style.display = 'none';
-            if(currentLevel < 50) {
-                launchLevel(currentLevel + 1);
-            } else {
-                alert("🌌 Потрясающе! Вы полностью прошли все 50 секторов Overdrive!");
-                backToMenu();
-            }
+            if(currentLevel < 50) launchLevel(currentLevel + 1);
+            else backToMenu();
         }
 
         function resetCurrentLevel() { launchLevel(currentLevel); }
         function backToMenu() {
-            gameActive = false;
-            document.getElementById('win-modal').style.display = 'none';
+            gameActive = false; document.getElementById('win-modal').style.display = 'none';
             document.getElementById('game-screen').classList.remove('active');
             document.getElementById('menu-screen').classList.add('active');
             initMenuGrid();
