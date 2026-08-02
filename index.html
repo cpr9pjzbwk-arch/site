@@ -2,388 +2,347 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Quantum Impulse: Ultra Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Премиум-заказ карты «Тройка»</title>
+    <!-- Подключаем красивый шрифт Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-space: #04060f;
-            --panel: rgba(13, 17, 33, 0.95);
-            --neon-cyan: #00f2fe;
-            --neon-magenta: #f355da;
-            --ice-blue: #00bfff;
-        }
-
-        /* Полная блокировка системного зума, лупы и выделений текста */
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            user-select: none; 
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: none; /* Жёсткий запрет на лупу и двойной тап на iOS/Android */
+            --primary: #003399;
+            --primary-light: #e6f0fa;
+            --accent: #ff3333;
+            --accent-hover: #e02e2e;
+            --bg-gradient: linear-gradient(135deg, #003399 0%, #001a4d 100%);
+            --card-bg: #ffffff;
+            --text-main: #2b2d42;
+            --text-muted: #8d99ae;
+            --border-color: #e2e8f0;
+            --tg-color: #229ED9;
         }
 
         body {
-            background: var(--bg-space); color: #fff; min-height: 100vh;
-            padding: env(safe-area-inset-top) 8px env(safe-area-inset-bottom);
-            display: flex; flex-direction: column; align-items: center; overflow: hidden;
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0; /* Фиксирует экран намертво */
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .screen { display: none; width: 100%; max-width: 420px; flex-direction: column; height: 94vh; }
-        .screen.active { display: flex; }
-
-        header { padding: 10px 0; text-align: center; }
-        h1 { font-size: 24px; font-weight: 900; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .glass-container { 
-            background: var(--panel); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; 
-            padding: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); flex: 1; display: flex; flex-direction: column;
-        }
-        
-        .level-scroll-area { 
-            flex: 1; overflow-y: auto; margin-top: 15px;
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        .order-container {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .lvl-card { 
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; 
-            padding: 12px 5px; color: #fff; font-size: 14px; font-weight: bold; cursor: pointer; text-align: center;
-        }
-        .lvl-card.locked { opacity: 0.25; pointer-events: none; }
-        .lvl-card.completed { border-color: var(--neon-cyan); background: rgba(0, 242, 254, 0.05); }
-
-        .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: bold; width: 100%; max-width: 420px;}
-        .hud-item { background: rgba(255,255,255,0.04); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
-        
-        #canvas-wrapper { position: relative; width: 100%; aspect-ratio: 9/14; max-height: 68vh; border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,0.1); }
-        canvas { width: 100%; height: 100%; background: #070914; display: block; }
-
-        .btn-ui {
-            background: linear-gradient(135deg, #4facfe, #00f2fe); border: none; color: white;
-            padding: 14px; border-radius: 16px; font-weight: 700; font-size: 15px; text-align: center; margin-top: 8px; width: 100%;
+        .order-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
         }
 
-        .modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,6,15,0.97); 
-            z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            color: var(--text-main);
+            background-color: #fafbfc;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input:hover, select:hover {
+            border-color: #cbd5e1;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(0, 51, 153, 0.1);
+        }
+
+        .design-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .design-option {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: #fafbfc;
+        }
+
+        .design-option input {
+            display: none;
+        }
+
+        .design-option:hover {
+            border-color: var(--primary);
+        }
+
+        .design-option.active {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .price-display {
+            background: var(--primary-light);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 25px;
+            border: 1px dashed rgba(0, 51, 153, 0.3);
+        }
+
+        .price-display span {
+            font-size: 24px;
+            font-weight: 800;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(255, 51, 51, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(255, 51, 51, 0.6);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Стили для ссылки на Telegram */
+        .telegram-footer {
+            margin-top: 25px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--tg-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+
+        .telegram-link:hover {
+            opacity: 0.8;
+        }
+
+        .telegram-link svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--tg-color);
         }
     </style>
 </head>
 <body>
 
-    <div id="menu-screen" class="screen active">
-        <header>
-            <h1>QUANTUM OVERDRIVE</h1>
-            <p style="color: #4b5563; font-size: 13px;">Исправленный Full-Screen Тач</p>
-        </header>
-        <div class="glass-container">
-            <h3 style="font-size: 14px; color: var(--neon-cyan);">ВЫБОР СЕКТОРА (1-50):</h3>
-            <div class="level-scroll-area" id="grid-container"></div>
-            <p style="font-size: 12px; color:#55657e; text-align:center; margin-top:10px;">🚀 Тяни экран в <b>любом месте</b>, чтобы запустить ядро!</p>
+    <div class="order-container">
+        <div class="header">
+            <h2>Карта «Тройка»</h2>
+            <p>Выберите срок действия и индивидуальный дизайн</p>
         </div>
-    </div>
 
-    <div id="game-screen" class="screen">
-        <div class="hud">
-            <button onclick="backToMenu()" style="background:none; border:none; color:var(--neon-magenta); font-weight:bold; font-size: 16px;">⬅ Выйти</button>
-            <div class="hud-item" id="hud-level">Сектор: 1</div>
-            <div class="hud-item" id="hud-type">Тип: База</div>
-        </div>
-        <div id="canvas-wrapper">
-            <canvas id="physicsCanvas"></canvas>
-        </div>
-        <button class="btn-ui" style="background: #1e293b;" onclick="resetCurrentLevel()">🔄 Перезапустить сектор</button>
-    </div>
+        <form id="troikaForm" onsubmit="sendToTelegram(event)">
+            
+            <div class="form-group">
+                <label for="fullName">ФИО получателя</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Иванов Иван Иванович" required>
+            </div>
 
-    <div class="modal" id="win-modal">
-        <h2 style="color: var(--neon-cyan); font-size: 28px;">СЕКТОР ПРОЙДЕН</h2>
-        <div style="font-size: 60px; margin: 20px 0;">🏆</div>
-        <button class="btn-ui" style="width: 80%;" onclick="loadNextLevel()">Дальше ➡️</button>
+            <div class="form-group">
+                <label for="phone">Номер телефона</label>
+                <input type="tel" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required>
+            </div>
+
+            <div class="form-group">
+                <label>Дизайн карты</label>
+                <div class="design-selector">
+                    <label class="design-option active" onclick="selectDesign(this)">
+                        <input type="radio" name="design" value="Классика" checked> Классика
+                    </label>
+                    <label class="design-option" onclick="selectDesign(this)">
+                        <input type="radio" name="design" value="Метро"> Метро
+                    </label>
+                    <label class="design-option" onclick="selectDesign(this)">
+                        <input type="radio" name="design" value="Cyber"> Cyberpunk
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">Срок подписки</label>
+                <select id="duration" name="duration" onchange="updatePrice()">
+                    <option value="1 месяц — 1 000 ₽">1 месяц — 1 000 ₽</option>
+                    <option value="2 месяца — 2 000 ₽">2 месяца — 2 000 ₽</option>
+                    <option value="3 месяца — 3 000 ₽">3 месяца — 3 000 ₽</option>
+                    <option value="4 месяца — 4 000 ₽">4 месяца — 4 000 ₽</option>
+                    <option value="5 месяцев — 5 000 ₽">5 месяцев — 5 000 ₽</option>
+                    <option value="6 месяцев — 6 000 ₽">6 месяцев — 6 000 ₽</option>
+                    <option value="7 месяцев — 7 000 ₽">7 месяцев — 7 000 ₽</option>
+                    <option value="8 месяцев — 8 000 ₽">8 месяцев — 8 000 ₽</option>
+                    <option value="9 месяцев — 9 000 ₽">9 месяцев — 9 000 ₽</option>
+                    <option value="10 месяцев — 10 000 ₽">10 месяцев — 10 000 ₽</option>
+                    <option value="11 месяцев — 11 000 ₽">11 месяцев — 11 000 ₽</option>
+                    <option value="12 месяцев — 12 000 ₽" selected>1 год (12 месяцев) — 12 000 ₽</option>
+                </select>
+            </div>
+
+            <div class="price-display">
+                Итого к оплате: <br><span id="totalPrice">12000</span> ₽
+            </div>
+
+            <button type="submit">Отправить заказ в Telegram</button>
+        </form>
+
+        <!-- Ссылка на Telegram-канал внизу -->
+        <div class="telegram-footer">
+            <a href="https://t.me/ismammma" target="_blank" class="telegram-link">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.25.38-.51 1.05-.78 4.11-1.79 6.85-2.97 8.22-3.55 3.91-1.67 4.72-1.96 5.24-1.97.12 0 .39.03.56.17.14.12.18.28.2.45-.02.07-.02.13-.04.2z"/>
+                </svg>
+                Наш Telegram-канал
+            </a>
+        </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('physicsCanvas');
-        const ctx = canvas.getContext('2d');
-
-        const WIDTH = 450;
-        const HEIGHT = 700;
-        canvas.width = WIDTH;
-        canvas.height = HEIGHT;
-
-        let maxUnlockedLevel = 1;
-        if(localStorage.getItem('q_max_lvl_v2')) {
-            maxUnlockedLevel = parseInt(localStorage.getItem('q_max_lvl_v2'));
-        }
-
-        let currentLevel = 1;
-        let gameActive = false;
-
-        let player = { x: 50, y: 600, vx: 0, vy: 0, radius: 15 };
-        const FRICTION = 0.97;
-        let levelGravity = 0.1;
-
-        // Полноэкранный Drag-and-Drop (независимый от шара)
-        let isDragging = false;
-        let dragStart = { x: 0, y: 0 };
-        let dragCurrent = { x: 0, y: 0 };
-
-        let platforms = [];
-        let lasers = [];
-        let enemies = [];
-        let vortexes = [];
-        let portal = { x: 380, y: 100, radius: 32 };
-        let animTime = 0;
-
-        // Жесткое гашение дабл-тапов на уровне JS (для Safari iPhone)
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 1) e.preventDefault();
-        }, { passive: false });
-
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (e) => {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) e.preventDefault(); // Гасит быстрый второй тап
-            lastTouchEnd = now;
-        }, { passive: false });
-
-        function generateProceduralLevel(lvl) {
-            platforms = []; lasers = []; enemies = []; vortexes = [];
-            animTime = 0;
-            levelGravity = 0.08 + (lvl * 0.002);
-
-            if (lvl % 2 === 0) {
-                player.x = 390; player.y = 630; portal.x = 60; portal.y = 90;
-            } else {
-                player.x = 60; player.y = 630; portal.x = 390; portal.y = 90;
-            }
-
-            // Границы карты
-            platforms.push({x: 0, y: HEIGHT - 15, w: WIDTH, h: 15, type: 'normal'});
-            platforms.push({x: 0, y: 0, w: 15, h: HEIGHT, type: 'normal'});
-            platforms.push({x: WIDTH - 15, y: 0, w: 15, h: HEIGHT, type: 'normal'});
-            platforms.push({x: 0, y: 0, w: WIDTH, h: 15, type: 'normal'});
-
-            let floorCount = 3 + Math.floor(lvl / 12);
-            let floorSpacing = 500 / floorCount;
-
-            for (let i = 1; i <= floorCount; i++) {
-                let yPos = HEIGHT - 100 - (i * floorSpacing);
-                let gapWidth = 110 - Math.min(lvl * 0.8, 45);
-                let gapX = (Math.sin(lvl * i * 45) * 0.5 + 0.5) * (WIDTH - 180) + 40;
-
-                platforms.push({x: 15, y: yPos, w: gapX - 15, h: 18, type: getRandomType(lvl, i)});
-                platforms.push({x: gapX + gapWidth, y: yPos, w: WIDTH - (gapX + gapWidth) - 15, h: 18, type: getRandomType(lvl, i + 1)});
-
-                if (lvl > 1 && i % 2 === 0) {
-                    lasers.push({
-                        x: gapX + 10, y: yPos - 25, w: 35, h: 10, 
-                        moveRange: 60 + Math.min(lvl, 40), startX: gapX + 10, speed: 0.02 + (lvl * 0.001)
-                    });
-                }
-                if (lvl >= 12 && i === 1) vortexes.push({ x: WIDTH / 2, y: yPos + 40, radius: 25 });
-            }
-
-            if (lvl >= 5) {
-                let enemyCount = 1 + Math.floor(lvl / 15);
-                for (let e = 0; e < enemyCount; e++) {
-                    enemies.push({ x: 100 + (e * 120), y: 150 + (e * 60), vx: 0, vy: 0, radius: 11, speedFactor: 0.25 + (lvl * 0.01) });
-                }
-            }
-        }
-
-        function getRandomType(lvl, seed) {
-            let r = Math.abs(Math.sin(seed * 99)) * 100;
-            if (lvl >= 8 && r > 75) return 'bouncy';
-            if (lvl >= 15 && r < 25) return 'ice';
-            return 'normal';
-        }
-
-        function initMenuGrid() {
-            const container = document.getElementById('grid-container');
-            container.innerHTML = '';
-            for (let i = 1; i <= 50; i++) {
-                const card = document.createElement('div');
-                card.className = `lvl-card ${i <= maxUnlockedLevel ? '' : 'locked'} ${i < maxUnlockedLevel ? 'completed' : ''}`;
-                card.innerHTML = `<div>${i}</div>`;
-                card.onclick = () => launchLevel(i);
-                container.appendChild(card);
-            }
-        }
-
-        function launchLevel(num) {
-            currentLevel = num;
-            document.getElementById('menu-screen').classList.remove('active');
-            document.getElementById('game-screen').classList.add('active');
-            document.getElementById('hud-level').innerText = `Сектор: ${num}`;
+        // Функция расчета цены с анимацией
+        function updatePrice() {
+            const selectElement = document.getElementById('duration');
+            const selectedText = selectElement.options[selectElement.selectedIndex].text;
             
-            let modes = ["База", "Прыгучесть", "Лед", "Ад"];
-            document.getElementById('hud-type').innerText = `Режим: ${num >= 25 ? modes[3] : num >= 15 ? modes[2] : num >= 8 ? modes[1] : modes[0]}`;
-
-            generateProceduralLevel(num);
-            player.vx = 0; player.vy = 0;
-            gameActive = true;
-            requestAnimationFrame(runGameLoop);
-        }
-
-        function runGameLoop() {
-            if (!gameActive) return;
-            animTime += 1;
-
-            if (!isDragging) {
-                player.vy += levelGravity;
-                player.vx *= FRICTION; player.vy *= FRICTION;
-                player.x += player.vx; player.y += player.vy;
-            }
-
-            // Логика Охотников
-            enemies.forEach(en => {
-                let dx = player.x - en.x; let dy = player.y - en.y; let dist = Math.sqrt(dx*dx + dy*dy);
-                if (dist > 5) {
-                    en.vx += (dx / dist) * en.speedFactor * 0.1; en.vy += (dy / dist) * en.speedFactor * 0.1;
-                    en.vx *= 0.93; en.vy *= 0.93;
-                }
-                en.x += en.vx; en.y += en.vy;
-                if (dist < player.radius + en.radius) resetCurrentLevel();
-            });
-
-            // Лазеры
-            lasers.forEach(lz => {
-                lz.x = lz.startX + Math.sin(animTime * lz.speed) * lz.moveRange;
-                if (player.x + player.radius > lz.x && player.x - player.radius < lz.x + lz.w &&
-                    player.y + player.radius > lz.y && player.y - player.radius < lz.y + lz.h) {
-                    resetCurrentLevel();
-                }
-            });
-
-            // Платформы
-            platforms.forEach(p => {
-                let closestX = Math.max(p.x, Math.min(player.x, p.x + p.w));
-                let closestY = Math.max(p.y, Math.min(player.y, p.y + p.h));
-                let dx = player.x - closestX; let dy = player.y - closestY; let dist = Math.sqrt(dx*dx + dy*dy);
-
-                if (dist < player.radius) {
-                    let overlap = player.radius - dist;
-                    if (dist === 0) { dx = 0; dy = -1; dist = 1; }
-                    player.x += (dx / dist) * overlap; player.y += (dy / dist) * overlap;
-
-                    let nx = dx / dist; let ny = dy / dist;
-                    let bounce = p.type === 'bouncy' ? 1.4 : p.type === 'ice' ? 0.1 : 0.3;
-                    if (p.type === 'ice') player.vx += nx * 0.4;
-
-                    let impulse = -(1 + bounce) * (player.vx * nx + player.vy * ny);
-                    player.vx += nx * impulse; player.vy += ny * impulse;
-                }
-            });
-
-            // Вихри
-            vortexes.forEach(vx => {
-                let vdx = vx.x - player.x; let vdy = vx.y - player.y; let vdist = Math.sqrt(vdx*vdx + vdy*vdy);
-                if (vdist < vx.radius + 50) { player.vx += (vdx / vdist) * 0.25; player.vy += (vdy / vdist) * 0.25; }
-            });
-
-            // Финиш
-            let pdx = player.x - portal.x; let pdy = player.y - portal.y;
-            if (Math.sqrt(pdx*pdx + pdy*pdy) < player.radius + portal.radius) {
-                triggerWin(); return;
-            }
-
-            drawScene();
-            requestAnimationFrame(runGameLoop);
-        }
-
-        function drawScene() {
-            ctx.clearRect(0, 0, WIDTH, HEIGHT);
-
-            platforms.forEach(p => {
-                ctx.fillStyle = p.type === 'bouncy' ? '#f355da' : p.type === 'ice' ? 'var(--ice-blue)' : '#1e293b';
-                ctx.fillRect(p.x, p.y, p.w, p.h);
-            });
-
-            vortexes.forEach(vx => {
-                ctx.strokeStyle = '#8a2be2'; ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.arc(vx.x, vx.y, vx.radius + Math.sin(animTime*0.1)*4, 0, Math.PI*2); ctx.stroke();
-            });
-
-            lasers.forEach(lz => { ctx.fillStyle = '#ff0055'; ctx.fillRect(lz.x, lz.y, lz.w, lz.h); });
-            enemies.forEach(en => { ctx.fillStyle = '#ff3333'; ctx.beginPath(); ctx.arc(en.x, en.y, en.radius, 0, Math.PI*2); ctx.fill(); });
-
-            // Портал
-            ctx.fillStyle = 'rgba(0, 255, 135, 0.15)'; ctx.beginPath(); ctx.arc(portal.x, portal.y, portal.radius, 0, Math.PI*2); ctx.fill();
-            ctx.strokeStyle = '#00ff87'; ctx.lineWidth = 3; ctx.stroke();
-
-            // Линия вектора рогатки (Рисуется РЯДОМ с шаром для наглядности прицела)
-            if (isDragging) {
-                ctx.strokeStyle = 'var(--neon-cyan)'; ctx.lineWidth = 4;
-                ctx.beginPath(); ctx.moveTo(player.x, player.y);
-                let targetX = player.x + (dragStart.x - dragCurrent.x) * 0.45;
-                let targetY = player.y + (dragStart.y - dragCurrent.y) * 0.45;
-                ctx.lineTo(targetX, targetY); ctx.stroke();
-            }
-
-            // Шар
-            ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI*2); ctx.fill();
-        }
-
-        // --- ПОЛНОЭКРАННОЕ УПРАВЛЕНИЕ: НАЖИМАЙ ГДЕ УГОДНО ---
-        canvas.addEventListener('touchstart', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const touch = e.touches[0];
+            // Вытаскиваем число из текста для расчета
+            let months = parseInt(selectedText);
+            if (selectedText.includes('год')) months = 12;
             
-            isDragging = true;
-            player.vx = 0; player.vy = 0; // Гасим скорость при новом зажатии
-
-            // Запоминаем точку входа пальца на экране
-            dragStart.x = (touch.clientX - rect.left) * (WIDTH / rect.width);
-            dragStart.y = (touch.clientY - rect.top) * (HEIGHT / rect.height);
-            dragCurrent = { ...dragStart };
-        });
-
-        canvas.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const rect = canvas.getBoundingClientRect();
-            const touch = e.touches[0];
-
-            dragCurrent.x = (touch.clientX - rect.left) * (WIDTH / rect.width);
-            dragCurrent.y = (touch.clientY - rect.top) * (HEIGHT / rect.height);
-        });
-
-        canvas.addEventListener('touchend', () => {
-            if (!isDragging) return;
-            isDragging = false;
-
-            let dx = dragStart.x - dragCurrent.x;
-            let dy = dragStart.y - dragCurrent.y;
-
-            // Запуск
-            player.vx = dx * 0.11;
-            player.vy = dy * 0.11;
-        });
-
-        function triggerWin() {
-            gameActive = false;
-            if (currentLevel === maxUnlockedLevel && maxUnlockedLevel < 50) {
-                maxUnlockedLevel++;
-                localStorage.setItem('q_max_lvl_v2', maxUnlockedLevel);
-            }
-            document.getElementById('win-modal').style.display = 'flex';
+            const totalPrice = months * 1000;
+            
+            const priceSpan = document.getElementById('totalPrice');
+            priceSpan.innerText = totalPrice.toLocaleString('ru-RU');
+            
+            priceSpan.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                priceSpan.style.transform = 'scale(1)';
+            }, 200);
         }
 
-        function loadNextLevel() {
-            document.getElementById('win-modal').style.display = 'none';
-            if(currentLevel < 50) launchLevel(currentLevel + 1);
-            else backToMenu();
+        // Выбор дизайна
+        function selectDesign(element) {
+            document.querySelectorAll('.design-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+            element.querySelector('input').checked = true;
         }
 
-        function resetCurrentLevel() { launchLevel(currentLevel); }
-        function backToMenu() {
-            gameActive = false; document.getElementById('win-modal').style.display = 'none';
-            document.getElementById('game-screen').classList.remove('active');
-            document.getElementById('menu-screen').classList.add('active');
-            initMenuGrid();
+        // Отправка данных анкеты в Telegram
+        function sendToTelegram(event) {
+            event.preventDefault(); // Предотвращаем перезагрузку страницы
+
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const design = document.querySelector('input[name="design"]:checked').value;
+            const durationSelect = document.getElementById('duration');
+            const duration = durationSelect.options[durationSelect.selectedIndex].text;
+            const totalPrice = document.getElementById('totalPrice').innerText;
+
+            // Формируем текст сообщения
+            const message = `🎫 Новый заказ карты Тройка!\n\n` +
+                            `👤 ФИО: ${fullName}\n` +
+                            `📞 Телефон: ${phone}\n` +
+                            `🎨 Дизайн: ${design}\n` +
+                            `⏳ Срок: ${duration}\n` +
+                            `💰 Сумма: ${totalPrice} ₽`;
+
+            // Кодируем текст для URL ссылки
+            const encodedMessage = encodeURIComponent(message);
+
+            // Перенаправляем пользователя в Telegram для отправки сообщения (откроется диалог или бот)
+            const telegramUrl = `https://t.me/ismammma?text=${encodedMessage}`;
+            window.open(telegramUrl, '_blank');
         }
 
-        window.onload = initMenuGrid;
+        window.onload = updatePrice;
     </script>
+
 </body>
 </html>
